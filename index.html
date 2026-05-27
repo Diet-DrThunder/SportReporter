@@ -41,7 +41,7 @@
         }
 
         .header-title {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: bold;
             letter-spacing: 3px;
         }
@@ -62,12 +62,12 @@
         .game-selector select {
             width: 100%;
             max-width: 400px;
-            padding: 0.6rem 1rem;
+            padding: 0.8rem 1rem;
             background: #1a1a1a;
             border: 1px solid #333;
             color: #fff;
             border-radius: 3px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -83,12 +83,12 @@
         }
 
         .btn {
-            padding: 0.6rem 1.2rem;
+            padding: 0.8rem 1.5rem;
             background: #1a1a1a;
             border: 1px solid #333;
             color: #fff;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 600;
             letter-spacing: 1px;
             transition: all 0.2s;
@@ -104,32 +104,41 @@
             flex: 1;
             display: flex;
             overflow: hidden;
-            gap: 0;
-            padding: 20px;
+            flex-direction: column;
+            padding: 0;
         }
 
-        /* Theatre Mode - Black bars on sides */
+        /* Theatre Mode - Black bars on top and bottom */
         .theatre-bar {
-            width: 20px;
+            height: 80px;
             background: #000;
             flex-shrink: 0;
         }
 
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            gap: 20px;
+            padding: 20px;
+        }
+
         /* Stats Panels */
         .stats-panel {
-            width: 22%;
+            width: 20%;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             border-radius: 8px;
+            min-width: 250px;
         }
 
         .stats-panel.left {
-            margin-right: 15px;
+            margin-right: 10px;
         }
 
         .stats-panel.right {
-            margin-left: 15px;
+            margin-left: 10px;
         }
 
         .panel-gradient {
@@ -138,14 +147,15 @@
             display: flex;
             flex-direction: column;
             border-radius: 8px;
-            border: 2px solid;
+            border: 3px solid;
             overflow: hidden;
         }
 
         .panel-header {
-            padding: 1.2rem;
+            padding: 1.5rem;
             border-bottom: 2px solid rgba(255,255,255,0.1);
             flex-shrink: 0;
+            background: rgba(0,0,0,0.5);
         }
 
         .panel-team-info {
@@ -156,14 +166,14 @@
         }
 
         .panel-team-logo {
-            width: 70px;
-            height: 70px;
+            width: 90px;
+            height: 90px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 3rem;
             flex-shrink: 0;
             background-size: contain;
             background-position: center;
@@ -172,30 +182,30 @@
 
         .panel-team-name {
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 1.3rem;
             letter-spacing: 1px;
         }
 
         .panel-team-record {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.6);
-            margin-top: 0.3rem;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 0.5rem;
         }
 
         .view-buttons {
             display: flex;
             gap: 0.5rem;
-            margin-top: 0.8rem;
+            margin-top: 1rem;
         }
 
         .view-btn {
             flex: 1;
-            padding: 0.5rem;
+            padding: 0.7rem;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
             color: rgba(255,255,255,0.7);
             cursor: pointer;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             font-weight: 600;
             text-transform: uppercase;
             transition: all 0.2s;
@@ -215,15 +225,15 @@
         .panel-content {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem;
+            padding: 1.5rem;
         }
 
         .stat-row {
             display: flex;
             align-items: center;
-            padding: 0.7rem 0;
+            padding: 1rem 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            gap: 0.8rem;
+            gap: 1rem;
         }
 
         .stat-row:last-child {
@@ -231,51 +241,52 @@
         }
 
         .stat-label {
-            color: rgba(255,255,255,0.6);
-            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.65rem;
-            min-width: 55px;
+            font-size: 0.8rem;
+            min-width: 60px;
+            letter-spacing: 0.5px;
         }
 
         .stat-value-container {
             flex: 1;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.7rem;
         }
 
         .stat-bar-container {
             flex: 1;
-            height: 20px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
+            height: 28px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.15);
         }
 
         .stat-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.7));
-            border-radius: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.8));
+            border-radius: 2px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 0.4rem;
+            padding-right: 0.6rem;
         }
 
         .stat-bar-text {
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             font-weight: bold;
             color: #fff;
             text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
         }
 
         .stat-value {
-            font-size: 1rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #fff;
-            min-width: 40px;
+            min-width: 50px;
             text-align: right;
         }
 
@@ -286,9 +297,9 @@
             flex-direction: column;
             background: #000;
             position: relative;
-            margin: 0 15px;
             border-radius: 8px;
             overflow: hidden;
+            border: 2px solid #333;
         }
 
         .broadcast-container {
@@ -308,54 +319,54 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .broadcast-placeholder svg {
-            width: 100px;
-            height: 100px;
-            opacity: 0.3;
+            width: 150px;
+            height: 150px;
+            opacity: 0.2;
         }
 
         .broadcast-placeholder p {
-            color: #666;
-            font-size: 1rem;
+            color: #555;
+            font-size: 1.5rem;
         }
 
         .game-info-bar {
-            background: rgba(0,0,0,0.9);
-            border-top: 1px solid #333;
-            padding: 1.5rem 2rem;
+            background: rgba(0,0,0,0.95);
+            border-top: 2px solid #333;
+            padding: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 2rem;
+            gap: 3rem;
         }
 
         .team-scoreline {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 2rem;
             flex: 1;
         }
 
         .team-score {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .team-name {
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .score-large {
-            font-size: 2.2rem;
+            font-size: 3.5rem;
             font-weight: bold;
-            min-width: 70px;
+            min-width: 100px;
         }
 
         .game-time-center {
@@ -364,14 +375,14 @@
         }
 
         .game-time-center .status {
-            font-size: 0.8rem;
-            color: #888;
+            font-size: 0.95rem;
+            color: #999;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .game-time-center .time {
-            font-size: 1.5rem;
+            font-size: 2.2rem;
             font-weight: bold;
             color: #fff;
         }
@@ -397,7 +408,7 @@
         }
 
         .selector-content h1 {
-            font-size: 4rem;
+            font-size: 5rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 4px;
@@ -412,7 +423,7 @@
         }
 
         .selector-content p {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             color: #888;
             margin-bottom: 2rem;
         }
@@ -443,21 +454,21 @@
         }
 
         .game-option-matchup {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
 
         .game-option-status {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #888;
         }
 
         .test-button {
-            padding: 1rem 2.5rem;
+            padding: 1.2rem 3rem;
             background: #ce1141;
             color: white;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
             border: none;
             border-radius: 4px;
@@ -476,10 +487,11 @@
             text-align: center;
             color: #888;
             padding: 2rem 1rem;
+            font-size: 1.1rem;
         }
 
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -488,7 +500,7 @@
 
         ::-webkit-scrollbar-thumb {
             background: rgba(255,255,255,0.2);
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -528,87 +540,92 @@
 
         <!-- Main Content - Theatre Mode -->
         <div class="main-content">
+            <!-- Top Theatre Bar -->
             <div class="theatre-bar"></div>
 
-            <!-- LEFT STATS PANEL -->
-            <div class="stats-panel left">
-                <div class="panel-gradient" id="leftGradient">
-                    <div class="panel-header">
-                        <div class="panel-team-info">
-                            <div class="panel-team-logo" id="leftTeamLogo"></div>
-                            <div>
-                                <div class="panel-team-name" id="leftTeamName">Team</div>
-                                <div class="panel-team-record" id="leftTeamRecord">0-0</div>
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                <!-- LEFT STATS PANEL -->
+                <div class="stats-panel left">
+                    <div class="panel-gradient" id="leftGradient">
+                        <div class="panel-header">
+                            <div class="panel-team-info">
+                                <div class="panel-team-logo" id="leftTeamLogo"></div>
+                                <div>
+                                    <div class="panel-team-name" id="leftTeamName">Team</div>
+                                    <div class="panel-team-record" id="leftTeamRecord">0-0</div>
+                                </div>
+                            </div>
+                            <div class="view-buttons">
+                                <button class="view-btn active" data-panel="left" data-view="team">Team</button>
+                                <button class="view-btn" data-panel="left" data-view="players">Players</button>
                             </div>
                         </div>
-                        <div class="view-buttons">
-                            <button class="view-btn active" data-panel="left" data-view="team">Team</button>
-                            <button class="view-btn" data-panel="left" data-view="players">Players</button>
+                        <div class="panel-content" id="leftContent">
+                            <div class="loading">Loading stats...</div>
                         </div>
                     </div>
-                    <div class="panel-content" id="leftContent">
-                        <div class="loading">Loading stats...</div>
+                </div>
+
+                <!-- CENTER BROADCAST -->
+                <div class="center-section">
+                    <div class="broadcast-container">
+                        <div class="broadcast-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+                                <polyline points="17 2 12 7 7 2"></polyline>
+                            </svg>
+                            <p>Broadcast Video Here</p>
+                        </div>
+                    </div>
+                    <div class="game-info-bar">
+                        <div class="team-scoreline">
+                            <div class="team-score">
+                                <div>
+                                    <div class="team-name" id="leftTeamNameScore">Away</div>
+                                    <div class="score-large" id="leftScoreMain">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="game-time-center">
+                            <div class="status" id="gameStatus">--</div>
+                            <div class="time" id="gameTimeMain">--</div>
+                        </div>
+                        <div class="team-scoreline" style="flex-direction: row-reverse;">
+                            <div class="team-score">
+                                <div>
+                                    <div class="team-name" id="rightTeamNameScore">Home</div>
+                                    <div class="score-large" id="rightScoreMain">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT STATS PANEL -->
+                <div class="stats-panel right">
+                    <div class="panel-gradient" id="rightGradient">
+                        <div class="panel-header">
+                            <div class="panel-team-info">
+                                <div class="panel-team-logo" id="rightTeamLogo"></div>
+                                <div>
+                                    <div class="panel-team-name" id="rightTeamName">Team</div>
+                                    <div class="panel-team-record" id="rightTeamRecord">0-0</div>
+                                </div>
+                            </div>
+                            <div class="view-buttons">
+                                <button class="view-btn active" data-panel="right" data-view="team">Team</button>
+                                <button class="view-btn" data-panel="right" data-view="players">Players</button>
+                            </div>
+                        </div>
+                        <div class="panel-content" id="rightContent">
+                            <div class="loading">Loading stats...</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- CENTER BROADCAST -->
-            <div class="center-section">
-                <div class="broadcast-container">
-                    <div class="broadcast-placeholder">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
-                            <polyline points="17 2 12 7 7 2"></polyline>
-                        </svg>
-                        <p>Broadcast Video Here</p>
-                    </div>
-                </div>
-                <div class="game-info-bar">
-                    <div class="team-scoreline">
-                        <div class="team-score">
-                            <div>
-                                <div class="team-name" id="leftTeamNameScore">Away</div>
-                                <div class="score-large" id="leftScoreMain">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-time-center">
-                        <div class="status" id="gameStatus">--</div>
-                        <div class="time" id="gameTimeMain">--</div>
-                    </div>
-                    <div class="team-scoreline" style="flex-direction: row-reverse;">
-                        <div class="team-score">
-                            <div>
-                                <div class="team-name" id="rightTeamNameScore">Home</div>
-                                <div class="score-large" id="rightScoreMain">0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RIGHT STATS PANEL -->
-            <div class="stats-panel right">
-                <div class="panel-gradient" id="rightGradient">
-                    <div class="panel-header">
-                        <div class="panel-team-info">
-                            <div class="panel-team-logo" id="rightTeamLogo"></div>
-                            <div>
-                                <div class="panel-team-name" id="rightTeamName">Team</div>
-                                <div class="panel-team-record" id="rightTeamRecord">0-0</div>
-                            </div>
-                        </div>
-                        <div class="view-buttons">
-                            <button class="view-btn active" data-panel="right" data-view="team">Team</button>
-                            <button class="view-btn" data-panel="right" data-view="players">Players</button>
-                        </div>
-                    </div>
-                    <div class="panel-content" id="rightContent">
-                        <div class="loading">Loading stats...</div>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Bottom Theatre Bar -->
             <div class="theatre-bar"></div>
         </div>
     </div>
@@ -617,37 +634,71 @@
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
         const NBA_API = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
 
+        // Team logos using SVG with proper colors
+        const TEAM_LOGOS = {
+            'LAL': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#1f41bb"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#fdb927" text-anchor="middle">LA</text></svg>',
+            'BOS': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#007a33"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#fff" text-anchor="middle">C</text></svg>',
+            'GSW': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#1d428a"/><text x="50" y="60" font-size="36" font-weight="bold" fill="#ffc72c" text-anchor="middle">GSW</text></svg>',
+            'MIA': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#98002e"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#f9a01b" text-anchor="middle">H</text></svg>',
+            'NYK': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#0c2340"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#f58426" text-anchor="middle">NY</text></svg>',
+            'CHI': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#ce1141"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#fff" text-anchor="middle">C</text></svg>',
+            'DAL': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#003da5"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#b8c4ca" text-anchor="middle">D</text></svg>',
+            'SAS': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#000"/><text x="50" y="60" font-size="36" font-weight="bold" fill="#c4ced4" text-anchor="middle">SA</text></svg>',
+            'OKC': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#007ac1"/><text x="50" y="60" font-size="36" font-weight="bold" fill="#ef3b39" text-anchor="middle">OKC</text></svg>',
+            'DEN': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#0e2240"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#ffb81c" text-anchor="middle">D</text></svg>',
+            'PHX': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#e56021"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#1d1160" text-anchor="middle">S</text></svg>',
+            'LAC': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#c60c30"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#1d428a" text-anchor="middle">C</text></svg>',
+            'MEM': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#12173f"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#fdb827" text-anchor="middle">M</text></svg>',
+            'NOP': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#0c2c56"/><text x="50" y="60" font-size="36" font-weight="bold" fill="#c4ced4" text-anchor="middle">NO</text></svg>',
+            'MIN': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#0c2340"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#236b8e" text-anchor="middle">T</text></svg>',
+            'MIL': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#12173f"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#eee1aa" text-anchor="middle">M</text></svg>',
+            'TOR': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#ce1141"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#000" text-anchor="middle">T</text></svg>',
+            'PHI': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#1d428a"/><text x="50" y="60" font-size="36" font-weight="bold" fill="#c4ced4" text-anchor="middle">76</text></svg>',
+            'ATL': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#e03828"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#061922" text-anchor="middle">A</text></svg>',
+            'BKN': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#000"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#fff" text-anchor="middle">B</text></svg>',
+            'CLE': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#6f2da8"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#041e42" text-anchor="middle">C</text></svg>',
+            'DET': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#c8102e"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#1d42ba" text-anchor="middle">D</text></svg>',
+            'HOU': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#ce1141"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#000" text-anchor="middle">H</text></svg>',
+            'IND': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#002d62"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#fdbb2f" text-anchor="middle">P</text></svg>',
+            'ORL': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#0072ce"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#c41e3a" text-anchor="middle">O</text></svg>',
+            'SAC': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#5a2d81"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#63727a" text-anchor="middle">K</text></svg>',
+            'UTA': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#f9a01b"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#00471b" text-anchor="middle">J</text></svg>',
+            'POR': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#e03828"/><text x="50" y="60" font-size="36" font-weight="bold" fill="#000" text-anchor="middle">POR</text></svg>',
+            'CHO': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#00778d"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#1ba1d7" text-anchor="middle">H</text></svg>',
+            'WAS': '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#002b5c"/><text x="50" y="60" font-size="40" font-weight="bold" fill="#f0163f" text-anchor="middle">W</text></svg>'
+        };
+
         const TEAM_DATA = {
-            'LAL': { name: 'Lakers', primary: '#1f41bb', secondary: '#fdb927', logo: '🏀' },
-            'BOS': { name: 'Celtics', primary: '#007a33', secondary: '#ba9653', logo: '🏀' },
-            'GSW': { name: 'Warriors', primary: '#1d428a', secondary: '#ffc72c', logo: '🏀' },
-            'MIA': { name: 'Heat', primary: '#98002e', secondary: '#f9a01b', logo: '🏀' },
-            'NYK': { name: 'Knicks', primary: '#0c2340', secondary: '#f58426', logo: '🏀' },
-            'CHI': { name: 'Bulls', primary: '#ce1141', secondary: '#000000', logo: '🏀' },
-            'DAL': { name: 'Mavericks', primary: '#003da5', secondary: '#b8c4ca', logo: '🏀' },
-            'SAS': { name: 'Spurs', primary: '#c4ced4', secondary: '#000000', logo: '🏀' },
-            'OKC': { name: 'Thunder', primary: '#007ac1', secondary: '#ef3b39', logo: '🏀' },
-            'DEN': { name: 'Nuggets', primary: '#0e2240', secondary: '#ffb81c', logo: '🏀' },
-            'PHX': { name: 'Suns', primary: '#e56021', secondary: '#1d1160', logo: '🏀' },
-            'LAC': { name: 'Clippers', primary: '#c60c30', secondary: '#1d428a', logo: '🏀' },
-            'MEM': { name: 'Grizzlies', primary: '#12173f', secondary: '#fdb827', logo: '🏀' },
-            'NOP': { name: 'Pelicans', primary: '#0c2c56', secondary: '#c4ced4', logo: '🏀' },
-            'MIN': { name: 'Timberwolves', primary: '#0c2340', secondary: '#236b8e', logo: '🏀' },
-            'MIL': { name: 'Bucks', primary: '#12173f', secondary: '#eee1aa', logo: '🏀' },
-            'TOR': { name: 'Raptors', primary: '#ce1141', secondary: '#000000', logo: '🏀' },
-            'PHI': { name: '76ers', primary: '#1d428a', secondary: '#c4ced4', logo: '🏀' },
-            'ATL': { name: 'Hawks', primary: '#e03828', secondary: '#061922', logo: '🏀' },
-            'BKN': { name: 'Nets', primary: '#000000', secondary: '#ffffff', logo: '🏀' },
-            'CLE': { name: 'Cavaliers', primary: '#6f2da8', secondary: '#041e42', logo: '🏀' },
-            'DET': { name: 'Pistons', primary: '#c8102e', secondary: '#1d42ba', logo: '🏀' },
-            'HOU': { name: 'Rockets', primary: '#ce1141', secondary: '#000000', logo: '🏀' },
-            'IND': { name: 'Pacers', primary: '#002d62', secondary: '#fdbb2f', logo: '🏀' },
-            'ORL': { name: 'Magic', primary: '#0072ce', secondary: '#c41e3a', logo: '🏀' },
-            'SAC': { name: 'Kings', primary: '#5a2d81', secondary: '#63727a', logo: '🏀' },
-            'UTA': { name: 'Jazz', primary: '#f9a01b', secondary: '#00471b', logo: '🏀' },
-            'POR': { name: 'Trail Blazers', primary: '#e03828', secondary: '#000000', logo: '🏀' },
-            'CHO': { name: 'Hornets', primary: '#00778d', secondary: '#1ba1d7', logo: '🏀' },
-            'WAS': { name: 'Wizards', primary: '#002b5c', secondary: '#f0163f', logo: '🏀' }
+            'LAL': { name: 'Lakers', primary: '#1f41bb', secondary: '#fdb927' },
+            'BOS': { name: 'Celtics', primary: '#007a33', secondary: '#ba9653' },
+            'GSW': { name: 'Warriors', primary: '#1d428a', secondary: '#ffc72c' },
+            'MIA': { name: 'Heat', primary: '#98002e', secondary: '#f9a01b' },
+            'NYK': { name: 'Knicks', primary: '#0c2340', secondary: '#f58426' },
+            'CHI': { name: 'Bulls', primary: '#ce1141', secondary: '#000000' },
+            'DAL': { name: 'Mavericks', primary: '#003da5', secondary: '#b8c4ca' },
+            'SAS': { name: 'Spurs', primary: '#c4ced4', secondary: '#000000' },
+            'OKC': { name: 'Thunder', primary: '#007ac1', secondary: '#ef3b39' },
+            'DEN': { name: 'Nuggets', primary: '#0e2240', secondary: '#ffb81c' },
+            'PHX': { name: 'Suns', primary: '#e56021', secondary: '#1d1160' },
+            'LAC': { name: 'Clippers', primary: '#c60c30', secondary: '#1d428a' },
+            'MEM': { name: 'Grizzlies', primary: '#12173f', secondary: '#fdb827' },
+            'NOP': { name: 'Pelicans', primary: '#0c2c56', secondary: '#c4ced4' },
+            'MIN': { name: 'Timberwolves', primary: '#0c2340', secondary: '#236b8e' },
+            'MIL': { name: 'Bucks', primary: '#12173f', secondary: '#eee1aa' },
+            'TOR': { name: 'Raptors', primary: '#ce1141', secondary: '#000000' },
+            'PHI': { name: '76ers', primary: '#1d428a', secondary: '#c4ced4' },
+            'ATL': { name: 'Hawks', primary: '#e03828', secondary: '#061922' },
+            'BKN': { name: 'Nets', primary: '#000000', secondary: '#ffffff' },
+            'CLE': { name: 'Cavaliers', primary: '#6f2da8', secondary: '#041e42' },
+            'DET': { name: 'Pistons', primary: '#c8102e', secondary: '#1d42ba' },
+            'HOU': { name: 'Rockets', primary: '#ce1141', secondary: '#000000' },
+            'IND': { name: 'Pacers', primary: '#002d62', secondary: '#fdbb2f' },
+            'ORL': { name: 'Magic', primary: '#0072ce', secondary: '#c41e3a' },
+            'SAC': { name: 'Kings', primary: '#5a2d81', secondary: '#63727a' },
+            'UTA': { name: 'Jazz', primary: '#f9a01b', secondary: '#00471b' },
+            'POR': { name: 'Trail Blazers', primary: '#e03828', secondary: '#000000' },
+            'CHO': { name: 'Hornets', primary: '#00778d', secondary: '#1ba1d7' },
+            'WAS': { name: 'Wizards', primary: '#002b5c', secondary: '#f0163f' }
         };
 
         const NBA_TEAMS = Object.entries(TEAM_DATA).map(([abbr, data]) => ({
@@ -866,7 +917,7 @@
             rightGradient.style.borderColor = homeTeamData.primary;
             rightGradient.style.background = `linear-gradient(135deg, ${homeTeamData.primary}22 0%, ${homeTeamData.secondary}11 100%)`;
 
-            // Update team info
+            // Update team info with logos
             updateTeamPanel('left', away, awayTeamData);
             updateTeamPanel('right', home, homeTeamData);
 
@@ -889,7 +940,9 @@
 
         function updateTeamPanel(side, team, teamData) {
             const prefix = side === 'left' ? 'left' : 'right';
-            document.getElementById(`${prefix}TeamLogo`).textContent = team.team?.abbreviation || '🏀';
+            const logoElement = document.getElementById(`${prefix}TeamLogo`);
+            const logoSvg = TEAM_LOGOS[team.team.abbreviation];
+            logoElement.innerHTML = logoSvg || team.team?.abbreviation;
             document.getElementById(`${prefix}TeamName`).textContent = team.team?.displayName || 'Team';
             document.getElementById(`${prefix}TeamRecord`).textContent = team.records?.[0]?.summary || '0-0';
         }
@@ -924,7 +977,7 @@
                             <span class="stat-label">${config.label}</span>
                             <div class="stat-value-container">
                                 <div class="stat-bar-container">
-                                    <div class="stat-bar-fill" style="width: ${barWidth}%;">
+                                    <div class="stat-bar-fill" style="width: ${barWidth}%; background: linear-gradient(90deg, ${teamData.primary}88, ${teamData.secondary}cc);">
                                         <span class="stat-bar-text">${numValue}%</span>
                                     </div>
                                 </div>
@@ -998,26 +1051,21 @@
             appState.refreshInterval = setInterval(refreshGame, 15000);
         }
 
-        // ============ Controls ============
         document.getElementById('refreshBtn').addEventListener('click', refreshGame);
         document.getElementById('homeBtn').addEventListener('click', () => {
-            if (appState.refreshInterval) clearInterval(appState.refreshInterval);
-            appState.isStarted = false;
-            document.getElementById('mainApp').style.display = 'none';
             document.getElementById('gameSelector').classList.remove('hidden');
-            loadAvailableGames();
+            document.getElementById('mainApp').style.display = 'none';
+            if (appState.refreshInterval) clearInterval(appState.refreshInterval);
         });
         document.getElementById('fullscreenBtn').addEventListener('click', () => {
-            const container = document.getElementById('mainApp');
             if (!document.fullscreenElement) {
-                container.requestFullscreen().catch(err => console.warn('Fullscreen failed'));
+                document.documentElement.requestFullscreen();
             } else {
                 document.exitFullscreen();
             }
         });
 
-        // ============ Initialize ============
-        window.addEventListener('DOMContentLoaded', loadAvailableGames);
+        loadAvailableGames();
     </script>
 </body>
 </html>
