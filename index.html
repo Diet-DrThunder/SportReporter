@@ -3,682 +3,332 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>StatBars Broadcast Mode — Projector Optimized</title>
+<title>StatBars Broadcast Mode — Live ESPN Stats</title>
 <style>
   :root{
-    --panel-width:360px;            /* medium panels for ViewSonic PA503S */
-    --topbar-height:160px;         /* top black bar larger than bottom */
+    --left-right-width:16%;        /* sidebars compressed to 16% */
+    --min-panel-width:260px;       /* keep readable on low res */
+    --topbar-height:160px;
     --bottombar-height:100px;
     --bg:#000;
     --panel-bg:rgba(0,0,0,0.56);
-    --panel-border:rgba(255,255,255,0.06);
     --muted:rgba(255,255,255,0.56);
-    --strong:#ffffff;
+    --strong:#fff;
     --bar-bg:rgba(255,255,255,0.04);
     --bar-border:rgba(255,255,255,0.08);
-    --radius:4px;
-    --font-sans: "Arial", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    --small-scale: 0.92;           /* overall vertical compression scale */
-    --control-height:44px;
+    --small-scale:0.92;
   }
-
-  /* Reset */
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;width:100%;background:var(--bg);color:var(--strong);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;overflow:hidden}
-
-  /* Top/Bottom black bars (theatre mode) */
-  .theatre-top, .theatre-bottom{
-    width:100%;
-    background:#000;
-    flex:0 0 auto;
-  }
-  .theatre-top{height:var(--topbar-height)}
-  .theatre-bottom{height:var(--bottombar-height)}
-
-  /* Layout */
-  .broadcast-viewport{
-    display:flex;
-    height: calc(100vh - var(--topbar-height) - var(--bottombar-height));
-    width:100%;
-    align-items:stretch;
-    justify-content:stretch;
-    gap:0;
-    transform: scale(var(--small-scale));
-    transform-origin: center top;
-  }
-
-  .stats-panel{
-    width:var(--panel-width);
-    min-width:var(--panel-width);
-    height:100%;
-    background:var(--panel-bg);
-    border-right:1px solid var(--panel-border);
-    display:flex;
-    flex-direction:column;
-    padding:14px 12px;
-    overflow:auto;
-    backdrop-filter: blur(4px);
-  }
-  .stats-panel.right{border-right:none;border-left:1px solid var(--panel-border)}
-
-  .broadcast-center{
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#000;
-    position:relative;
-    overflow:hidden;
-  }
-
-  /* Team header - logo without box */
-  .team-header{display:flex;gap:10px;align-items:center;margin-bottom:10px}
-  .team-logo{width:64px;height:64px;border-radius:0;display:flex;align-items:center;justify-content:center;overflow:visible;flex-shrink:0}
+  html,body{height:100%;width:100%;background:var(--bg);color:var(--strong);font-family:Arial,system-ui;overflow:hidden}
+  .theatre-top,.theatre-bottom{width:100%;background:#000;flex:0 0 auto}
+  .theatre-top{height:var(--topbar-height)} .theatre-bottom{height:var(--bottombar-height)}
+  .viewport{display:flex;height:calc(100vh - var(--topbar-height) - var(--bottombar-height));gap:0;transform:scale(var(--small-scale));transform-origin:center top}
+  .panel{width:var(--left-right-width);min-width:var(--min-panel-width);background:var(--panel-bg);padding:12px;overflow:auto;display:flex;flex-direction:column}
+  .panel.right{border-left:1px solid rgba(255,255,255,0.06)}
+  .center{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .team-header{display:flex;gap:10px;align-items:center;margin-bottom:8px}
   .team-logo img{width:64px;height:64px;object-fit:contain;display:block}
-  .team-meta{display:flex;flex-direction:column;gap:2px}
-  .team-name{font-size:1.12rem;font-weight:800;letter-spacing:0.2px}
-  .team-record{font-size:0.86rem;color:var(--muted)}
-
-  /* Stats list (compressed) */
+  .team-name{font-weight:800;font-size:1.05rem}
+  .team-record{color:var(--muted);font-size:0.86rem}
   .stats-list{display:flex;flex-direction:column;gap:6px}
   .stat-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
-  .stat-left{display:flex;align-items:center;gap:8px;min-width:110px}
-  .stat-label{font-size:0.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;width:60px}
-  .stat-value-container{display:flex;align-items:center;gap:8px}
-  .stat-value{font-weight:800;font-size:0.98rem;min-width:40px;text-align:right}
-  .stat-bar-container{width:150px;height:16px;background:var(--bar-bg);border:1px solid var(--bar-border);border-radius:6px;overflow:hidden}
-  .stat-bar-fill{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;color:#fff;font-weight:700;font-size:0.68rem;border-radius:6px}
-
-  /* Broadcast area */
-  .broadcast-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#666;pointer-events:none}
-  .broadcast-video{width:100%;height:100%;object-fit:contain;background:#0a0a0a;display:block}
-
-  /* Homescreen overlay */
-  .homescreen{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.95);
-    z-index:1200;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    flex-direction:column;
-    gap:18px;
-    padding:28px;
-  }
-  .homescreen .panel{
-    width:min(980px,92vw);
-    background:rgba(20,20,20,0.9);
-    border:1px solid rgba(255,255,255,0.04);
-    padding:18px;
-    border-radius:8px;
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-  }
-  .homescreen h1{font-size:2.4rem;margin-bottom:6px}
-  .homescreen .controls{display:flex;gap:12px;align-items:center}
+  .stat-label{font-size:0.68rem;font-weight:800;color:var(--muted);width:60px;text-transform:uppercase}
+  .stat-value{font-weight:800;min-width:40px;text-align:right}
+  .stat-bar{width:150px;height:16px;background:var(--bar-bg);border-radius:6px;overflow:hidden;border:1px solid var(--bar-border)}
+  .stat-fill{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;color:#fff;font-weight:700;font-size:0.68rem;transition:width 400ms}
+  .homescreen{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:1200;display:flex;align-items:center;justify-content:center;color:#fff;flex-direction:column;gap:18px;padding:28px}
+  .panel-ui{width:min(980px,92vw);background:rgba(20,20,20,0.9);padding:18px;border-radius:8px;display:flex;gap:12px}
   .btn{background:#111;border:1px solid rgba(255,255,255,0.06);color:#fff;padding:10px 14px;border-radius:6px;cursor:pointer;font-weight:700}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04)}
-  .games-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto;padding-right:6px}
+  .games-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto}
   .game-option{padding:10px;border-radius:6px;background:rgba(255,255,255,0.02);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-  .game-option:hover{background:rgba(255,255,255,0.03)}
-
-  /* Delay slider control (subtle) */
-  .delay-control{
-    position:fixed;
-    left:50%;
-    transform:translateX(-50%);
-    bottom: calc(var(--bottombar-height) - 44px);
-    z-index:1300;
-    background:rgba(0,0,0,0.6);
-    border:1px solid rgba(255,255,255,0.04);
-    padding:8px 12px;
-    border-radius:8px;
-    display:flex;
-    gap:10px;
-    align-items:center;
-    color:var(--muted);
-    font-size:0.92rem;
-    backdrop-filter: blur(4px);
-  }
-  .delay-control input[type="range"]{width:220px}
-
-  /* Small helpers */
+  .delay-control{position:fixed;left:12px;bottom:calc(var(--bottombar-height) + 8px);z-index:1300;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px;display:flex;gap:8px;align-items:center;color:var(--muted);font-size:0.9rem}
+  .delay-control input[type="range"]{width:160px}
   .muted{color:var(--muted)}
-  .center-note{font-size:0.95rem;color:#666}
-  .hidden{display:none}
-
-  /* Scrollbar (subtle) */
-  .stats-panel::-webkit-scrollbar{width:8px}
-  .stats-panel::-webkit-scrollbar-track{background:transparent}
-  .stats-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:8px}
-  .stats-panel::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.09)}
-  .games-list::-webkit-scrollbar{width:8px}
-  .games-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:8px}
-
-  /* subtle transition for bar changes */
-  .stat-bar-fill{transition:width 400ms ease, background 400ms ease}
-  @media (max-width:1000px){
-    :root{--panel-width:300px}
-    .stat-bar-container{width:120px}
-  }
-  @media (max-width:760px){
-    .stats-panel{display:none}
-  }
+  @media (max-width:900px){ :root{--left-right-width:28%} }
+  @media (max-width:760px){ .panel{display:none} }
 </style>
 </head>
 <body>
 
-  <!-- Homescreen overlay (select games today/tomorrow + test mode) -->
-  <div class="homescreen" id="homescreen" role="dialog" aria-modal="true">
-    <div style="text-align:center">
-      <h1>StatBars</h1>
-      <div class="muted" style="font-size:1rem">Select a game to begin or use Test Mode</div>
+<!-- Homescreen -->
+<div class="homescreen" id="homescreen" role="dialog" aria-modal="true">
+  <div style="text-align:center"><h1>StatBars</h1><div class="muted">Select a live game or use Test Mode</div></div>
+  <div class="panel-ui">
+    <div style="flex:1">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="btn" id="todayBtn">Games Today</button>
+        <button class="btn" id="tomorrowBtn">Games Tomorrow</button>
+        <button class="btn" id="refreshBtn">Refresh</button>
+      </div>
+      <div class="games-list" id="gamesList"></div>
     </div>
-
-    <div class="panel" style="flex-direction:row;align-items:flex-start">
-      <div style="flex:1;min-width:320px">
-        <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center">
-          <button class="btn" id="btnToday">Games Today</button>
-          <button class="btn" id="btnTomorrow">Games Tomorrow</button>
-          <button class="btn" id="btnRefreshGames">Refresh</button>
-        </div>
-        <div class="games-list" id="gamesList" aria-live="polite">
-          <!-- populated dynamically -->
-        </div>
-      </div>
-
-      <div style="width:320px;display:flex;flex-direction:column;gap:10px;align-items:stretch">
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="font-weight:800">Quick Actions</div>
-          <button class="btn" id="btnTestMode">Enter Test Mode</button>
-          <button class="btn ghost" id="btnCloseHomescreen">Close (Show Broadcast)</button>
-        </div>
-
-        <div style="margin-top:8px">
-          <div style="font-weight:800;margin-bottom:6px">Info</div>
-          <div class="muted" style="font-size:0.92rem;line-height:1.2">
-            Use the delay slider (bottom) to offset incoming stats 0–30s to sync with your broadcast.
-            Double‑click the center broadcast area to load a local video or image for testing.
-          </div>
-        </div>
-      </div>
+    <div style="width:320px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-weight:800">Quick Actions</div>
+      <button class="btn" id="testBtn">Enter Test Mode</button>
+      <button class="btn" id="closeHomescreen">Close</button>
+      <div style="margin-top:8px"><div style="font-weight:800">Info</div><div class="muted" style="font-size:0.92rem">Delay slider offsets stat updates 0–30s to sync with broadcast. Double‑click center to load a local video/image.</div></div>
     </div>
   </div>
+</div>
 
-  <!-- Top black bar (theatre) -->
-  <div class="theatre-top" aria-hidden="true"></div>
+<div class="theatre-top" aria-hidden="true"></div>
 
-  <!-- Main broadcast viewport (panels + center) -->
-  <div class="broadcast-viewport" id="viewport" aria-hidden="false">
-
-    <!-- LEFT PANEL -->
-    <aside class="stats-panel" id="leftPanel" aria-label="Left team stats">
-      <div class="team-header">
-        <div class="team-logo"><img id="leftLogo" alt="Left team logo"></div>
-        <div class="team-meta">
-          <div class="team-name" id="leftName">Away</div>
-          <div class="team-record" id="leftRecord">0-0</div>
-        </div>
+<div class="viewport" id="viewport">
+  <aside class="panel" id="leftPanel">
+    <div class="team-header">
+      <div class="team-logo"><img id="leftLogo" alt=""></div>
+      <div>
+        <div class="team-name" id="leftName">Away</div>
+        <div class="team-record" id="leftRecord">0-0</div>
       </div>
-      <div class="stats-list" id="leftStats" aria-live="polite"></div>
-    </aside>
+    </div>
+    <div class="stats-list" id="leftStats" aria-live="polite"></div>
+  </aside>
 
-    <!-- CENTER BROADCAST -->
-    <main class="broadcast-center" id="center" aria-label="Broadcast area">
-      <input id="fileInput" type="file" accept="video/*,image/*" class="hidden" />
-      <video id="broadcastVideo" class="broadcast-video" playsinline muted></video>
-      <div class="broadcast-placeholder" id="placeholder">
-        <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.12">
-          <rect x="2" y="6" width="20" height="14" rx="2" ry="2"></rect>
-          <polyline points="8 3 12 7 16 3"></polyline>
-        </svg>
-        <div class="center-note">Broadcast Area</div>
-        <div class="muted" style="font-size:0.86rem">Double‑click to load a local video or image</div>
+  <main class="center" id="center">
+    <input id="fileInput" type="file" accept="video/*,image/*" style="display:none" />
+    <video id="video" class="broadcast-video" playsinline muted style="display:none"></video>
+    <div class="broadcast-placeholder" id="placeholder">
+      <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.12"><rect x="2" y="6" width="20" height="14" rx="2"></rect><polyline points="8 3 12 7 16 3"></polyline></svg>
+      <div class="muted">Broadcast Area — double‑click to load local media</div>
+    </div>
+  </main>
+
+  <aside class="panel right" id="rightPanel">
+    <div class="team-header">
+      <div class="team-logo"><img id="rightLogo" alt=""></div>
+      <div>
+        <div class="team-name" id="rightName">Home</div>
+        <div class="team-record" id="rightRecord">0-0</div>
       </div>
-    </main>
+    </div>
+    <div class="stats-list" id="rightStats" aria-live="polite"></div>
+  </aside>
+</div>
 
-    <!-- RIGHT PANEL -->
-    <aside class="stats-panel right" id="rightPanel" aria-label="Right team stats">
-      <div class="team-header">
-        <div class="team-logo"><img id="rightLogo" alt="Right team logo"></div>
-        <div class="team-meta">
-          <div class="team-name" id="rightName">Home</div>
-          <div class="team-record" id="rightRecord">0-0</div>
-        </div>
-      </div>
-      <div class="stats-list" id="rightStats" aria-live="polite"></div>
-    </aside>
+<div class="delay-control" id="delayControl">
+  <div style="font-weight:700">Delay</div>
+  <input id="delaySlider" type="range" min="0" max="30" value="0" />
+  <div id="delayLabel">0s</div>
+</div>
 
-  </div>
-
-  <!-- Delay slider control (subtle) -->
-  <div class="delay-control" id="delayControl" role="region" aria-label="Stats delay control">
-    <div style="font-weight:700;color:#ddd">Delay</div>
-    <input id="delaySlider" type="range" min="0" max="30" value="0" />
-    <div id="delayValue" style="min-width:44px;text-align:right;color:#ddd">0s</div>
-  </div>
-
-  <!-- Bottom black bar (theatre) -->
-  <div class="theatre-bottom" aria-hidden="true"></div>
+<div class="theatre-bottom" aria-hidden="true"></div>
 
 <script>
-/*
-  Updated StatBars Broadcast Mode
-  - All NBA teams included
-  - Removed PTS stat
-  - Stat bars use solid team primary color (no gradient)
-  - Logo box removed (logo stands alone)
-  - Homescreen re-added with Games Today / Tomorrow and Test Mode button
-  - Delay slider 0-30s added (subtle, bottom) to offset stat updates
-  - Top black bar larger than bottom
-  - Full single-file HTML
-*/
+/* Live schedule + live stats from ESPN scoreboard API.
+   Uses scoreboard endpoint to list games and to refresh game data (competitions[].statistics).
+   Falls back to a CORS proxy if direct fetch fails. */
+const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
-/* -------------------------
-   Full NBA team color data (30 teams)
-   ------------------------- */
-const TEAM_DATA = {
-  ATL: { name: "Hawks", primary: "#E03A3E", secondary: "#061922" },
-  BOS: { name: "Celtics", primary: "#007A33", secondary: "#BA9653" },
-  BKN: { name: "Nets", primary: "#000000", secondary: "#FFFFFF" },
-  CHA: { name: "Hornets", primary: "#00788D", secondary: "#1BA1D7" },
-  CHI: { name: "Bulls", primary: "#CE1141", secondary: "#000000" },
-  CLE: { name: "Cavaliers", primary: "#6F2DA8", secondary: "#041E42" },
-  DAL: { name: "Mavericks", primary: "#00538C", secondary: "#B8C4CA" },
-  DEN: { name: "Nuggets", primary: "#0E2240", secondary: "#FFB81C" },
-  DET: { name: "Pistons", primary: "#C8102E", secondary: "#1D42BA" },
-  GSW: { name: "Warriors", primary: "#1D428A", secondary: "#FFC72C" },
-  HOU: { name: "Rockets", primary: "#CE1141", secondary: "#000000" },
-  IND: { name: "Pacers", primary: "#002D62", secondary: "#FDBB2F" },
-  LAC: { name: "Clippers", primary: "#C60C30", secondary: "#1D428A" },
-  LAL: { name: "Lakers", primary: "#552583", secondary: "#FDB927" },
-  MEM: { name: "Grizzlies", primary: "#12173F", secondary: "#FDB827" },
-  MIA: { name: "Heat", primary: "#98002E", secondary: "#F9A01B" },
-  MIL: { name: "Bucks", primary: "#00471B", secondary: "#EEE1AA" },
-  MIN: { name: "Timberwolves", primary: "#0C2340", secondary: "#236B8E" },
-  NOP: { name: "Pelicans", primary: "#0C2C56", secondary: "#C4CED4" },
-  NYK: { name: "Knicks", primary: "#0C2340", secondary: "#F58426" },
-  OKC: { name: "Thunder", primary: "#007AC1", secondary: "#EF3B39" },
-  ORL: { name: "Magic", primary: "#0072CE", secondary: "#C41E3A" },
-  PHI: { name: "76ers", primary: "#1D428A", secondary: "#C4CED4" },
-  PHX: { name: "Suns", primary: "#E56020", secondary: "#1D1160" },
-  POR: { name: "Trail Blazers", primary: "#E03A3E", secondary: "#000000" },
-  SAC: { name: "Kings", primary: "#5A2D81", secondary: "#63727A" },
-  SAS: { name: "Spurs", primary: "#C4CED4", secondary: "#000000" },
-  TOR: { name: "Raptors", primary: "#CE1141", secondary: "#000000" },
-  UTA: { name: "Jazz", primary: "#00471B", secondary: "#F9A01B" },
-  WAS: { name: "Wizards", primary: "#002B5C", secondary: "#F0163F" }
-};
+const homescreen = document.getElementById('homescreen');
+const gamesList = document.getElementById('gamesList');
+const todayBtn = document.getElementById('todayBtn');
+const tomorrowBtn = document.getElementById('tomorrowBtn');
+const refreshBtn = document.getElementById('refreshBtn');
+const testBtn = document.getElementById('testBtn');
+const closeHomescreen = document.getElementById('closeHomescreen');
 
-/* -------------------------
-   DOM references
-   ------------------------- */
-const leftNameEl = document.getElementById('leftName');
-const leftRecordEl = document.getElementById('leftRecord');
-const leftLogoEl = document.getElementById('leftLogo');
-const leftStatsEl = document.getElementById('leftStats');
+const leftName = document.getElementById('leftName');
+const leftRecord = document.getElementById('leftRecord');
+const leftLogo = document.getElementById('leftLogo');
+const leftStats = document.getElementById('leftStats');
 
-const rightNameEl = document.getElementById('rightName');
-const rightRecordEl = document.getElementById('rightRecord');
-const rightLogoEl = document.getElementById('rightLogo');
-const rightStatsEl = document.getElementById('rightStats');
+const rightName = document.getElementById('rightName');
+const rightRecord = document.getElementById('rightRecord');
+const rightLogo = document.getElementById('rightLogo');
+const rightStats = document.getElementById('rightStats');
 
-const broadcastVideo = document.getElementById('broadcastVideo');
+const delaySlider = document.getElementById('delaySlider');
+const delayLabel = document.getElementById('delayLabel');
+
+const video = document.getElementById('video');
 const placeholder = document.getElementById('placeholder');
 const fileInput = document.getElementById('fileInput');
 const center = document.getElementById('center');
 
-const homescreen = document.getElementById('homescreen');
-const gamesList = document.getElementById('gamesList');
-const btnToday = document.getElementById('btnToday');
-const btnTomorrow = document.getElementById('btnTomorrow');
-const btnTestMode = document.getElementById('btnTestMode');
-const btnCloseHomescreen = document.getElementById('btnCloseHomescreen');
-const btnRefreshGames = document.getElementById('btnRefreshGames');
+let statDelay = 0;
+let refreshInterval = null;
+let currentGameId = null;
+let pendingTimeout = null;
+let isTest = false;
 
-const delaySlider = document.getElementById('delaySlider');
-const delayValue = document.getElementById('delayValue');
-
-let isTestMode = false;
-let currentLeft = null;
-let currentRight = null;
-let statDelaySeconds = 0; // controlled by slider
-let pendingUpdateTimer = null;
-
-/* -------------------------
-   Helpers
-   ------------------------- */
-function clamp(v, a=0, b=100){ return Math.max(a, Math.min(b, v)); }
-function safeNumber(v){ const n = parseFloat(String(v).replace('%','')); return Number.isFinite(n) ? n : null; }
-function solidColorFor(abbr){
-  const team = TEAM_DATA[abbr];
-  if(!team) return '#666';
-  return team.primary || '#666';
-}
-
-/* -------------------------
-   Create stat row (no PTS)
-   - Removed points stat per request
-   ------------------------- */
-function createStatRow(label, value, isPercent, teamAbbr){
-  const row = document.createElement('div');
-  row.className = 'stat-row';
-
-  const left = document.createElement('div');
-  left.className = 'stat-left';
-  const labelEl = document.createElement('div');
-  labelEl.className = 'stat-label';
-  labelEl.textContent = label;
-  left.appendChild(labelEl);
-
-  const right = document.createElement('div');
-  right.className = 'stat-value-container';
-
-  if(isPercent){
-    const barContainer = document.createElement('div');
-    barContainer.className = 'stat-bar-container';
-
-    const fill = document.createElement('div');
-    fill.className = 'stat-bar-fill';
-    const pct = safeNumber(value);
-    const widthPct = pct === null ? 0 : clamp(Math.round(pct), 0, 100);
-    fill.style.width = widthPct + '%';
-    // solid team color (no gradient)
-    fill.style.background = solidColorFor(teamAbbr) + 'CC';
-    fill.textContent = (pct === null ? '--' : `${widthPct}%`);
-    barContainer.appendChild(fill);
-    right.appendChild(barContainer);
-
-    const valEl = document.createElement('div');
-    valEl.className = 'stat-value';
-    valEl.textContent = (pct === null ? '--' : `${pct}`);
-    right.appendChild(valEl);
-  } else {
-    const valEl = document.createElement('div');
-    valEl.className = 'stat-value';
-    valEl.textContent = (value === null || value === undefined) ? '--' : value;
-    right.appendChild(valEl);
+// helper: fetch with proxy fallback
+async function fetchJson(url){
+  try{
+    const r = await fetch(url);
+    if(!r.ok) throw new Error('fetch failed');
+    return await r.json();
+  }catch(e){
+    const prox = CORS_PROXY + encodeURIComponent(url);
+    const r2 = await fetch(prox);
+    if(!r2.ok) throw new Error('proxy failed');
+    return await r2.json();
   }
-
-  row.appendChild(left);
-  row.appendChild(right);
-  return row;
 }
+function ymd(d){ const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0'); return `${y}${m}${day}`; }
 
-/* -------------------------
-   Render team panel (left or right)
-   - Points stat removed from statMap
-   - Logo displayed without box/background
-   - Stats update delayed by statDelaySeconds
-   ------------------------- */
-function renderTeamPanel(side, teamObj){
-  // schedule update with delay so user can sync with broadcast
-  if(pendingUpdateTimer) clearTimeout(pendingUpdateTimer);
-  pendingUpdateTimer = setTimeout(() => {
-    const isLeft = side === 'left';
-    const nameEl = isLeft ? leftNameEl : rightNameEl;
-    const recordEl = isLeft ? leftRecordEl : rightRecordEl;
-    const logoEl = isLeft ? leftLogoEl : rightLogoEl;
-    const statsEl = isLeft ? leftStatsEl : rightStatsEl;
-
-    // Basic meta
-    const displayName = teamObj.team?.displayName || teamObj.displayName || teamObj.name || 'Team';
-    const abbr = teamObj.team?.abbreviation || teamObj.abbreviation || (displayName.split(' ')[0] || '').slice(0,3).toUpperCase();
-    nameEl.textContent = displayName;
-    recordEl.textContent = (teamObj.records && teamObj.records[0] && teamObj.records[0].summary) ? teamObj.records[0].summary : '0-0';
-
-    // logo: try ESPN CDN if abbreviation present
-    if(abbr){
-      logoEl.src = `https://a.espncdn.com/i/teamlogos/nba/500/${abbr.toLowerCase()}.png`;
-      logoEl.alt = abbr;
-    } else {
-      logoEl.src = '';
-      logoEl.alt = 'logo';
-    }
-
-    // Stats mapping and order (no PTS)
-    const statMap = [
-      { key: 'fieldGoalPct', label: 'FG%', isPct: true },
-      { key: 'threePointPct', label: '3P%', isPct: true },
-      { key: 'freeThrowPct', label: 'FT%', isPct: true },
-      { key: 'rebounds', label: 'REB', isPct: false },
-      { key: 'assists', label: 'AST', isPct: false },
-      { key: 'steals', label: 'STL', isPct: false },
-      { key: 'blocks', label: 'BLK', isPct: false },
-      { key: 'turnovers', label: 'TOV', isPct: false },
-      { key: 'personalFouls', label: 'FOUL', isPct: false }
-    ];
-
-    // Clear existing
-    statsEl.innerHTML = '';
-
-    // Source stats: some payloads use statistics array, some use simple object
-    const statsArray = teamObj.statistics || teamObj.stats || [];
-    const statsMap = {};
-    if(Array.isArray(statsArray)){
-      statsArray.forEach(s => {
-        if(!s) return;
-        const name = s.name || s.statId || s.displayName;
-        const display = s.displayValue ?? s.value ?? s.display ?? s;
-        if(name) statsMap[name] = display;
-      });
-    } else if(typeof statsArray === 'object'){
-      Object.assign(statsMap, statsArray);
-    }
-
-    // Render rows
-    statMap.forEach(spec => {
-      let raw = statsMap[spec.key] ?? statsMap[spec.key.replace(/([A-Z])/g,' $1').toLowerCase()] ?? statsMap[spec.label] ?? '--';
-      if(typeof raw === 'object' && raw.displayValue) raw = raw.displayValue;
-      if(typeof raw === 'string' && raw.includes('%')) raw = raw.replace('%','').trim();
-      const value = (raw === '--' || raw === null || raw === undefined) ? '--' : raw;
-      const row = createStatRow(spec.label, value, spec.isPct, abbr);
-      statsEl.appendChild(row);
-    });
-  }, statDelaySeconds * 1000);
-}
-
-/* -------------------------
-   Test data generation (robust)
-   ------------------------- */
-function randomInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
-function getRandomTeamAbbr(){
-  const keys = Object.keys(TEAM_DATA);
-  return keys[Math.floor(Math.random()*keys.length)];
-}
-function generateRandomStats(){
-  return {
-    fieldGoalPct: (randomInt(40,60)).toString(),
-    threePointPct: (randomInt(28,45)).toString(),
-    freeThrowPct: (randomInt(70,92)).toString(),
-    rebounds: randomInt(30,60).toString(),
-    assists: randomInt(15,35).toString(),
-    steals: randomInt(3,12).toString(),
-    blocks: randomInt(1,10).toString(),
-    turnovers: randomInt(5,18).toString(),
-    personalFouls: randomInt(8,22).toString()
-  };
-}
-function generateTestTeam(abbr){
-  const teamInfo = TEAM_DATA[abbr] || { name: abbr, primary:'#444', secondary:'#666' };
-  const stats = generateRandomStats();
-  return {
-    team: { abbreviation: abbr, displayName: teamInfo.name || abbr },
-    displayName: teamInfo.name || abbr,
-    abbreviation: abbr,
-    records: [{ summary: `${randomInt(10,45)}-${randomInt(10,45)}` }],
-    statistics: Object.entries(stats).map(([k,v]) => ({ name:k, displayValue: v }))
-  };
-}
-function enterTestMode(){
-  isTestMode = true;
-  const leftAbbr = getRandomTeamAbbr();
-  let rightAbbr = getRandomTeamAbbr();
-  while(rightAbbr === leftAbbr) rightAbbr = getRandomTeamAbbr();
-
-  currentLeft = generateTestTeam(leftAbbr);
-  currentRight = generateTestTeam(rightAbbr);
-
-  renderTeamPanel('left', currentLeft);
-  renderTeamPanel('right', currentRight);
-}
-
-/* -------------------------
-   Homescreen: mock games generator
-   - Games Today / Tomorrow produce simple mock matchups
-   - Selecting a game hides homescreen and sets teams
-   ------------------------- */
-function makeMockGames(dateLabel){
-  // produce 6 mock games
-  const keys = Object.keys(TEAM_DATA);
-  const games = [];
-  for(let i=0;i<6;i++){
-    let a = keys[Math.floor(Math.random()*keys.length)];
-    let b = keys[Math.floor(Math.random()*keys.length)];
-    while(b===a) b = keys[Math.floor(Math.random()*keys.length)];
-    games.push({
-      id: `${dateLabel}-${i}`,
-      away: a,
-      home: b,
-      status: dateLabel === 'today' ? 'Live' : 'Scheduled',
-      time: dateLabel === 'today' ? `${randomInt(1,12)}:${String(randomInt(0,59)).padStart(2,'0')} PM` : `${randomInt(10,11)}:${String(randomInt(0,59)).padStart(2,'0')} AM`
-    });
+// load games for date
+async function loadGames(dateLabel){
+  const d = new Date();
+  if(dateLabel==='tomorrow') d.setDate(d.getDate()+1);
+  const dateParam = ymd(d);
+  try{
+    const data = await fetchJson(`${ESPN_SCOREBOARD}?dates=${dateParam}`);
+    const events = data.events ?? [];
+    renderGames(events);
+  }catch(err){
+    gamesList.innerHTML = `<div class="muted">Failed to load games: ${err.message}</div>`;
   }
-  return games;
 }
-
-function populateGames(dateLabel){
+function renderGames(events){
   gamesList.innerHTML = '';
-  const games = makeMockGames(dateLabel);
-  games.forEach(g => {
-    const el = document.createElement('div');
-    el.className = 'game-option';
-    el.innerHTML = `<div style="font-weight:700">${g.away} @ ${g.home}</div><div style="color:var(--muted);font-size:0.92rem">${g.status} • ${g.time}</div>`;
-    el.addEventListener('click', () => {
-      // set current teams and hide homescreen
-      currentLeft = { team: { abbreviation: g.away, displayName: TEAM_DATA[g.away]?.name || g.away }, records: [{ summary: '0-0' }], statistics: [] };
-      currentRight = { team: { abbreviation: g.home, displayName: TEAM_DATA[g.home]?.name || g.home }, records: [{ summary: '0-0' }], statistics: [] };
-      // render immediately (with delay applied)
-      renderTeamPanel('left', currentLeft);
-      renderTeamPanel('right', currentRight);
-      homescreen.style.display = 'none';
-    });
+  if(!events.length){ gamesList.innerHTML = '<div class="muted">No games</div>'; return; }
+  events.forEach(ev=>{
+    const comp = ev.competitions?.[0]?.competitors ?? [];
+    const away = comp.find(c=>c.homeAway==='away');
+    const home = comp.find(c=>c.homeAway==='home');
+    const status = ev.status?.type?.description ?? ev.status ?? '';
+    const time = ev.date ? new Date(ev.date).toLocaleString() : '';
+    const el = document.createElement('div'); el.className='game-option';
+    el.innerHTML = `<div style="font-weight:700">${away?.team?.abbreviation || 'AW'} @ ${home?.team?.abbreviation || 'HM'}</div><div style="color:var(--muted);font-size:0.92rem">${status} • ${time}</div>`;
+    el.addEventListener('click', ()=>selectGame(ev.id));
     gamesList.appendChild(el);
   });
 }
 
-/* -------------------------
-   Video / placeholder handling
-   ------------------------- */
-function showPlaceholder(show){
-  placeholder.style.display = show ? 'flex' : 'none';
-  broadcastVideo.style.display = show ? 'none' : 'block';
+async function selectGame(gameId){
+  // fetch scoreboard and find game
+  try{
+    const data = await fetchJson(`${ESPN_SCOREBOARD}`);
+    const events = data.events ?? [];
+    const game = events.find(e=>e.id===gameId);
+    if(!game){ alert('Game not found'); return; }
+    currentGameId = gameId;
+    isTest = false;
+    homescreen.style.display = 'none';
+    applyGame(game);
+    startAutoRefresh();
+  }catch(err){
+    alert('Failed to load game: '+err.message);
+  }
 }
-showPlaceholder(true);
 
-center.addEventListener('dblclick', () => fileInput.click());
-fileInput.addEventListener('change', (e) => {
-  const file = e.target.files && e.target.files[0];
-  if(!file) return;
-  const url = URL.createObjectURL(file);
-  if(file.type.startsWith('image/')){
-    const img = new Image();
-    img.src = url;
-    img.style.maxWidth = '100%';
-    img.style.maxHeight = '100%';
-    img.style.objectFit = 'contain';
-    img.style.display = 'block';
-    // remove existing children except file input
-    while(center.firstChild) center.removeChild(center.firstChild);
-    center.appendChild(fileInput);
-    center.appendChild(img);
+function applyGame(game){
+  const comp = game.competitions?.[0]?.competitors ?? [];
+  const away = comp.find(c=>c.homeAway==='away');
+  const home = comp.find(c=>c.homeAway==='home');
+  renderPanel('left', away);
+  renderPanel('right', home);
+}
+
+// render panel with delay applied
+function renderPanel(side, teamObj){
+  if(pendingTimeout) clearTimeout(pendingTimeout);
+  pendingTimeout = setTimeout(()=>{
+    const isLeft = side==='left';
+    const nameEl = isLeft?leftName:rightName;
+    const recordEl = isLeft?leftRecord:rightRecord;
+    const logoEl = isLeft?leftLogo:rightLogo;
+    const statsEl = isLeft?leftStats:rightStats;
+    const display = teamObj.team?.displayName || teamObj.team?.name || teamObj.team?.abbreviation || 'Team';
+    const abbr = teamObj.team?.abbreviation || (display.split(' ')[0]||'').slice(0,3).toUpperCase();
+    nameEl.textContent = display;
+    recordEl.textContent = teamObj.records?.[0]?.summary ?? '0-0';
+    if(abbr){ logoEl.src = `https://a.espncdn.com/i/teamlogos/nba/500/${abbr.toLowerCase()}.png`; logoEl.alt = abbr; } else { logoEl.src=''; logoEl.alt=''; }
+    // stat map (no PTS)
+    const statMap = [
+      {key:'fieldGoalPct',label:'FG%',isPct:true},
+      {key:'threePointPct',label:'3P%',isPct:true},
+      {key:'freeThrowPct',label:'FT%',isPct:true},
+      {key:'rebounds',label:'REB',isPct:false},
+      {key:'assists',label:'AST',isPct:false},
+      {key:'steals',label:'STL',isPct:false},
+      {key:'blocks',label:'BLK',isPct:false},
+      {key:'turnovers',label:'TOV',isPct:false},
+      {key:'personalFouls',label:'FOUL',isPct:false}
+    ];
+    statsEl.innerHTML = '';
+    const statsArray = teamObj.statistics ?? [];
+    const map = {};
+    if(Array.isArray(statsArray)) statsArray.forEach(s=>{ if(!s) return; map[s.name]=s.displayValue ?? s.value ?? s; });
+    statMap.forEach(spec=>{
+      let raw = map[spec.key] ?? '--';
+      if(typeof raw==='string' && raw.includes('%')) raw = raw.replace('%','').trim();
+      const value = (raw===null||raw===undefined)?'--':raw;
+      const row = createRow(spec.label, value, spec.isPct, abbr);
+      statsEl.appendChild(row);
+    });
+  }, statDelay*1000);
+}
+
+function createRow(label,value,isPct,abbr){
+  const row=document.createElement('div'); row.className='stat-row';
+  const left=document.createElement('div'); left.className='stat-left';
+  const labelEl=document.createElement('div'); labelEl.className='stat-label'; labelEl.textContent=label; left.appendChild(labelEl);
+  const right=document.createElement('div'); right.className='stat-value-container';
+  if(isPct){
+    const bar=document.createElement('div'); bar.className='stat-bar';
+    const fill=document.createElement('div'); fill.className='stat-fill';
+    const n = parseFloat(String(value).replace('%','')); const pct = Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n))):0;
+    fill.style.width = pct + '%';
+    const color = (window.TEAM_COLORS && TEAM_COLORS[abbr]) ? TEAM_COLORS[abbr] : '#666';
+    fill.style.background = color + 'CC';
+    fill.textContent = Number.isFinite(n)?(pct+'%'):'--';
+    bar.appendChild(fill); right.appendChild(bar);
+    const val=document.createElement('div'); val.className='stat-value'; val.textContent = Number.isFinite(n)?String(n):'--'; right.appendChild(val);
   } else {
-    if(!document.body.contains(broadcastVideo)){
-      while(center.firstChild) center.removeChild(center.firstChild);
-      center.appendChild(fileInput);
-      center.appendChild(broadcastVideo);
-      center.appendChild(placeholder);
-    }
-    broadcastVideo.src = url;
-    broadcastVideo.loop = true;
-    broadcastVideo.muted = true;
-    broadcastVideo.play().catch(()=>{ /* autoplay may be blocked */ });
-    showPlaceholder(false);
+    const val=document.createElement('div'); val.className='stat-value'; val.textContent = value; right.appendChild(val);
   }
-});
+  row.appendChild(left); row.appendChild(right); return row;
+}
 
-/* -------------------------
-   Delay slider handling
-   ------------------------- */
-delaySlider.addEventListener('input', (e) => {
-  statDelaySeconds = Number(e.target.value);
-  delayValue.textContent = `${statDelaySeconds}s`;
-});
+// auto-refresh live stats for selected game
+async function refreshCurrentGame(){
+  if(!currentGameId) return;
+  try{
+    const data = await fetchJson(`${ESPN_SCOREBOARD}`);
+    const game = data.events?.find(e=>e.id===currentGameId);
+    if(game) applyGame(game);
+  }catch(e){
+    console.warn('refresh failed',e);
+  }
+}
+function startAutoRefresh(){
+  if(refreshInterval) clearInterval(refreshInterval);
+  refreshInterval = setInterval(refreshCurrentGame, 15000); // 15s
+}
 
-/* -------------------------
-   Homescreen controls
-   ------------------------- */
-btnToday.addEventListener('click', () => populateGames('today'));
-btnTomorrow.addEventListener('click', () => populateGames('tomorrow'));
-btnRefreshGames.addEventListener('click', () => {
-  // refresh current list (if empty default to today)
-  const first = gamesList.firstChild;
-  if(!first) populateGames('today');
-  else {
-    // simple visual refresh
-    const label = document.querySelector('#gamesList .game-option') ? 'today' : 'today';
-    populateGames(label);
-  }
-});
-btnTestMode.addEventListener('click', () => {
-  enterTestMode();
-  homescreen.style.display = 'none';
-});
-btnCloseHomescreen.addEventListener('click', () => {
-  homescreen.style.display = 'none';
-});
+// Test mode
+function randomInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function randAbbr(){ const keys=Object.keys(TEAM_COLORS); return keys[Math.floor(Math.random()*keys.length)]; }
+function genStats(){ return { fieldGoalPct:randomInt(40,60).toString(), threePointPct:randomInt(28,45).toString(), freeThrowPct:randomInt(70,92).toString(), rebounds:randomInt(30,60).toString(), assists:randomInt(15,35).toString(), steals:randomInt(3,12).toString(), blocks:randomInt(1,10).toString(), turnovers:randomInt(5,18).toString(), personalFouls:randomInt(8,22).toString() }; }
+function enterTest(){ isTest=true; const a=randAbbr(), b=randAbbr(); while(b===a) b=randAbbr(); renderPanel('left',{team:{abbreviation:a,displayName:TEAM_COLORS[a].name},records:[{summary:'0-0'}],statistics:Object.entries(genStats()).map(([k,v])=>({name:k,displayValue:v}))}); renderPanel('right',{team:{abbreviation:b,displayName:TEAM_COLORS[b].name},records:[{summary:'0-0'}],statistics:Object.entries(genStats()).map(([k,v])=>({name:k,displayValue:v}))}); homescreen.style.display='none'; }
 
-/* -------------------------
-   Keyboard shortcuts
-   - T toggles test mode
-   - H shows homescreen
-   - R regenerates test stats
-   ------------------------- */
-window.addEventListener('keydown', (e) => {
-  if(e.key === 't' || e.key === 'T'){
-    isTestMode = !isTestMode;
-    if(isTestMode) {
-      enterTestMode();
-      homescreen.style.display = 'none';
-    } else {
-      leftNameEl.textContent = 'Away'; leftRecordEl.textContent = '0-0'; leftLogoEl.src=''; leftStatsEl.innerHTML='';
-      rightNameEl.textContent = 'Home'; rightRecordEl.textContent = '0-0'; rightLogoEl.src=''; rightStatsEl.innerHTML='';
-    }
-  }
-  if(e.key === 'h' || e.key === 'H'){
-    homescreen.style.display = 'flex';
-  }
-  if(e.key === 'r' || e.key === 'R'){
-    if(isTestMode) enterTestMode();
-  }
-});
+// small team color map for stat fills (primary colors)
+const TEAM_COLORS = {
+  ATL:"#E03A3E",BOS:"#007A33",BKN:"#000000",CHA:"#00788D",CHI:"#CE1141",CLE:"#6F2DA8",
+  DAL:"#00538C",DEN:"#0E2240",DET:"#C8102E",GSW:"#1D428A",HOU:"#CE1141",IND:"#002D62",
+  LAC:"#C60C30",LAL:"#552583",MEM:"#12173F",MIA:"#98002E",MIL:"#00471B",MIN:"#0C2340",
+  NOP:"#0C2C56",NYK:"#0C2340",OKC:"#007AC1",ORL:"#0072CE",PHI:"#1D428A",PHX:"#E56020",
+  POR:"#E03A3E",SAC:"#5A2D81",SAS:"#C4CED4",TOR:"#CE1141",UTA:"#00471B",WAS:"#002B5C"
+};
 
-/* -------------------------
-   Initialization
-   ------------------------- */
-(function init(){
-  // default: populate today's games
-  populateGames('today');
-  // start in homescreen visible
-  homescreen.style.display = 'flex';
-  // default delay 0
-  statDelaySeconds = Number(delaySlider.value);
-  delayValue.textContent = `${statDelaySeconds}s`;
-  // start in test mode off; user can press Test Mode
-})();
+// homescreen controls
+todayBtn.addEventListener('click', ()=>loadGames('today'));
+tomorrowBtn.addEventListener('click', ()=>loadGames('tomorrow'));
+refreshBtn.addEventListener('click', ()=>loadGames('today'));
+testBtn.addEventListener('click', ()=>{ enterTest(); });
+closeHomescreen.addEventListener('click', ()=>homescreen.style.display='none');
+
+delaySlider.addEventListener('input', (e)=>{ statDelay = Number(e.target.value); delayLabel.textContent = statDelay + 's'; });
+
+// center media
+center.addEventListener('dblclick', ()=>fileInput.click());
+fileInput.addEventListener('change',(e)=>{ const f=e.target.files[0]; if(!f) return; const url=URL.createObjectURL(f); if(f.type.startsWith('image/')){ const img=new Image(); img.src=url; img.style.maxWidth='100%'; img.style.maxHeight='100%'; while(center.firstChild) center.removeChild(center.firstChild); center.appendChild(fileInput); center.appendChild(img); } else { if(!document.body.contains(video)){ while(center.firstChild) center.removeChild(center.firstChild); center.appendChild(fileInput); center.appendChild(video); center.appendChild(placeholder); } video.src=url; video.loop=true; video.muted=true; video.play().catch(()=>{}); placeholder.style.display='none'; } });
+
+// init
+(async function init(){ await loadGames('today'); homescreen.style.display='flex'; delayLabel.textContent = statDelay + 's'; })();
 </script>
 </body>
 </html>
