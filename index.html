@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StatBars - NBA Live Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -15,7 +16,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            background: #0a0a0a;
+            background: #000;
             color: #fff;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
@@ -30,19 +31,27 @@
 
         .header {
             background: #000;
-            padding: 1.5rem;
+            padding: 1rem 2rem;
             border-bottom: 1px solid #222;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
+            height: 70px;
         }
 
         .header-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            letter-spacing: 2px;
-            color: #4ade80;
+            letter-spacing: 3px;
+        }
+
+        .header-title .stat {
+            color: #1f41bb;
+        }
+
+        .header-title .bars {
+            color: #ce1141;
         }
 
         .game-selector {
@@ -53,12 +62,12 @@
         .game-selector select {
             width: 100%;
             max-width: 400px;
-            padding: 0.7rem 1rem;
+            padding: 0.6rem 1rem;
             background: #1a1a1a;
             border: 1px solid #333;
             color: #fff;
-            border-radius: 4px;
-            font-size: 0.95rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -68,24 +77,18 @@
             background: #252525;
         }
 
-        .game-selector select:focus {
-            outline: none;
-            border-color: #4ade80;
-            background: #252525;
-        }
-
         .controls {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .btn {
-            padding: 0.7rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             background: #1a1a1a;
             border: 1px solid #333;
             color: #fff;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 600;
             letter-spacing: 1px;
             transition: all 0.2s;
@@ -102,121 +105,46 @@
             display: flex;
             overflow: hidden;
             gap: 0;
+            padding: 20px;
         }
 
-        /* Theatre Mode Layout */
+        /* Theatre Mode - Black bars on sides */
+        .theatre-bar {
+            width: 20px;
+            background: #000;
+            flex-shrink: 0;
+        }
+
+        /* Stats Panels */
         .stats-panel {
-            width: 25%;
+            width: 22%;
             display: flex;
             flex-direction: column;
-            background: #0f0f0f;
-            border-right: 2px solid #222;
             overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .stats-panel.left {
+            margin-right: 15px;
         }
 
         .stats-panel.right {
-            border-right: none;
-            border-left: 2px solid #222;
+            margin-left: 15px;
         }
 
-        .center-section {
+        .panel-gradient {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%);
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: #000;
-            position: relative;
-        }
-
-        .broadcast-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #000;
-            position: relative;
+            border-radius: 8px;
+            border: 2px solid;
             overflow: hidden;
         }
 
-        .broadcast-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .broadcast-placeholder svg {
-            width: 120px;
-            height: 120px;
-            opacity: 0.3;
-        }
-
-        .broadcast-placeholder p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .game-info-bar {
-            background: #1a1a1a;
-            border-top: 1px solid #222;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .team-scoreline {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            flex: 1;
-        }
-
-        .team-score {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .team-name {
-            font-weight: 600;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .score-large {
-            font-size: 2.5rem;
-            font-weight: bold;
-            min-width: 80px;
-        }
-
-        .game-time-center {
-            text-align: center;
-            flex: 1;
-        }
-
-        .game-time-center .status {
-            font-size: 0.85rem;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .game-time-center .time {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #4ade80;
-        }
-
         .panel-header {
-            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
-            padding: 1.5rem;
-            border-bottom: 1px solid #222;
+            padding: 1.2rem;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
             flex-shrink: 0;
         }
 
@@ -228,72 +156,74 @@
         }
 
         .panel-team-logo {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             flex-shrink: 0;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .panel-team-name {
             font-weight: bold;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
         }
 
         .panel-team-record {
-            font-size: 0.85rem;
-            color: #888;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 0.3rem;
         }
 
         .view-buttons {
             display: flex;
             gap: 0.5rem;
-            margin-top: 1rem;
+            margin-top: 0.8rem;
         }
 
         .view-btn {
             flex: 1;
-            padding: 0.6rem;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: #888;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.7);
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
             transition: all 0.2s;
             border-radius: 3px;
         }
 
         .view-btn:hover {
-            background: #2a2a2a;
-            border-color: #555;
+            background: rgba(255,255,255,0.15);
         }
 
         .view-btn.active {
-            background: #333;
-            border-color: #555;
-            color: #4ade80;
+            background: rgba(255,255,255,0.3);
+            color: #fff;
+            border-color: rgba(255,255,255,0.4);
         }
 
         .panel-content {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         .stat-row {
             display: flex;
             align-items: center;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #1a1a1a;
-            gap: 1rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 0.8rem;
         }
 
         .stat-row:last-child {
@@ -301,12 +231,11 @@
         }
 
         .stat-label {
-            color: #888;
+            color: rgba(255,255,255,0.6);
             font-weight: 600;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
-            font-size: 0.7rem;
-            min-width: 60px;
+            font-size: 0.65rem;
+            min-width: 55px;
         }
 
         .stat-value-container {
@@ -318,122 +247,149 @@
 
         .stat-bar-container {
             flex: 1;
-            height: 24px;
-            background: #1a1a1a;
-            border-radius: 3px;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
             overflow: hidden;
-            border: 1px solid #333;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         .stat-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4ade80, #22c55e);
-            border-radius: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.7));
+            border-radius: 1px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 0.5rem;
+            padding-right: 0.4rem;
         }
 
         .stat-bar-text {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: bold;
             color: #fff;
             text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
         }
 
         .stat-value {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
-            color: #4ade80;
-            min-width: 45px;
+            color: #fff;
+            min-width: 40px;
             text-align: right;
         }
 
-        .player-card {
-            background: #1a1a1a;
-            padding: 1rem;
-            margin-bottom: 0.8rem;
-            border-left: 3px solid #333;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 3px;
+        /* Center Broadcast */
+        .center-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #000;
+            position: relative;
+            margin: 0 15px;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
-        .player-card:hover {
-            background: #252525;
-            border-left-color: #555;
+        .broadcast-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            position: relative;
+            overflow: hidden;
         }
 
-        .player-name {
-            font-weight: bold;
-            font-size: 0.95rem;
-            margin-bottom: 0.4rem;
+        .broadcast-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .player-info {
+        .broadcast-placeholder svg {
+            width: 100px;
+            height: 100px;
+            opacity: 0.3;
+        }
+
+        .broadcast-placeholder p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .game-info-bar {
+            background: rgba(0,0,0,0.9);
+            border-top: 1px solid #333;
+            padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
-            color: #888;
-            margin-bottom: 0.6rem;
+            align-items: center;
+            gap: 2rem;
         }
 
-        .player-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.4rem;
+        .team-scoreline {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex: 1;
         }
 
-        .player-stat {
-            background: rgba(74, 222, 128, 0.1);
-            padding: 0.4rem;
-            border-radius: 3px;
-            text-align: center;
-            font-size: 0.7rem;
+        .team-score {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .player-stat-value {
-            font-weight: bold;
+        .team-name {
+            font-weight: 600;
             font-size: 0.9rem;
-            color: #4ade80;
-        }
-
-        .player-stat-label {
-            color: #888;
-            font-size: 0.65rem;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .loading {
+        .score-large {
+            font-size: 2.2rem;
+            font-weight: bold;
+            min-width: 70px;
+        }
+
+        .game-time-center {
             text-align: center;
+            flex: 1;
+        }
+
+        .game-time-center .status {
+            font-size: 0.8rem;
             color: #888;
-            padding: 2rem 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #dc2626;
-            color: #fca5a5;
-            padding: 1rem;
-            border-radius: 4px;
-            text-align: center;
-            margin: 1rem;
+        .game-time-center .time {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
         }
 
+        /* Game Selector */
         .game-selector-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.98);
+            background: #000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            gap: 2rem;
+            gap: 3rem;
         }
 
         .game-selector-overlay.hidden {
@@ -441,16 +397,22 @@
         }
 
         .selector-content h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #4ade80;
-            margin-bottom: 1rem;
+            letter-spacing: 4px;
+        }
+
+        .selector-content h1 .stat {
+            color: #1f41bb;
+        }
+
+        .selector-content h1 .bars {
+            color: #ce1141;
         }
 
         .selector-content p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #888;
             margin-bottom: 2rem;
         }
@@ -458,29 +420,30 @@
         .game-options {
             display: flex;
             gap: 2rem;
-            width: 100%;
+            flex-wrap: wrap;
             justify-content: center;
+            max-width: 1200px;
         }
 
         .game-option {
             background: #1a1a1a;
             border: 2px solid #333;
-            padding: 1.5rem;
+            padding: 2rem;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
-            flex: 0 1 400px;
+            flex: 0 1 350px;
         }
 
         .game-option:hover {
-            border-color: #4ade80;
+            border-color: #1f41bb;
             background: #252525;
-            transform: translateY(-2px);
+            transform: translateY(-4px);
         }
 
         .game-option-matchup {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
@@ -491,8 +454,8 @@
         }
 
         .test-button {
-            padding: 1rem 2rem;
-            background: #dc2626;
+            padding: 1rem 2.5rem;
+            background: #ce1141;
             color: white;
             font-size: 1rem;
             font-weight: bold;
@@ -505,25 +468,31 @@
         }
 
         .test-button:hover {
-            background: #b91c1c;
+            background: #a80d33;
             transform: scale(1.05);
         }
 
+        .loading {
+            text-align: center;
+            color: #888;
+            padding: 2rem 1rem;
+        }
+
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0a;
+            background: transparent;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: rgba(255,255,255,0.3);
         }
     </style>
 </head>
@@ -531,7 +500,7 @@
     <!-- Game Selection Overlay -->
     <div class="game-selector-overlay" id="gameSelector">
         <div class="selector-content">
-            <h1>StatBars</h1>
+            <h1><span class="stat">Stat</span><span class="bars">Bars</span></h1>
             <p>Select a game to begin</p>
             <div class="game-options">
                 <div id="liveGamesContainer"></div>
@@ -544,7 +513,7 @@
     <div class="container" id="mainApp" style="display: none;">
         <!-- Header -->
         <div class="header">
-            <div class="header-title">StatBars</div>
+            <div class="header-title"><span class="stat">Stat</span><span class="bars">Bars</span></div>
             <div class="game-selector">
                 <select id="gameDropdown">
                     <option value="">Select Game</option>
@@ -557,25 +526,29 @@
             </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- Main Content - Theatre Mode -->
         <div class="main-content">
+            <div class="theatre-bar"></div>
+
             <!-- LEFT STATS PANEL -->
-            <div class="stats-panel left" id="leftPanel">
-                <div class="panel-header">
-                    <div class="panel-team-info">
-                        <div class="panel-team-logo" id="leftTeamLogo">🏀</div>
-                        <div>
-                            <div class="panel-team-name" id="leftTeamName">Team</div>
-                            <div class="panel-team-record" id="leftTeamRecord">0-0</div>
+            <div class="stats-panel left">
+                <div class="panel-gradient" id="leftGradient">
+                    <div class="panel-header">
+                        <div class="panel-team-info">
+                            <div class="panel-team-logo" id="leftTeamLogo"></div>
+                            <div>
+                                <div class="panel-team-name" id="leftTeamName">Team</div>
+                                <div class="panel-team-record" id="leftTeamRecord">0-0</div>
+                            </div>
+                        </div>
+                        <div class="view-buttons">
+                            <button class="view-btn active" data-panel="left" data-view="team">Team</button>
+                            <button class="view-btn" data-panel="left" data-view="players">Players</button>
                         </div>
                     </div>
-                    <div class="view-buttons">
-                        <button class="view-btn active" data-panel="left" data-view="team">Team</button>
-                        <button class="view-btn" data-panel="left" data-view="players">Players</button>
+                    <div class="panel-content" id="leftContent">
+                        <div class="loading">Loading stats...</div>
                     </div>
-                </div>
-                <div class="panel-content" id="leftContent">
-                    <div class="loading">Loading stats...</div>
                 </div>
             </div>
 
@@ -615,24 +588,28 @@
             </div>
 
             <!-- RIGHT STATS PANEL -->
-            <div class="stats-panel right" id="rightPanel">
-                <div class="panel-header">
-                    <div class="panel-team-info">
-                        <div class="panel-team-logo" id="rightTeamLogo">🏀</div>
-                        <div>
-                            <div class="panel-team-name" id="rightTeamName">Team</div>
-                            <div class="panel-team-record" id="rightTeamRecord">0-0</div>
+            <div class="stats-panel right">
+                <div class="panel-gradient" id="rightGradient">
+                    <div class="panel-header">
+                        <div class="panel-team-info">
+                            <div class="panel-team-logo" id="rightTeamLogo"></div>
+                            <div>
+                                <div class="panel-team-name" id="rightTeamName">Team</div>
+                                <div class="panel-team-record" id="rightTeamRecord">0-0</div>
+                            </div>
+                        </div>
+                        <div class="view-buttons">
+                            <button class="view-btn active" data-panel="right" data-view="team">Team</button>
+                            <button class="view-btn" data-panel="right" data-view="players">Players</button>
                         </div>
                     </div>
-                    <div class="view-buttons">
-                        <button class="view-btn active" data-panel="right" data-view="team">Team</button>
-                        <button class="view-btn" data-panel="right" data-view="players">Players</button>
+                    <div class="panel-content" id="rightContent">
+                        <div class="loading">Loading stats...</div>
                     </div>
                 </div>
-                <div class="panel-content" id="rightContent">
-                    <div class="loading">Loading stats...</div>
-                </div>
             </div>
+
+            <div class="theatre-bar"></div>
         </div>
     </div>
 
@@ -640,71 +617,45 @@
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
         const NBA_API = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
 
-        const TEAM_COLORS = {
-            'LAL': { primary: '#552583', secondary: '#FDB927' },
-            'BOS': { primary: '#007A33', secondary: '#BA9653' },
-            'GSW': { primary: '#1D428A', secondary: '#FFC72C' },
-            'MIA': { primary: '#98002E', secondary: '#F9A01B' },
-            'NYK': { primary: '#0C2340', secondary: '#F58426' },
-            'CHI': { primary: '#CE1141', secondary: '#000000' },
-            'DAL': { primary: '#003DA5', secondary: '#B8C4CA' },
-            'SAS': { primary: '#C4CED4', secondary: '#000000' },
-            'OKC': { primary: '#007AC1', secondary: '#EF3B39' },
-            'DEN': { primary: '#0E2240', secondary: '#FFB81C' },
-            'PHX': { primary: '#E56021', secondary: '#1D1160' },
-            'LAC': { primary: '#C60C30', secondary: '#1D428A' },
-            'MEM': { primary: '#12173F', secondary: '#FDB827' },
-            'NOP': { primary: '#0C2C56', secondary: '#C4CED4' },
-            'MIN': { primary: '#0C2340', secondary: '#236B8E' },
-            'MIL': { primary: '#12173F', secondary: '#EEE1AA' },
-            'TOR': { primary: '#CE1141', secondary: '#000000' },
-            'PHI': { primary: '#1D428A', secondary: '#C4CED4' },
-            'ATL': { primary: '#E03828', secondary: '#061922' },
-            'BKN': { primary: '#000000', secondary: '#FFFFFF' },
-            'CLE': { primary: '#6F2DA8', secondary: '#041E42' },
-            'DET': { primary: '#C8102E', secondary: '#1D42BA' },
-            'HOU': { primary: '#CE1141', secondary: '#000000' },
-            'IND': { primary: '#002D62', secondary: '#FDBB2F' },
-            'ORL': { primary: '#0072CE', secondary: '#C41E3A' },
-            'SAC': { primary: '#5A2D81', secondary: '#63727A' },
-            'UTA': { primary: '#F9A01B', secondary: '#00471B' },
-            'POR': { primary: '#E03828', secondary: '#000000' },
-            'CHO': { primary: '#00778D', secondary: '#1BA1D7' },
-            'WAS': { primary: '#002B5C', secondary: '#F0163F' }
+        const TEAM_DATA = {
+            'LAL': { name: 'Lakers', primary: '#1f41bb', secondary: '#fdb927', logo: '🏀' },
+            'BOS': { name: 'Celtics', primary: '#007a33', secondary: '#ba9653', logo: '🏀' },
+            'GSW': { name: 'Warriors', primary: '#1d428a', secondary: '#ffc72c', logo: '🏀' },
+            'MIA': { name: 'Heat', primary: '#98002e', secondary: '#f9a01b', logo: '🏀' },
+            'NYK': { name: 'Knicks', primary: '#0c2340', secondary: '#f58426', logo: '🏀' },
+            'CHI': { name: 'Bulls', primary: '#ce1141', secondary: '#000000', logo: '🏀' },
+            'DAL': { name: 'Mavericks', primary: '#003da5', secondary: '#b8c4ca', logo: '🏀' },
+            'SAS': { name: 'Spurs', primary: '#c4ced4', secondary: '#000000', logo: '🏀' },
+            'OKC': { name: 'Thunder', primary: '#007ac1', secondary: '#ef3b39', logo: '🏀' },
+            'DEN': { name: 'Nuggets', primary: '#0e2240', secondary: '#ffb81c', logo: '🏀' },
+            'PHX': { name: 'Suns', primary: '#e56021', secondary: '#1d1160', logo: '🏀' },
+            'LAC': { name: 'Clippers', primary: '#c60c30', secondary: '#1d428a', logo: '🏀' },
+            'MEM': { name: 'Grizzlies', primary: '#12173f', secondary: '#fdb827', logo: '🏀' },
+            'NOP': { name: 'Pelicans', primary: '#0c2c56', secondary: '#c4ced4', logo: '🏀' },
+            'MIN': { name: 'Timberwolves', primary: '#0c2340', secondary: '#236b8e', logo: '🏀' },
+            'MIL': { name: 'Bucks', primary: '#12173f', secondary: '#eee1aa', logo: '🏀' },
+            'TOR': { name: 'Raptors', primary: '#ce1141', secondary: '#000000', logo: '🏀' },
+            'PHI': { name: '76ers', primary: '#1d428a', secondary: '#c4ced4', logo: '🏀' },
+            'ATL': { name: 'Hawks', primary: '#e03828', secondary: '#061922', logo: '🏀' },
+            'BKN': { name: 'Nets', primary: '#000000', secondary: '#ffffff', logo: '🏀' },
+            'CLE': { name: 'Cavaliers', primary: '#6f2da8', secondary: '#041e42', logo: '🏀' },
+            'DET': { name: 'Pistons', primary: '#c8102e', secondary: '#1d42ba', logo: '🏀' },
+            'HOU': { name: 'Rockets', primary: '#ce1141', secondary: '#000000', logo: '🏀' },
+            'IND': { name: 'Pacers', primary: '#002d62', secondary: '#fdbb2f', logo: '🏀' },
+            'ORL': { name: 'Magic', primary: '#0072ce', secondary: '#c41e3a', logo: '🏀' },
+            'SAC': { name: 'Kings', primary: '#5a2d81', secondary: '#63727a', logo: '🏀' },
+            'UTA': { name: 'Jazz', primary: '#f9a01b', secondary: '#00471b', logo: '🏀' },
+            'POR': { name: 'Trail Blazers', primary: '#e03828', secondary: '#000000', logo: '🏀' },
+            'CHO': { name: 'Hornets', primary: '#00778d', secondary: '#1ba1d7', logo: '🏀' },
+            'WAS': { name: 'Wizards', primary: '#002b5c', secondary: '#f0163f', logo: '🏀' }
         };
 
-        const NBA_TEAMS = [
-            { name: 'Los Angeles Lakers', abbr: 'LAL' },
-            { name: 'Boston Celtics', abbr: 'BOS' },
-            { name: 'Golden State Warriors', abbr: 'GSW' },
-            { name: 'Miami Heat', abbr: 'MIA' },
-            { name: 'New York Knicks', abbr: 'NYK' },
-            { name: 'Chicago Bulls', abbr: 'CHI' },
-            { name: 'Dallas Mavericks', abbr: 'DAL' },
-            { name: 'San Antonio Spurs', abbr: 'SAS' },
-            { name: 'Oklahoma City Thunder', abbr: 'OKC' },
-            { name: 'Denver Nuggets', abbr: 'DEN' },
-            { name: 'Phoenix Suns', abbr: 'PHX' },
-            { name: 'Los Angeles Clippers', abbr: 'LAC' },
-            { name: 'Memphis Grizzlies', abbr: 'MEM' },
-            { name: 'New Orleans Pelicans', abbr: 'NOP' },
-            { name: 'Minnesota Timberwolves', abbr: 'MIN' },
-            { name: 'Milwaukee Bucks', abbr: 'MIL' },
-            { name: 'Toronto Raptors', abbr: 'TOR' },
-            { name: 'Philadelphia 76ers', abbr: 'PHI' },
-            { name: 'Atlanta Hawks', abbr: 'ATL' },
-            { name: 'Brooklyn Nets', abbr: 'BKN' },
-            { name: 'Cleveland Cavaliers', abbr: 'CLE' },
-            { name: 'Detroit Pistons', abbr: 'DET' },
-            { name: 'Houston Rockets', abbr: 'HOU' },
-            { name: 'Indiana Pacers', abbr: 'IND' },
-            { name: 'Orlando Magic', abbr: 'ORL' },
-            { name: 'Sacramento Kings', abbr: 'SAC' },
-            { name: 'Utah Jazz', abbr: 'UTA' },
-            { name: 'Portland Trail Blazers', abbr: 'POR' },
-            { name: 'Charlotte Hornets', abbr: 'CHO' },
-            { name: 'Washington Wizards', abbr: 'WAS' }
-        ];
+        const NBA_TEAMS = Object.entries(TEAM_DATA).map(([abbr, data]) => ({
+            abbr,
+            name: data.name,
+            displayName: data.name,
+            ...data
+        }));
 
         let appState = {
             allGames: [],
@@ -742,6 +693,9 @@
                 homeTeam = getRandomTeam();
             }
 
+            const stats1 = getRandomStats();
+            const stats2 = getRandomStats();
+
             return {
                 id: 'test-game',
                 competitions: [{
@@ -756,16 +710,16 @@
                             team: { displayName: awayTeam.name, abbreviation: awayTeam.abbr },
                             records: [{ summary: '25-10' }],
                             statistics: [
-                                { name: 'fieldGoalPct', displayValue: getRandomStats().fieldGoalPct },
-                                { name: 'threePointPct', displayValue: getRandomStats().threePointPct },
-                                { name: 'freeThrowPct', displayValue: getRandomStats().freeThrowPct },
-                                { name: 'points', displayValue: getRandomStats().points },
-                                { name: 'rebounds', displayValue: getRandomStats().rebounds },
-                                { name: 'assists', displayValue: getRandomStats().assists },
-                                { name: 'steals', displayValue: getRandomStats().steals },
-                                { name: 'blocks', displayValue: getRandomStats().blocks },
-                                { name: 'turnovers', displayValue: getRandomStats().turnovers },
-                                { name: 'personalFouls', displayValue: getRandomStats().personalFouls }
+                                { name: 'fieldGoalPct', displayValue: stats1.fieldGoalPct },
+                                { name: 'threePointPct', displayValue: stats1.threePointPct },
+                                { name: 'freeThrowPct', displayValue: stats1.freeThrowPct },
+                                { name: 'points', displayValue: stats1.points },
+                                { name: 'rebounds', displayValue: stats1.rebounds },
+                                { name: 'assists', displayValue: stats1.assists },
+                                { name: 'steals', displayValue: stats1.steals },
+                                { name: 'blocks', displayValue: stats1.blocks },
+                                { name: 'turnovers', displayValue: stats1.turnovers },
+                                { name: 'personalFouls', displayValue: stats1.personalFouls }
                             ],
                             players: []
                         },
@@ -775,16 +729,16 @@
                             team: { displayName: homeTeam.name, abbreviation: homeTeam.abbr },
                             records: [{ summary: '28-8' }],
                             statistics: [
-                                { name: 'fieldGoalPct', displayValue: getRandomStats().fieldGoalPct },
-                                { name: 'threePointPct', displayValue: getRandomStats().threePointPct },
-                                { name: 'freeThrowPct', displayValue: getRandomStats().freeThrowPct },
-                                { name: 'points', displayValue: getRandomStats().points },
-                                { name: 'rebounds', displayValue: getRandomStats().rebounds },
-                                { name: 'assists', displayValue: getRandomStats().assists },
-                                { name: 'steals', displayValue: getRandomStats().steals },
-                                { name: 'blocks', displayValue: getRandomStats().blocks },
-                                { name: 'turnovers', displayValue: getRandomStats().turnovers },
-                                { name: 'personalFouls', displayValue: getRandomStats().personalFouls }
+                                { name: 'fieldGoalPct', displayValue: stats2.fieldGoalPct },
+                                { name: 'threePointPct', displayValue: stats2.threePointPct },
+                                { name: 'freeThrowPct', displayValue: stats2.freeThrowPct },
+                                { name: 'points', displayValue: stats2.points },
+                                { name: 'rebounds', displayValue: stats2.rebounds },
+                                { name: 'assists', displayValue: stats2.assists },
+                                { name: 'steals', displayValue: stats2.steals },
+                                { name: 'blocks', displayValue: stats2.blocks },
+                                { name: 'turnovers', displayValue: stats2.turnovers },
+                                { name: 'personalFouls', displayValue: stats2.personalFouls }
                             ],
                             players: []
                         }
@@ -807,7 +761,7 @@
             } catch (error) {
                 console.error('Error:', error);
                 const container = document.getElementById('liveGamesContainer');
-                container.innerHTML = '<div class="error">Failed to load live games</div>';
+                container.innerHTML = '<div class="loading">No live games available. Click TEST MODE to demo.</div>';
             }
         }
 
@@ -816,7 +770,6 @@
             container.innerHTML = '';
 
             if (appState.allGames.length === 0) {
-                container.innerHTML = '<div class="error">No games available right now</div>';
                 return;
             }
 
@@ -888,10 +841,6 @@
             });
         }
 
-        function getTeamColor(abbr, type = 'primary') {
-            return TEAM_COLORS[abbr]?.[type] || '#4ade80';
-        }
-
         // ============ Render Game ============
         function renderGame() {
             const game = appState.currentGame;
@@ -904,15 +853,22 @@
 
             if (!away || !home) return;
 
-            // Apply team colors to panels
-            const leftColor = getTeamColor(away.team.abbreviation);
-            const rightColor = getTeamColor(home.team.abbreviation);
-            document.getElementById('leftPanel').style.borderRight = `3px solid ${leftColor}`;
-            document.getElementById('rightPanel').style.borderLeft = `3px solid ${rightColor}`;
+            const awayTeamData = TEAM_DATA[away.team.abbreviation];
+            const homeTeamData = TEAM_DATA[home.team.abbreviation];
+
+            // Apply team colors and gradients to panels
+            const leftGradient = document.getElementById('leftGradient');
+            const rightGradient = document.getElementById('rightGradient');
+            
+            leftGradient.style.borderColor = awayTeamData.primary;
+            leftGradient.style.background = `linear-gradient(135deg, ${awayTeamData.primary}22 0%, ${awayTeamData.secondary}11 100%)`;
+            
+            rightGradient.style.borderColor = homeTeamData.primary;
+            rightGradient.style.background = `linear-gradient(135deg, ${homeTeamData.primary}22 0%, ${homeTeamData.secondary}11 100%)`;
 
             // Update team info
-            updateTeamPanel('left', away, game);
-            updateTeamPanel('right', home, game);
+            updateTeamPanel('left', away, awayTeamData);
+            updateTeamPanel('right', home, homeTeamData);
 
             // Update center score
             document.getElementById('leftTeamNameScore').textContent = away.team.displayName;
@@ -927,32 +883,32 @@
             document.getElementById('gameStatus').textContent = status.type?.description || 'Scheduled';
 
             // Render initial stats
-            renderTeamStats('left', away);
-            renderTeamStats('right', home);
+            renderTeamStats('left', away, awayTeamData);
+            renderTeamStats('right', home, homeTeamData);
         }
 
-        function updateTeamPanel(side, team, game) {
+        function updateTeamPanel(side, team, teamData) {
             const prefix = side === 'left' ? 'left' : 'right';
             document.getElementById(`${prefix}TeamLogo`).textContent = team.team?.abbreviation || '🏀';
             document.getElementById(`${prefix}TeamName`).textContent = team.team?.displayName || 'Team';
             document.getElementById(`${prefix}TeamRecord`).textContent = team.records?.[0]?.summary || '0-0';
         }
 
-        function renderTeamStats(side, team) {
+        function renderTeamStats(side, team, teamData) {
             const stats = team.statistics || [];
             const containerId = `${side}Content`;
 
             const statMap = {
-                'fieldGoalPct': { label: 'Field Goal %', isPercentage: true },
-                'threePointPct': { label: 'Three Point %', isPercentage: true },
-                'freeThrowPct': { label: 'Free Throw %', isPercentage: true },
+                'fieldGoalPct': { label: 'FG%', isPercentage: true },
+                'threePointPct': { label: '3P%', isPercentage: true },
+                'freeThrowPct': { label: 'FT%', isPercentage: true },
                 'points': { label: 'Points', isPercentage: false },
                 'rebounds': { label: 'Rebounds', isPercentage: false },
                 'assists': { label: 'Assists', isPercentage: false },
                 'steals': { label: 'Steals', isPercentage: false },
                 'blocks': { label: 'Blocks', isPercentage: false },
                 'turnovers': { label: 'Turnovers', isPercentage: false },
-                'personalFouls': { label: 'Personal Fouls', isPercentage: false },
+                'personalFouls': { label: 'Fouls', isPercentage: false },
             };
 
             let html = '';
@@ -1010,7 +966,8 @@
                 if (!team) return;
 
                 if (view === 'team') {
-                    renderTeamStats(panel, team);
+                    const teamData = TEAM_DATA[team.team.abbreviation];
+                    renderTeamStats(panel, team, teamData);
                 }
             });
         });
