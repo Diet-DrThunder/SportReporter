@@ -31,13 +31,13 @@
 
         .header {
             background: #000;
-            padding: 1rem 2rem;
+            padding: 0.8rem 2rem;
             border-bottom: 1px solid #222;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            height: 60px;
+            height: 55px;
             flex-shrink: 0;
         }
 
@@ -63,11 +63,11 @@
         .game-selector select {
             width: 100%;
             max-width: 400px;
-            padding: 0.6rem 1rem;
+            padding: 0.5rem 0.8rem;
             background: #1a1a1a;
             border: 1px solid #333;
             color: #fff;
-            border-radius: 3px;
+            border-radius: 0px;
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
@@ -80,25 +80,24 @@
 
         .controls {
             display: flex;
-            gap: 0.8rem;
+            gap: 1.5rem;
         }
 
         .btn {
-            padding: 0.6rem 1.2rem;
-            background: #1a1a1a;
-            border: 1px solid #333;
+            background: none;
+            border: none;
             color: #fff;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 1px;
             transition: all 0.2s;
             text-transform: uppercase;
+            padding: 0;
         }
 
         .btn:hover {
-            background: #2a2a2a;
-            border-color: #555;
+            color: #1f41bb;
         }
 
         .main-content {
@@ -135,39 +134,28 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border-radius: 8px;
             min-width: 280px;
-        }
-
-        .panel-gradient {
-            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            border-radius: 8px;
             border: 3px solid;
-            overflow: hidden;
+            background: rgba(0,0,0,0.6);
         }
 
         .panel-header {
             padding: 1.2rem;
             border-bottom: 2px solid rgba(255,255,255,0.1);
             flex-shrink: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.8);
         }
 
         .panel-team-info {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
         }
 
         .panel-team-logo {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+            width: 70px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -179,7 +167,6 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 5px;
         }
 
         .panel-team-name {
@@ -196,32 +183,30 @@
 
         .view-buttons {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 0.6rem;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
         }
 
         .view-btn {
             flex: 1;
-            padding: 0.5rem;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.4rem;
+            background: #333;
+            border: none;
             color: rgba(255,255,255,0.7);
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
             transition: all 0.2s;
-            border-radius: 3px;
         }
 
         .view-btn:hover {
-            background: rgba(255,255,255,0.15);
+            background: #444;
         }
 
         .view-btn.active {
-            background: rgba(255,255,255,0.3);
+            background: #555;
             color: #fff;
-            border-color: rgba(255,255,255,0.4);
         }
 
         .panel-content {
@@ -233,7 +218,7 @@
         .stat-row {
             display: flex;
             align-items: center;
-            padding: 0.6rem 0;
+            padding: 0.7rem 0;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             gap: 0.8rem;
             justify-content: space-between;
@@ -262,10 +247,9 @@
 
         .stat-bar-container {
             flex: 1;
-            max-width: 180px;
-            height: 24px;
+            max-width: 160px;
+            height: 22px;
             background: rgba(255,255,255,0.08);
-            border-radius: 3px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.15);
         }
@@ -275,11 +259,11 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 0.5rem;
+            padding-right: 0.4rem;
         }
 
         .stat-bar-text {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
             color: #fff;
             text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
@@ -301,9 +285,8 @@
             flex-direction: column;
             background: #000;
             position: relative;
-            border-radius: 8px;
             overflow: hidden;
-            border: 2px solid #333;
+            border: 3px solid #333;
             height: 100%;
         }
 
@@ -315,6 +298,7 @@
             background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
             position: relative;
             overflow: hidden;
+            aspect-ratio: 16 / 9;
         }
 
         .broadcast-placeholder {
@@ -328,24 +312,25 @@
         }
 
         .broadcast-placeholder svg {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             opacity: 0.15;
         }
 
         .broadcast-placeholder p {
             color: #444;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .game-info-bar {
             background: rgba(0,0,0,0.95);
             border-top: 2px solid #333;
-            padding: 1.2rem 1.5rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 2rem;
+            flex-shrink: 0;
         }
 
         .team-scoreline {
@@ -369,9 +354,9 @@
         }
 
         .score-large {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            min-width: 80px;
+            min-width: 70px;
         }
 
         .game-time-center {
@@ -380,14 +365,14 @@
         }
 
         .game-time-center .status {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #777;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .game-time-center .time {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: bold;
             color: #fff;
         }
@@ -445,7 +430,6 @@
             background: #1a1a1a;
             border: 2px solid #333;
             padding: 2rem;
-            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
@@ -476,7 +460,6 @@
             font-size: 1.1rem;
             font-weight: bold;
             border: none;
-            border-radius: 4px;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -505,7 +488,6 @@
 
         ::-webkit-scrollbar-thumb {
             background: rgba(255,255,255,0.2);
-            border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -537,8 +519,8 @@
                 </select>
             </div>
             <div class="controls">
-                <button class="btn" id="refreshBtn">Refresh</button>
-                <button class="btn" id="homeBtn">Home</button>
+                <button class="btn" id="refreshBtn">REFRESH</button>
+                <button class="btn" id="homeBtn">HOME</button>
             </div>
         </div>
 
@@ -550,26 +532,24 @@
             <!-- Content Area - Centered -->
             <div class="content-area">
                 <!-- LEFT STATS PANEL -->
-                <div class="stats-panel">
-                    <div class="panel-gradient" id="leftGradient">
-                        <div class="panel-header">
-                            <div class="panel-team-info">
-                                <div class="panel-team-logo" id="leftTeamLogo">
-                                    <img src="" alt="Team Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23fff%22%3E%3Ccircle cx=%2212%22 cy=%2712%22 r=%2710%22/%3E%3C/svg%3E'">
-                                </div>
-                                <div>
-                                    <div class="panel-team-name" id="leftTeamName">Team</div>
-                                    <div class="panel-team-record" id="leftTeamRecord">0-0</div>
-                                </div>
+                <div class="stats-panel" id="leftGradient">
+                    <div class="panel-header">
+                        <div class="panel-team-info">
+                            <div class="panel-team-logo" id="leftTeamLogo">
+                                <img src="" alt="Team Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23fff%22%3E%3Ccircle cx=%2712%22 cy=%2712%22 r=%2710%22/%3E%3C/svg%3E'">
                             </div>
-                            <div class="view-buttons">
-                                <button class="view-btn active" data-panel="left" data-view="team">Team</button>
-                                <button class="view-btn" data-panel="left" data-view="players">Players</button>
+                            <div>
+                                <div class="panel-team-name" id="leftTeamName">Team</div>
+                                <div class="panel-team-record" id="leftTeamRecord">0-0</div>
                             </div>
                         </div>
-                        <div class="panel-content" id="leftContent">
-                            <div class="loading">Loading stats...</div>
+                        <div class="view-buttons">
+                            <button class="view-btn active" data-panel="left" data-view="team">TEAM</button>
+                            <button class="view-btn" data-panel="left" data-view="players">PLAYERS</button>
                         </div>
+                    </div>
+                    <div class="panel-content" id="leftContent">
+                        <div class="loading">Loading stats...</div>
                     </div>
                 </div>
 
@@ -582,7 +562,7 @@
                                 <polyline points="17 2 12 7 7 2"></polyline>
                             </svg>
                             <p>Broadcast Area</p>
-                            <p style="font-size: 0.9rem; color: #555;">Connect your video source</p>
+                            <p style="font-size: 0.85rem; color: #555;">Connect your video source</p>
                         </div>
                     </div>
                     <div class="game-info-bar">
@@ -610,26 +590,24 @@
                 </div>
 
                 <!-- RIGHT STATS PANEL -->
-                <div class="stats-panel">
-                    <div class="panel-gradient" id="rightGradient">
-                        <div class="panel-header">
-                            <div class="panel-team-info">
-                                <div class="panel-team-logo" id="rightTeamLogo">
-                                    <img src="" alt="Team Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23fff%22%3E%3Ccircle cx=%2712%22 cy=%2712%22 r=%2710%22/%3E%3C/svg%3E'">
-                                </div>
-                                <div>
-                                    <div class="panel-team-name" id="rightTeamName">Team</div>
-                                    <div class="panel-team-record" id="rightTeamRecord">0-0</div>
-                                </div>
+                <div class="stats-panel" id="rightGradient">
+                    <div class="panel-header">
+                        <div class="panel-team-info">
+                            <div class="panel-team-logo" id="rightTeamLogo">
+                                <img src="" alt="Team Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23fff%22%3E%3Ccircle cx=%2712%22 cy=%2712%22 r=%2710%22/%3E%3C/svg%3E'">
                             </div>
-                            <div class="view-buttons">
-                                <button class="view-btn active" data-panel="right" data-view="team">Team</button>
-                                <button class="view-btn" data-panel="right" data-view="players">Players</button>
+                            <div>
+                                <div class="panel-team-name" id="rightTeamName">Team</div>
+                                <div class="panel-team-record" id="rightTeamRecord">0-0</div>
                             </div>
                         </div>
-                        <div class="panel-content" id="rightContent">
-                            <div class="loading">Loading stats...</div>
+                        <div class="view-buttons">
+                            <button class="view-btn active" data-panel="right" data-view="team">TEAM</button>
+                            <button class="view-btn" data-panel="right" data-view="players">PLAYERS</button>
                         </div>
+                    </div>
+                    <div class="panel-content" id="rightContent">
+                        <div class="loading">Loading stats...</div>
                     </div>
                 </div>
             </div>
@@ -773,12 +751,10 @@
             };
         }
 
-        // Get ESPN logo URL for team
         function getTeamLogoUrl(teamAbbr) {
             return `https://a.espncdn.com/i/teamlogos/nba/500/${teamAbbr.toLowerCase()}.png`;
         }
 
-        // ============ Load Games on Start ============
         async function loadAvailableGames() {
             try {
                 const url = CORS_PROXY + encodeURIComponent(NBA_API);
@@ -872,7 +848,6 @@
             });
         }
 
-        // ============ Render Game ============
         function renderGame() {
             const game = appState.currentGame;
             const competitors = game.competitions?.[0]?.competitors || [];
@@ -887,33 +862,28 @@
             const awayTeamData = TEAM_DATA[away.team.abbreviation];
             const homeTeamData = TEAM_DATA[home.team.abbreviation];
 
-            // Apply team colors and gradients to panels
             const leftGradient = document.getElementById('leftGradient');
             const rightGradient = document.getElementById('rightGradient');
             
             leftGradient.style.borderColor = awayTeamData.primary;
-            leftGradient.style.background = `linear-gradient(135deg, ${awayTeamData.primary}22 0%, ${awayTeamData.secondary}11 100%)`;
+            leftGradient.style.background = `rgba(0,0,0,0.6)`;
             
             rightGradient.style.borderColor = homeTeamData.primary;
-            rightGradient.style.background = `linear-gradient(135deg, ${homeTeamData.primary}22 0%, ${homeTeamData.secondary}11 100%)`;
+            rightGradient.style.background = `rgba(0,0,0,0.6)`;
 
-            // Update team info with ESPN logos
             updateTeamPanel('left', away, awayTeamData);
             updateTeamPanel('right', home, homeTeamData);
 
-            // Update center score
             document.getElementById('leftTeamNameScore').textContent = away.team.displayName;
             document.getElementById('rightTeamNameScore').textContent = home.team.displayName;
             document.getElementById('leftScoreMain').textContent = away.score || '0';
             document.getElementById('rightScoreMain').textContent = home.score || '0';
 
-            // Update game time
             let timeStr = `Q${period} ${Math.floor(clock / 60)}:${String(Math.floor(clock % 60)).padStart(2, '0')}`;
             if (status.type?.description?.includes('Final')) timeStr = 'FINAL';
             document.getElementById('gameTimeMain').textContent = timeStr;
             document.getElementById('gameStatus').textContent = status.type?.description || 'Scheduled';
 
-            // Render initial stats
             renderTeamStats('left', away, awayTeamData);
             renderTeamStats('right', home, homeTeamData);
         }
@@ -978,7 +948,6 @@
             document.getElementById(containerId).innerHTML = html;
         }
 
-        // ============ View Mode Switching ============
         document.querySelectorAll('.view-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const panel = e.target.dataset.panel;
@@ -1004,7 +973,6 @@
             });
         });
 
-        // ============ Refresh Data ============
         async function refreshGame() {
             if (appState.isTestMode) return;
 
