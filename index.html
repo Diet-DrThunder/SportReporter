@@ -7,18 +7,19 @@
 <style>
   :root{
     --panel-width:360px;            /* medium panels for ViewSonic PA503S */
-    --topbar-height:120px;         /* black bars top/bottom as requested */
-    --bottombar-height:120px;
+    --topbar-height:160px;         /* top black bar larger than bottom */
+    --bottombar-height:100px;
     --bg:#000;
     --panel-bg:rgba(0,0,0,0.56);
     --panel-border:rgba(255,255,255,0.06);
     --muted:rgba(255,255,255,0.56);
     --strong:#ffffff;
-    --bar-bg:rgba(255,255,255,0.08);
-    --bar-border:rgba(255,255,255,0.14);
+    --bar-bg:rgba(255,255,255,0.04);
+    --bar-border:rgba(255,255,255,0.08);
     --radius:4px;
     --font-sans: "Arial", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     --small-scale: 0.92;           /* overall vertical compression scale */
+    --control-height:44px;
   }
 
   /* Reset */
@@ -70,10 +71,10 @@
     overflow:hidden;
   }
 
-  /* Team header */
+  /* Team header - logo without box */
   .team-header{display:flex;gap:10px;align-items:center;margin-bottom:10px}
-  .team-logo{width:60px;height:60px;border-radius:6px;background:#111;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
-  .team-logo img{width:100%;height:100%;object-fit:contain;display:block}
+  .team-logo{width:64px;height:64px;border-radius:0;display:flex;align-items:center;justify-content:center;overflow:visible;flex-shrink:0}
+  .team-logo img{width:64px;height:64px;object-fit:contain;display:block}
   .team-meta{display:flex;flex-direction:column;gap:2px}
   .team-name{font-size:1.12rem;font-weight:800;letter-spacing:0.2px}
   .team-record{font-size:0.86rem;color:var(--muted)}
@@ -92,6 +93,58 @@
   .broadcast-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#666;pointer-events:none}
   .broadcast-video{width:100%;height:100%;object-fit:contain;background:#0a0a0a;display:block}
 
+  /* Homescreen overlay */
+  .homescreen{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.95);
+    z-index:1200;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    flex-direction:column;
+    gap:18px;
+    padding:28px;
+  }
+  .homescreen .panel{
+    width:min(980px,92vw);
+    background:rgba(20,20,20,0.9);
+    border:1px solid rgba(255,255,255,0.04);
+    padding:18px;
+    border-radius:8px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .homescreen h1{font-size:2.4rem;margin-bottom:6px}
+  .homescreen .controls{display:flex;gap:12px;align-items:center}
+  .btn{background:#111;border:1px solid rgba(255,255,255,0.06);color:#fff;padding:10px 14px;border-radius:6px;cursor:pointer;font-weight:700}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04)}
+  .games-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto;padding-right:6px}
+  .game-option{padding:10px;border-radius:6px;background:rgba(255,255,255,0.02);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .game-option:hover{background:rgba(255,255,255,0.03)}
+
+  /* Delay slider control (subtle) */
+  .delay-control{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom: calc(var(--bottombar-height) - 44px);
+    z-index:1300;
+    background:rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.04);
+    padding:8px 12px;
+    border-radius:8px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    color:var(--muted);
+    font-size:0.92rem;
+    backdrop-filter: blur(4px);
+  }
+  .delay-control input[type="range"]{width:220px}
+
   /* Small helpers */
   .muted{color:var(--muted)}
   .center-note{font-size:0.95rem;color:#666}
@@ -102,8 +155,11 @@
   .stats-panel::-webkit-scrollbar-track{background:transparent}
   .stats-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:8px}
   .stats-panel::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.09)}
+  .games-list::-webkit-scrollbar{width:8px}
+  .games-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:8px}
 
-  /* Responsive fallback for very narrow screens */
+  /* subtle transition for bar changes */
+  .stat-bar-fill{transition:width 400ms ease, background 400ms ease}
   @media (max-width:1000px){
     :root{--panel-width:300px}
     .stat-bar-container{width:120px}
@@ -111,18 +167,52 @@
   @media (max-width:760px){
     .stats-panel{display:none}
   }
-
-  /* subtle transition for bar changes */
-  .stat-bar-fill{transition:width 400ms ease, background 400ms ease}
 </style>
 </head>
 <body>
+
+  <!-- Homescreen overlay (select games today/tomorrow + test mode) -->
+  <div class="homescreen" id="homescreen" role="dialog" aria-modal="true">
+    <div style="text-align:center">
+      <h1>StatBars</h1>
+      <div class="muted" style="font-size:1rem">Select a game to begin or use Test Mode</div>
+    </div>
+
+    <div class="panel" style="flex-direction:row;align-items:flex-start">
+      <div style="flex:1;min-width:320px">
+        <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center">
+          <button class="btn" id="btnToday">Games Today</button>
+          <button class="btn" id="btnTomorrow">Games Tomorrow</button>
+          <button class="btn" id="btnRefreshGames">Refresh</button>
+        </div>
+        <div class="games-list" id="gamesList" aria-live="polite">
+          <!-- populated dynamically -->
+        </div>
+      </div>
+
+      <div style="width:320px;display:flex;flex-direction:column;gap:10px;align-items:stretch">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-weight:800">Quick Actions</div>
+          <button class="btn" id="btnTestMode">Enter Test Mode</button>
+          <button class="btn ghost" id="btnCloseHomescreen">Close (Show Broadcast)</button>
+        </div>
+
+        <div style="margin-top:8px">
+          <div style="font-weight:800;margin-bottom:6px">Info</div>
+          <div class="muted" style="font-size:0.92rem;line-height:1.2">
+            Use the delay slider (bottom) to offset incoming stats 0–30s to sync with your broadcast.
+            Double‑click the center broadcast area to load a local video or image for testing.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Top black bar (theatre) -->
   <div class="theatre-top" aria-hidden="true"></div>
 
   <!-- Main broadcast viewport (panels + center) -->
-  <div class="broadcast-viewport" id="viewport">
+  <div class="broadcast-viewport" id="viewport" aria-hidden="false">
 
     <!-- LEFT PANEL -->
     <aside class="stats-panel" id="leftPanel" aria-label="Left team stats">
@@ -138,7 +228,6 @@
 
     <!-- CENTER BROADCAST -->
     <main class="broadcast-center" id="center" aria-label="Broadcast area">
-      <!-- Hidden file input to load local video or image; double-click center to open -->
       <input id="fileInput" type="file" accept="video/*,image/*" class="hidden" />
       <video id="broadcastVideo" class="broadcast-video" playsinline muted></video>
       <div class="broadcast-placeholder" id="placeholder">
@@ -165,21 +254,31 @@
 
   </div>
 
+  <!-- Delay slider control (subtle) -->
+  <div class="delay-control" id="delayControl" role="region" aria-label="Stats delay control">
+    <div style="font-weight:700;color:#ddd">Delay</div>
+    <input id="delaySlider" type="range" min="0" max="30" value="0" />
+    <div id="delayValue" style="min-width:44px;text-align:right;color:#ddd">0s</div>
+  </div>
+
   <!-- Bottom black bar (theatre) -->
   <div class="theatre-bottom" aria-hidden="true"></div>
 
 <script>
 /*
-  Single-file index.html JavaScript
-  - Includes all NBA teams
-  - Implements: compressed stat rows, rounded stat bars, team color gradients,
-    removed score/time bar, header hidden, medium panels (~360px), black bars top/bottom 120px,
-    tighter padding, smaller fonts, test mode, double-click to load local video/image.
+  Updated StatBars Broadcast Mode
+  - All NBA teams included
+  - Removed PTS stat
+  - Stat bars use solid team primary color (no gradient)
+  - Logo box removed (logo stands alone)
+  - Homescreen re-added with Games Today / Tomorrow and Test Mode button
+  - Delay slider 0-30s added (subtle, bottom) to offset stat updates
+  - Top black bar larger than bottom
+  - Full single-file HTML
 */
 
 /* -------------------------
    Full NBA team color data (30 teams)
-   Colors chosen as primary/secondary approximations for stat bar gradients.
    ------------------------- */
 const TEAM_DATA = {
   ATL: { name: "Hawks", primary: "#E03A3E", secondary: "#061922" },
@@ -232,26 +331,37 @@ const placeholder = document.getElementById('placeholder');
 const fileInput = document.getElementById('fileInput');
 const center = document.getElementById('center');
 
+const homescreen = document.getElementById('homescreen');
+const gamesList = document.getElementById('gamesList');
+const btnToday = document.getElementById('btnToday');
+const btnTomorrow = document.getElementById('btnTomorrow');
+const btnTestMode = document.getElementById('btnTestMode');
+const btnCloseHomescreen = document.getElementById('btnCloseHomescreen');
+const btnRefreshGames = document.getElementById('btnRefreshGames');
+
+const delaySlider = document.getElementById('delaySlider');
+const delayValue = document.getElementById('delayValue');
+
 let isTestMode = false;
 let currentLeft = null;
 let currentRight = null;
+let statDelaySeconds = 0; // controlled by slider
+let pendingUpdateTimer = null;
 
 /* -------------------------
-   Utility helpers
+   Helpers
    ------------------------- */
 function clamp(v, a=0, b=100){ return Math.max(a, Math.min(b, v)); }
 function safeNumber(v){ const n = parseFloat(String(v).replace('%','')); return Number.isFinite(n) ? n : null; }
-function gradientFor(abbr){
+function solidColorFor(abbr){
   const team = TEAM_DATA[abbr];
-  if(!team) return 'linear-gradient(90deg,#444,#666)';
-  const p = team.primary;
-  const s = team.secondary;
-  // use semi-transparent stops for subtle projector-friendly look
-  return `linear-gradient(90deg, ${p}CC 0%, ${s}99 100%)`;
+  if(!team) return '#666';
+  return team.primary || '#666';
 }
 
 /* -------------------------
-   Create stat row (compressed)
+   Create stat row (no PTS)
+   - Removed points stat per request
    ------------------------- */
 function createStatRow(label, value, isPercent, teamAbbr){
   const row = document.createElement('div');
@@ -276,7 +386,8 @@ function createStatRow(label, value, isPercent, teamAbbr){
     const pct = safeNumber(value);
     const widthPct = pct === null ? 0 : clamp(Math.round(pct), 0, 100);
     fill.style.width = widthPct + '%';
-    fill.style.background = gradientFor(teamAbbr);
+    // solid team color (no gradient)
+    fill.style.background = solidColorFor(teamAbbr) + 'CC';
     fill.textContent = (pct === null ? '--' : `${widthPct}%`);
     barContainer.appendChild(fill);
     right.appendChild(barContainer);
@@ -299,71 +410,75 @@ function createStatRow(label, value, isPercent, teamAbbr){
 
 /* -------------------------
    Render team panel (left or right)
-   - Accepts a team object shaped like ESPN's competitor object or our test object
+   - Points stat removed from statMap
+   - Logo displayed without box/background
+   - Stats update delayed by statDelaySeconds
    ------------------------- */
 function renderTeamPanel(side, teamObj){
-  const isLeft = side === 'left';
-  const nameEl = isLeft ? leftNameEl : rightNameEl;
-  const recordEl = isLeft ? leftRecordEl : rightRecordEl;
-  const logoEl = isLeft ? leftLogoEl : rightLogoEl;
-  const statsEl = isLeft ? leftStatsEl : rightStatsEl;
+  // schedule update with delay so user can sync with broadcast
+  if(pendingUpdateTimer) clearTimeout(pendingUpdateTimer);
+  pendingUpdateTimer = setTimeout(() => {
+    const isLeft = side === 'left';
+    const nameEl = isLeft ? leftNameEl : rightNameEl;
+    const recordEl = isLeft ? leftRecordEl : rightRecordEl;
+    const logoEl = isLeft ? leftLogoEl : rightLogoEl;
+    const statsEl = isLeft ? leftStatsEl : rightStatsEl;
 
-  // Basic meta
-  const displayName = teamObj.team?.displayName || teamObj.displayName || teamObj.name || 'Team';
-  const abbr = teamObj.team?.abbreviation || teamObj.abbreviation || (displayName.split(' ')[0] || '').slice(0,3).toUpperCase();
-  nameEl.textContent = displayName;
-  recordEl.textContent = (teamObj.records && teamObj.records[0] && teamObj.records[0].summary) ? teamObj.records[0].summary : '0-0';
+    // Basic meta
+    const displayName = teamObj.team?.displayName || teamObj.displayName || teamObj.name || 'Team';
+    const abbr = teamObj.team?.abbreviation || teamObj.abbreviation || (displayName.split(' ')[0] || '').slice(0,3).toUpperCase();
+    nameEl.textContent = displayName;
+    recordEl.textContent = (teamObj.records && teamObj.records[0] && teamObj.records[0].summary) ? teamObj.records[0].summary : '0-0';
 
-  // logo: try ESPN CDN if abbreviation present
-  if(abbr){
-    logoEl.src = `https://a.espncdn.com/i/teamlogos/nba/500/${abbr.toLowerCase()}.png`;
-    logoEl.alt = abbr;
-  } else {
-    logoEl.src = '';
-    logoEl.alt = 'logo';
-  }
+    // logo: try ESPN CDN if abbreviation present
+    if(abbr){
+      logoEl.src = `https://a.espncdn.com/i/teamlogos/nba/500/${abbr.toLowerCase()}.png`;
+      logoEl.alt = abbr;
+    } else {
+      logoEl.src = '';
+      logoEl.alt = 'logo';
+    }
 
-  // Stats mapping and order (compressed)
-  const statMap = [
-    { key: 'fieldGoalPct', label: 'FG%', isPct: true },
-    { key: 'threePointPct', label: '3P%', isPct: true },
-    { key: 'freeThrowPct', label: 'FT%', isPct: true },
-    { key: 'points', label: 'PTS', isPct: false },
-    { key: 'rebounds', label: 'REB', isPct: false },
-    { key: 'assists', label: 'AST', isPct: false },
-    { key: 'steals', label: 'STL', isPct: false },
-    { key: 'blocks', label: 'BLK', isPct: false },
-    { key: 'turnovers', label: 'TOV', isPct: false },
-    { key: 'personalFouls', label: 'FOUL', isPct: false }
-  ];
+    // Stats mapping and order (no PTS)
+    const statMap = [
+      { key: 'fieldGoalPct', label: 'FG%', isPct: true },
+      { key: 'threePointPct', label: '3P%', isPct: true },
+      { key: 'freeThrowPct', label: 'FT%', isPct: true },
+      { key: 'rebounds', label: 'REB', isPct: false },
+      { key: 'assists', label: 'AST', isPct: false },
+      { key: 'steals', label: 'STL', isPct: false },
+      { key: 'blocks', label: 'BLK', isPct: false },
+      { key: 'turnovers', label: 'TOV', isPct: false },
+      { key: 'personalFouls', label: 'FOUL', isPct: false }
+    ];
 
-  // Clear existing
-  statsEl.innerHTML = '';
+    // Clear existing
+    statsEl.innerHTML = '';
 
-  // Source stats: some payloads use statistics array, some use simple object
-  const statsArray = teamObj.statistics || teamObj.stats || [];
-  const statsMap = {};
-  if(Array.isArray(statsArray)){
-    statsArray.forEach(s => {
-      if(!s) return;
-      const name = s.name || s.statId || s.displayName;
-      const display = s.displayValue ?? s.value ?? s.display ?? s;
-      if(name) statsMap[name] = display;
+    // Source stats: some payloads use statistics array, some use simple object
+    const statsArray = teamObj.statistics || teamObj.stats || [];
+    const statsMap = {};
+    if(Array.isArray(statsArray)){
+      statsArray.forEach(s => {
+        if(!s) return;
+        const name = s.name || s.statId || s.displayName;
+        const display = s.displayValue ?? s.value ?? s.display ?? s;
+        if(name) statsMap[name] = display;
+      });
+    } else if(typeof statsArray === 'object'){
+      Object.assign(statsMap, statsArray);
+    }
+
+    // Render rows
+    statMap.forEach(spec => {
+      let raw = statsMap[spec.key] ?? statsMap[spec.key.replace(/([A-Z])/g,' $1').toLowerCase()] ?? statsMap[spec.label] ?? '--';
+      if(typeof raw === 'object' && raw.displayValue) raw = raw.displayValue;
+      if(typeof raw === 'string' && raw.includes('%')) raw = raw.replace('%','').trim();
+      const value = (raw === '--' || raw === null || raw === undefined) ? '--' : raw;
+      const row = createStatRow(spec.label, value, spec.isPct, abbr);
+      statsEl.appendChild(row);
     });
-  } else if(typeof statsArray === 'object'){
-    Object.assign(statsMap, statsArray);
-  }
-
-  // Render rows
-  statMap.forEach(spec => {
-    // try multiple key formats
-    let raw = statsMap[spec.key] ?? statsMap[spec.key.replace(/([A-Z])/g,' $1').toLowerCase()] ?? statsMap[spec.label] ?? '--';
-    if(typeof raw === 'object' && raw.displayValue) raw = raw.displayValue;
-    if(typeof raw === 'string' && raw.includes('%')) raw = raw.replace('%','').trim();
-    const value = (raw === '--' || raw === null || raw === undefined) ? '--' : raw;
-    const row = createStatRow(spec.label, value, spec.isPct, abbr);
-    statsEl.appendChild(row);
-  });
+  }, statDelaySeconds * 1000);
 }
 
 /* -------------------------
@@ -379,7 +494,6 @@ function generateRandomStats(){
     fieldGoalPct: (randomInt(40,60)).toString(),
     threePointPct: (randomInt(28,45)).toString(),
     freeThrowPct: (randomInt(70,92)).toString(),
-    points: randomInt(80,130).toString(),
     rebounds: randomInt(30,60).toString(),
     assists: randomInt(15,35).toString(),
     steals: randomInt(3,12).toString(),
@@ -413,6 +527,50 @@ function enterTestMode(){
 }
 
 /* -------------------------
+   Homescreen: mock games generator
+   - Games Today / Tomorrow produce simple mock matchups
+   - Selecting a game hides homescreen and sets teams
+   ------------------------- */
+function makeMockGames(dateLabel){
+  // produce 6 mock games
+  const keys = Object.keys(TEAM_DATA);
+  const games = [];
+  for(let i=0;i<6;i++){
+    let a = keys[Math.floor(Math.random()*keys.length)];
+    let b = keys[Math.floor(Math.random()*keys.length)];
+    while(b===a) b = keys[Math.floor(Math.random()*keys.length)];
+    games.push({
+      id: `${dateLabel}-${i}`,
+      away: a,
+      home: b,
+      status: dateLabel === 'today' ? 'Live' : 'Scheduled',
+      time: dateLabel === 'today' ? `${randomInt(1,12)}:${String(randomInt(0,59)).padStart(2,'0')} PM` : `${randomInt(10,11)}:${String(randomInt(0,59)).padStart(2,'0')} AM`
+    });
+  }
+  return games;
+}
+
+function populateGames(dateLabel){
+  gamesList.innerHTML = '';
+  const games = makeMockGames(dateLabel);
+  games.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'game-option';
+    el.innerHTML = `<div style="font-weight:700">${g.away} @ ${g.home}</div><div style="color:var(--muted);font-size:0.92rem">${g.status} • ${g.time}</div>`;
+    el.addEventListener('click', () => {
+      // set current teams and hide homescreen
+      currentLeft = { team: { abbreviation: g.away, displayName: TEAM_DATA[g.away]?.name || g.away }, records: [{ summary: '0-0' }], statistics: [] };
+      currentRight = { team: { abbreviation: g.home, displayName: TEAM_DATA[g.home]?.name || g.home }, records: [{ summary: '0-0' }], statistics: [] };
+      // render immediately (with delay applied)
+      renderTeamPanel('left', currentLeft);
+      renderTeamPanel('right', currentRight);
+      homescreen.style.display = 'none';
+    });
+    gamesList.appendChild(el);
+  });
+}
+
+/* -------------------------
    Video / placeholder handling
    ------------------------- */
 function showPlaceholder(show){
@@ -427,7 +585,6 @@ fileInput.addEventListener('change', (e) => {
   if(!file) return;
   const url = URL.createObjectURL(file);
   if(file.type.startsWith('image/')){
-    // For images, replace center content with an <img> (keeps panels intact)
     const img = new Image();
     img.src = url;
     img.style.maxWidth = '100%';
@@ -436,13 +593,10 @@ fileInput.addEventListener('change', (e) => {
     img.style.display = 'block';
     // remove existing children except file input
     while(center.firstChild) center.removeChild(center.firstChild);
-    center.appendChild(fileInput); // keep file input for future loads
+    center.appendChild(fileInput);
     center.appendChild(img);
   } else {
-    // video
-    // if center currently has an image from previous load, restore structure
     if(!document.body.contains(broadcastVideo)){
-      // rebuild center structure
       while(center.firstChild) center.removeChild(center.firstChild);
       center.appendChild(fileInput);
       center.appendChild(broadcastVideo);
@@ -451,34 +605,64 @@ fileInput.addEventListener('change', (e) => {
     broadcastVideo.src = url;
     broadcastVideo.loop = true;
     broadcastVideo.muted = true;
-    broadcastVideo.play().catch(()=>{ /* autoplay may be blocked; user can unmute locally */ });
+    broadcastVideo.play().catch(()=>{ /* autoplay may be blocked */ });
     showPlaceholder(false);
   }
 });
 
 /* -------------------------
-   Keyboard shortcuts & controls
-   - T toggles test mode (user requested test mode earlier)
+   Delay slider handling
+   ------------------------- */
+delaySlider.addEventListener('input', (e) => {
+  statDelaySeconds = Number(e.target.value);
+  delayValue.textContent = `${statDelaySeconds}s`;
+});
+
+/* -------------------------
+   Homescreen controls
+   ------------------------- */
+btnToday.addEventListener('click', () => populateGames('today'));
+btnTomorrow.addEventListener('click', () => populateGames('tomorrow'));
+btnRefreshGames.addEventListener('click', () => {
+  // refresh current list (if empty default to today)
+  const first = gamesList.firstChild;
+  if(!first) populateGames('today');
+  else {
+    // simple visual refresh
+    const label = document.querySelector('#gamesList .game-option') ? 'today' : 'today';
+    populateGames(label);
+  }
+});
+btnTestMode.addEventListener('click', () => {
+  enterTestMode();
+  homescreen.style.display = 'none';
+});
+btnCloseHomescreen.addEventListener('click', () => {
+  homescreen.style.display = 'none';
+});
+
+/* -------------------------
+   Keyboard shortcuts
+   - T toggles test mode
+   - H shows homescreen
    - R regenerates test stats
-   - C clears panels
    ------------------------- */
 window.addEventListener('keydown', (e) => {
-  if(e.key === 't' || e.key === 'T'){ // toggle test mode
+  if(e.key === 't' || e.key === 'T'){
     isTestMode = !isTestMode;
-    if(isTestMode) enterTestMode();
-    else {
-      // clear panels
+    if(isTestMode) {
+      enterTestMode();
+      homescreen.style.display = 'none';
+    } else {
       leftNameEl.textContent = 'Away'; leftRecordEl.textContent = '0-0'; leftLogoEl.src=''; leftStatsEl.innerHTML='';
       rightNameEl.textContent = 'Home'; rightRecordEl.textContent = '0-0'; rightLogoEl.src=''; rightStatsEl.innerHTML='';
     }
   }
-  if(e.key === 'r' || e.key === 'R'){ // refresh test stats if in test mode
-    if(isTestMode) enterTestMode();
+  if(e.key === 'h' || e.key === 'H'){
+    homescreen.style.display = 'flex';
   }
-  if(e.key === 'c' || e.key === 'C'){ // clear
-    isTestMode = false;
-    leftNameEl.textContent = 'Away'; leftRecordEl.textContent = '0-0'; leftLogoEl.src=''; leftStatsEl.innerHTML='';
-    rightNameEl.textContent = 'Home'; rightRecordEl.textContent = '0-0'; rightLogoEl.src=''; rightStatsEl.innerHTML='';
+  if(e.key === 'r' || e.key === 'R'){
+    if(isTestMode) enterTestMode();
   }
 });
 
@@ -486,19 +670,15 @@ window.addEventListener('keydown', (e) => {
    Initialization
    ------------------------- */
 (function init(){
-  // Start in test mode by default so the user sees something on first load
-  enterTestMode();
-
-  // Keep placeholder visible until a video is loaded
-  showPlaceholder(true);
-
-  // Accessibility: allow double-click hint to be keyboard accessible (Enter on center)
-  center.tabIndex = 0;
-  center.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter') fileInput.click();
-  });
+  // default: populate today's games
+  populateGames('today');
+  // start in homescreen visible
+  homescreen.style.display = 'flex';
+  // default delay 0
+  statDelaySeconds = Number(delaySlider.value);
+  delayValue.textContent = `${statDelaySeconds}s`;
+  // start in test mode off; user can press Test Mode
 })();
-
 </script>
 </body>
 </html>
