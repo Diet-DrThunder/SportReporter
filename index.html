@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Sports Dashboard</title>
+    <title>NBA Live Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
@@ -15,7 +15,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            background: #000;
+            background: #0a0a0a;
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             overflow: hidden;
@@ -51,9 +51,9 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 2rem;
+            padding: 3rem 2rem;
             position: relative;
-            border-right: 3px solid #333;
+            border-right: 4px solid #1a1a1a;
         }
 
         .team-section:last-child {
@@ -62,117 +62,134 @@
 
         .team-header {
             text-align: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
         }
 
         .team-logo-large {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1rem;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .team-name {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         .team-score {
-            font-size: 4rem;
-            font-weight: bold;
+            font-size: 5rem;
+            font-weight: 900;
             margin: 1rem 0;
+            letter-spacing: -2px;
         }
 
         .team-record {
-            font-size: 1rem;
-            color: #999;
+            font-size: 1.1rem;
+            color: #888;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .game-status {
+            font-size: 0.95rem;
+            color: #aaa;
+            padding: 0.75rem 0;
+            margin-top: 1rem;
+            font-weight: 500;
         }
 
         .stats-selector {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .stat-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border-radius: 0.375rem;
+            padding: 0.75rem 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            color: #ccc;
+            border-radius: 0;
             cursor: pointer;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+            font-size: 0.9rem;
+            transition: all 0.3s;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .stat-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
         }
 
         .stat-btn.active {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.6);
-            font-weight: 600;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #fff;
         }
 
         .stats-content {
             flex: 1;
             overflow-y: auto;
-            padding-right: 1rem;
+            padding-right: 1.5rem;
         }
 
         .player-stats {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
         .player-stats:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
         }
 
         .player-stats.selected {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .player-header {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
         }
 
         .player-photo {
             width: 100px;
             height: 100px;
-            border-radius: 0.5rem;
-            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 2.5rem;
             flex-shrink: 0;
-            color: #666;
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .player-info {
@@ -180,61 +197,70 @@
         }
 
         .player-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 0.25rem;
+            font-size: 1.3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .player-position {
-            font-size: 0.9rem;
-            color: #999;
-            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: #888;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .player-number {
-            font-size: 0.85rem;
+            font-size: 1.2rem;
             color: #666;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 1rem;
         }
 
         .stat-item {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 0.75rem;
-            border-radius: 0.375rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: 0;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #4ade80;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #fff;
         }
 
         .stat-label {
-            font-size: 0.7rem;
-            color: #999;
+            font-size: 0.75rem;
+            color: #888;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 0.25rem;
+            letter-spacing: 0.75px;
+            margin-top: 0.5rem;
+            font-weight: 700;
         }
 
         .team-stats {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0;
+            padding: 2rem;
         }
 
         .team-stat-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 0;
+            padding: 1rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -243,26 +269,30 @@
         }
 
         .stat-name {
-            font-size: 0.95rem;
-            color: #ccc;
+            font-size: 1rem;
+            color: #aaa;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .stat-number {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #4ade80;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
         }
 
         .video-section {
             position: absolute;
             top: 2rem;
             right: 2rem;
-            width: 300px;
-            height: 200px;
+            width: 320px;
+            height: 240px;
             background: #000;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0;
             overflow: hidden;
+            z-index: 50;
         }
 
         #videoFeed {
@@ -273,26 +303,28 @@
 
         .video-controls {
             position: absolute;
-            bottom: 0.5rem;
-            right: 0.5rem;
+            bottom: 0.75rem;
+            right: 0.75rem;
             display: flex;
-            gap: 0.25rem;
+            gap: 0.5rem;
             z-index: 10;
         }
 
         .video-btn {
-            padding: 0.25rem 0.5rem;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 0.75rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             color: #fff;
-            border-radius: 0.25rem;
+            border-radius: 0;
             cursor: pointer;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             transition: background 0.2s;
+            font-weight: 600;
         }
 
         .video-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
+            border-color: rgba(255, 255, 255, 0.6);
         }
 
         .start-overlay {
@@ -301,13 +333,13 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
+            background: #000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            gap: 2rem;
+            gap: 3rem;
         }
 
         .start-overlay.hidden {
@@ -315,10 +347,10 @@
         }
 
         .start-overlay h1 {
-            font-size: 4rem;
-            font-weight: bold;
+            font-size: 5rem;
+            font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             background: linear-gradient(135deg, #ff6b6b, #ff8e53, #ffd93d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -326,18 +358,20 @@
         }
 
         .start-overlay p {
-            font-size: 1.2rem;
-            color: #888;
+            font-size: 1.3rem;
+            color: #666;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
         .start-button {
-            padding: 1rem 3rem;
+            padding: 1.5rem 4rem;
             background: linear-gradient(135deg, #ff6b6b, #ff8e53);
             color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.3rem;
+            font-weight: 900;
             border: none;
-            border-radius: 0.5rem;
+            border-radius: 0;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -346,49 +380,59 @@
 
         .start-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+            box-shadow: 0 0 40px rgba(255, 107, 107, 0.6);
+        }
+
+        .start-button:active {
+            transform: scale(0.95);
         }
 
         .control-buttons {
             position: fixed;
-            top: 1rem;
+            top: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 0.5rem;
+            gap: 1rem;
             z-index: 100;
         }
 
         .control-btn {
-            padding: 0.75rem 1.5rem;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.9rem 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.15);
             color: #fff;
-            border-radius: 0.375rem;
+            border-radius: 0;
             cursor: pointer;
-            font-size: 0.875rem;
-            transition: background 0.2s;
+            font-size: 0.9rem;
+            transition: all 0.3s;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .control-btn:hover {
-            background: rgba(0, 0, 0, 0.95);
-            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .sport-selector {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.15);
             color: #fff;
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
+            padding: 0.9rem 2rem;
+            border-radius: 0;
+            font-size: 0.9rem;
             cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            transition: all 0.3s;
         }
 
         .sport-selector:hover {
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .touchdown-animation {
@@ -396,52 +440,53 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 10rem;
-            font-weight: bold;
+            font-size: 12rem;
+            font-weight: 900;
             color: #ff6b6b;
             z-index: 999;
             pointer-events: none;
             text-transform: uppercase;
             letter-spacing: 4px;
             animation: touchdownPulse 1s ease-out;
-            text-shadow: 0 0 20px #ff6b6b, 0 0 40px #ff6b6b;
+            text-shadow: 0 0 40px #ff6b6b, 0 0 80px #ff6b6b;
         }
 
         @keyframes touchdownPulse {
             0% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(0.8);
-                text-shadow: 0 0 20px #ff6b6b, 0 0 40px #ff6b6b;
+                transform: translate(-50%, -50%) scale(0.6);
+                text-shadow: 0 0 40px #ff6b6b, 0 0 80px #ff6b6b;
             }
             50% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1);
-                text-shadow: 0 0 40px #ff6b6b, 0 0 80px #ff6b6b;
+                transform: translate(-50%, -50%) scale(1.15);
+                text-shadow: 0 0 60px #ff6b6b, 0 0 120px #ff6b6b;
             }
             100% {
                 opacity: 0;
-                transform: translate(-50%, -50%) scale(1.2);
-                text-shadow: 0 0 20px #ff6b6b, 0 0 40px #ff6b6b;
+                transform: translate(-50%, -50%) scale(1.3);
+                text-shadow: 0 0 40px #ff6b6b, 0 0 80px #ff6b6b;
             }
         }
 
         .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 1rem;
-            border-radius: 0.375rem;
-            font-size: 0.9rem;
+            background: rgba(239, 68, 68, 0.08);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            color: #ff9999;
+            padding: 1.5rem;
+            border-radius: 0;
+            font-size: 1rem;
             text-align: center;
+            font-weight: 600;
         }
 
         .loading-spinner {
             display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            border-top-color: #4ade80;
+            border-top-color: #ff6b6b;
             animation: spin 0.8s linear infinite;
         }
 
@@ -454,22 +499,31 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 0;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .team-color-primary {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
     <div class="start-overlay" id="startOverlay">
-        <h1>Sports Dashboard</h1>
+        <h1>NBA Dashboard</h1>
         <p>Click to Start (Required for Audio)</p>
         <button class="start-button" id="startButton">Start App</button>
     </div>
@@ -483,11 +537,11 @@
                 <div class="team-section" id="teamSectionLeft">
                     <div style="position: relative;">
                         <div class="team-header">
-                            <div class="team-logo-large" id="teamLogoLeft">🏈</div>
-                            <div class="team-name" id="teamNameLeft">Away Team</div>
+                            <div class="team-logo-large" id="teamLogoLeft">🏀</div>
+                            <div class="team-name" id="teamNameLeft">Away</div>
                             <div class="team-score" id="teamScoreLeft">0</div>
                             <div class="team-record" id="teamRecordLeft">0-0</div>
-                            <div class="team-record" id="gameStatusLeft" style="margin-top: 0.5rem; font-size: 0.9rem;">--</div>
+                            <div class="game-status" id="gameStatusLeft">--</div>
                         </div>
 
                         <div class="video-section" id="videoSection">
@@ -512,11 +566,11 @@
                 <!-- RIGHT TEAM -->
                 <div class="team-section" id="teamSectionRight">
                     <div class="team-header">
-                        <div class="team-logo-large" id="teamLogoRight">🏈</div>
-                        <div class="team-name" id="teamNameRight">Home Team</div>
+                        <div class="team-logo-large" id="teamLogoRight">🏀</div>
+                        <div class="team-name" id="teamNameRight">Home</div>
                         <div class="team-score" id="teamScoreRight">0</div>
                         <div class="team-record" id="teamRecordRight">0-0</div>
-                        <div class="team-record" id="gameStatusRight" style="margin-top: 0.5rem; font-size: 0.9rem;">--</div>
+                        <div class="game-status" id="gameStatusRight">--</div>
                     </div>
 
                     <div class="stats-selector" id="statsSelectorRight">
@@ -534,77 +588,63 @@
         <div class="black-bars"></div>
 
         <div class="control-buttons">
-            <select id="sportSelector" class="sport-selector">
-                <option value="nfl">🏈 NFL</option>
-                <option value="nba">🏀 NBA</option>
-                <option value="mlb">⚾ MLB</option>
-            </select>
             <button class="control-btn" id="fullscreenBtn">Fullscreen</button>
             <button class="control-btn" id="refreshBtn">Refresh</button>
         </div>
     </div>
 
     <script>
-        // ============ Configuration ============
-        const API_ENDPOINTS = {
-            nfl: 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard',
-            nba: 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard',
-            mlb: 'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard'
+        // ============ NBA Team Colors ============
+        const NBA_TEAM_COLORS = {
+            'Atlanta Hawks': { primary: '#E03828', secondary: '#C4CED4' },
+            'Boston Celtics': { primary: '#007A33', secondary: '#BA9653' },
+            'Brooklyn Nets': { primary: '#000000', secondary: '#FFFFFF' },
+            'Charlotte Hornets': { primary: '#1D1160', secondary: '#00778D' },
+            'Chicago Bulls': { primary: '#CE1141', secondary: '#000000' },
+            'Cleveland Cavaliers': { primary: '#6F2DA8', secondary: '#041E42' },
+            'Dallas Mavericks': { primary: '#0C2340', secondary: '#B8C4CA' },
+            'Denver Nuggets': { primary: '#0E2240', secondary: '#FFB81C' },
+            'Detroit Pistons': { primary: '#C41E3A', secondary: '#1D428A' },
+            'Golden State Warriors': { primary: '#1D428A', secondary: '#FFC72C' },
+            'Houston Rockets': { primary: '#CE1141', secondary: '#000000' },
+            'LA Clippers': { primary: '#C4CED4', secondary: '#ED174C' },
+            'LA Lakers': { primary: '#552583', secondary: '#FDB927' },
+            'Memphis Grizzlies': { primary: '#12120E', secondary: '#6189B9' },
+            'Miami Heat': { primary: '#98002E', secondary: '#F9A01B' },
+            'Milwaukee Bucks': { primary: '#12120E', secondary: '#00471B' },
+            'Minnesota Timberwolves': { primary: '#0C2340', secondary: '#236B3D' },
+            'New Orleans Pelicans': { primary: '#0C2340', secondary: '#C4CED4' },
+            'New York Knicks': { primary: '#F58426', secondary: '#1D428A' },
+            'Oklahoma City Thunder': { primary: '#002B5C', secondary: '#EF3B39' },
+            'Orlando Magic': { primary: '#0077B6', secondary: '#000000' },
+            'Philadelphia 76ers': { primary: '#1D1160', secondary: '#C4CED4' },
+            'Phoenix Suns': { primary: '#1D1160', secondary: '#E56020' },
+            'Portland Trail Blazers': { primary: '#E03828', secondary: '#000000' },
+            'Sacramento Kings': { primary: '#5A2D81', secondary: '#63727A' },
+            'San Antonio Spurs': { primary: '#C4CED4', secondary: '#000000' },
+            'Toronto Raptors': { primary: '#CE1141', secondary: '#000000' },
+            'Utah Jazz': { primary: '#002B5C', secondary: '#00471B' },
+            'Washington Wizards': { primary: '#0C2340', secondary: '#E31937' }
         };
 
+        // ============ Configuration ============
+        const API_URL = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
         // ============ State Management ============
         let appState = {
-            currentSport: 'nfl',
             currentGame: null,
             audioContext: null,
             isAppStarted: false,
             selectedPlayers: { left: null, right: null },
             statType: { left: 'team', right: 'team' },
             videoStream: null,
-            teamColors: {
-                left: '#1a1a2e',
-                right: '#1a1a2e'
-            }
+            teamColors: { left: { primary: '#0a0a0a', secondary: '#fff' }, right: { primary: '#0a0a0a', secondary: '#fff' } }
         };
 
         // ============ Utility Functions ============
         function getTeamColor(teamName) {
-            const colors = {
-                'Kansas City Chiefs': '#E31828',
-                'San Francisco 49ers': '#AA0000',
-                'Philadelphia Eagles': '#003831',
-                'Dallas Cowboys': '#003594',
-                'Buffalo Bills': '#00338D',
-                'Green Bay Packers': '#203731',
-                'New England Patriots': '#002244',
-                'Pittsburgh Steelers': '#27251F',
-                'Los Angeles Rams': '#003594',
-                'Tampa Bay Buccaneers': '#FF6B35',
-                'Miami Dolphins': '#008E97',
-                'New York Giants': '#0B3A7D',
-                'Chicago Bears': '#0B162A',
-                'New Orleans Saints': '#D3BC8D',
-                'Las Vegas Raiders': '#000000',
-                'Atlanta Falcons': '#A71930',
-                'Baltimore Ravens': '#241773',
-                'New York Jets': '#125740',
-                'Denver Broncos': '#FB4F14',
-                'Tennessee Titans': '#0C2C56',
-                'Minnesota Vikings': '#4F2683',
-                'Washington Football Team': '#5A1D34',
-                'Arizona Cardinals': '#97233F',
-                'Seattle Seahawks': '#0C2C56',
-                'Jacksonville Jaguars': '#006687',
-                'Houston Texans': '#03202F',
-                'Los Angeles Chargers': '#0080B4',
-                'Cincinnati Bengals': '#FB4F14',
-                'Indianapolis Colts': '#002C5F',
-                'Detroit Lions': '#0076B6',
-                'Carolina Panthers': '#0085CA',
-            };
-            return colors[teamName] || '#1a1a2e';
+            return NBA_TEAM_COLORS[teamName] || { primary: '#0a0a0a', secondary: '#fff' };
         }
 
         function rgbToRgba(hex, alpha = 0.1) {
@@ -626,7 +666,7 @@
                 videoFeed.srcObject = stream;
                 videoFeed.play();
             } catch (error) {
-                console.warn('Camera access denied or unavailable:', error);
+                console.warn('Camera access denied:', error);
                 document.getElementById('videoSection').style.display = 'none';
             }
         }
@@ -681,7 +721,7 @@
             playSound('touchdown.mp3');
             const animation = document.createElement('div');
             animation.className = 'touchdown-animation';
-            animation.textContent = 'TOUCHDOWN!';
+            animation.textContent = 'SLAM!';
             document.body.appendChild(animation);
             setTimeout(() => animation.remove(), 1000);
         }
@@ -714,9 +754,7 @@
         // ============ API Fetching ============
         async function fetchAndDisplayGame() {
             try {
-                const url = API_ENDPOINTS[appState.currentSport];
-                const proxiedUrl = CORS_PROXY + encodeURIComponent(url);
-
+                const proxiedUrl = CORS_PROXY + encodeURIComponent(API_URL);
                 const response = await fetch(proxiedUrl);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
@@ -755,55 +793,46 @@
                 return;
             }
 
-            // Update team info
             updateTeamSection('left', away, game);
             updateTeamSection('right', home, game);
 
-            // Set team colors
             appState.teamColors.left = getTeamColor(away.team?.displayName || '');
             appState.teamColors.right = getTeamColor(home.team?.displayName || '');
 
             applyTeamColors();
-
-            // Render initial stats
             renderStats('left', away);
             renderStats('right', home);
         }
 
         function updateTeamSection(side, teamData, game) {
-            const sectionId = `teamSection${side === 'left' ? 'Left' : 'Right'}`;
-            const section = document.getElementById(sectionId);
-            const logoId = `teamLogo${side === 'left' ? 'Left' : 'Right'}`;
-            const nameId = `teamName${side === 'left' ? 'Left' : 'Right'}`;
-            const scoreId = `teamScore${side === 'left' ? 'Left' : 'Right'}`;
-            const recordId = `teamRecord${side === 'left' ? 'Left' : 'Right'}`;
-            const statusId = `gameStatus${side === 'left' ? 'Left' : 'Right'}`;
-
+            const prefix = side === 'left' ? 'Left' : 'Right';
             const abbr = teamData.team?.abbreviation || '?';
-            const name = teamData.team?.displayName || 'Team';
+            const name = teamData.team?.displayName?.split(' ').pop() || 'TEAM';
             const score = teamData.score || 0;
             const record = teamData.records?.[0]?.summary || '0-0';
             const status = game.competitions?.[0]?.status?.displayClock || '--';
+            const period = game.competitions?.[0]?.status?.period || 0;
 
-            document.getElementById(logoId).textContent = abbr;
-            document.getElementById(nameId).textContent = name;
-            document.getElementById(scoreId).textContent = score;
-            document.getElementById(recordId).textContent = record;
-            document.getElementById(statusId).textContent = status;
+            document.getElementById(`teamLogo${prefix}`).textContent = abbr;
+            document.getElementById(`teamName${prefix}`).textContent = name.toUpperCase();
+            document.getElementById(`teamScore${prefix}`).textContent = score;
+            document.getElementById(`teamRecord${prefix}`).textContent = record;
+            document.getElementById(`gameStatus${prefix}`).textContent = `Q${period} • ${status}`;
         }
 
         function applyTeamColors() {
             const leftSection = document.getElementById('teamSectionLeft');
             const rightSection = document.getElementById('teamSectionRight');
 
-            leftSection.style.background = rgbToRgba(appState.teamColors.left, 0.08);
-            rightSection.style.background = rgbToRgba(appState.teamColors.right, 0.08);
+            leftSection.style.background = rgbToRgba(appState.teamColors.left.primary, 0.04);
+            rightSection.style.background = rgbToRgba(appState.teamColors.right.primary, 0.04);
+
+            leftSection.style.borderLeftColor = appState.teamColors.left.primary;
+            rightSection.style.borderRightColor = appState.teamColors.right.primary;
         }
 
         function renderStats(side, teamData) {
             const statType = appState.statType[side];
-            const contentId = `statsContent${side === 'left' ? 'Left' : 'Right'}`;
-
             if (statType === 'team') {
                 renderTeamStats(side, teamData);
             } else {
@@ -815,57 +844,27 @@
             const stats = teamData.statistics || [];
             const contentId = `statsContent${side === 'left' ? 'Left' : 'Right'}`;
 
-            let statsHtml = '<div class="team-stats">';
+            const points = stats.find(s => s.name === 'points')?.displayValue || '--';
+            const rebounds = stats.find(s => s.name === 'rebounds')?.displayValue || '--';
+            const assists = stats.find(s => s.name === 'assists')?.displayValue || '--';
+            const steals = stats.find(s => s.name === 'steals')?.displayValue || '--';
+            const blocks = stats.find(s => s.name === 'blocks')?.displayValue || '--';
+            const turnovers = stats.find(s => s.name === 'turnovers')?.displayValue || '--';
+            const fieldGoalsPct = stats.find(s => s.name === 'fieldGoalsPercentage')?.displayValue || '--';
+            const threePointersPct = stats.find(s => s.name === 'threePointersPercentage')?.displayValue || '--';
 
-            if (appState.currentSport === 'nfl') {
-                const passingYards = stats.find(s => s.name === 'passingYards')?.displayValue || '--';
-                const rushingYards = stats.find(s => s.name === 'rushingYards')?.displayValue || '--';
-                const turnovers = stats.find(s => s.name === 'turnovers')?.displayValue || '--';
-                const tackles = stats.find(s => s.name === 'tackles')?.displayValue || '--';
-                const interceptions = stats.find(s => s.name === 'interceptions')?.displayValue || '--';
-                const sacks = stats.find(s => s.name === 'sacks')?.displayValue || '--';
-
-                statsHtml += `
-                    <div class="team-stat-row"><span class="stat-name">Passing Yards</span><span class="stat-number">${passingYards}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">Rushing Yards</span><span class="stat-number">${rushingYards}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">Turnovers</span><span class="stat-number">${turnovers}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">Tackles</span><span class="stat-number">${tackles}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">Interceptions</span><span class="stat-number">${interceptions}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">Sacks</span><span class="stat-number">${sacks}</span></div>
-                `;
-            } else if (appState.currentSport === 'nba') {
-                const points = stats.find(s => s.name === 'points')?.displayValue || '--';
-                const rebounds = stats.find(s => s.name === 'rebounds')?.displayValue || '--';
-                const assists = stats.find(s => s.name === 'assists')?.displayValue || '--';
-                const steals = stats.find(s => s.name === 'steals')?.displayValue || '--';
-                const blocks = stats.find(s => s.name === 'blocks')?.displayValue || '--';
-                const turnovers = stats.find(s => s.name === 'turnovers')?.displayValue || '--';
-
-                statsHtml += `
+            const statsHtml = `
+                <div class="team-stats">
                     <div class="team-stat-row"><span class="stat-name">Points</span><span class="stat-number">${points}</span></div>
                     <div class="team-stat-row"><span class="stat-name">Rebounds</span><span class="stat-number">${rebounds}</span></div>
                     <div class="team-stat-row"><span class="stat-name">Assists</span><span class="stat-number">${assists}</span></div>
                     <div class="team-stat-row"><span class="stat-name">Steals</span><span class="stat-number">${steals}</span></div>
                     <div class="team-stat-row"><span class="stat-name">Blocks</span><span class="stat-number">${blocks}</span></div>
                     <div class="team-stat-row"><span class="stat-name">Turnovers</span><span class="stat-number">${turnovers}</span></div>
-                `;
-            } else if (appState.currentSport === 'mlb') {
-                const hits = stats.find(s => s.name === 'hits')?.displayValue || '--';
-                const runs = stats.find(s => s.name === 'runs')?.displayValue || '--';
-                const rbi = stats.find(s => s.name === 'rbi')?.displayValue || '--';
-                const strikeouts = stats.find(s => s.name === 'strikeouts')?.displayValue || '--';
-                const errors = stats.find(s => s.name === 'errors')?.displayValue || '--';
-
-                statsHtml += `
-                    <div class="team-stat-row"><span class="stat-name">Hits</span><span class="stat-number">${hits}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">Runs</span><span class="stat-number">${runs}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">RBIs</span><span class="stat-number">${rbi}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">Strikeouts</span><span class="stat-number">${strikeouts}</span></div>
-                    <div class="team-stat-row"><span class="stat-name">Errors</span><span class="stat-number">${errors}</span></div>
-                `;
-            }
-
-            statsHtml += '</div>';
+                    <div class="team-stat-row"><span class="stat-name">FG %</span><span class="stat-number">${fieldGoalsPct}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">3PT %</span><span class="stat-number">${threePointersPct}</span></div>
+                </div>
+            `;
             document.getElementById(contentId).innerHTML = statsHtml;
         }
 
@@ -879,24 +878,32 @@
             }
 
             let playersHtml = '';
-            players.slice(0, 10).forEach(playerData => {
+            players.slice(0, 12).forEach(playerData => {
                 const player = playerData.person || playerData;
                 const selected = appState.selectedPlayers[side]?.id === player.id ? 'selected' : '';
 
-                const statsGrid = getPlayerStatsGrid(playerData);
+                const points = playerData.stats?.find(s => s.name === 'points')?.displayValue || '0';
+                const rebounds = playerData.stats?.find(s => s.name === 'rebounds')?.displayValue || '0';
+                const assists = playerData.stats?.find(s => s.name === 'assists')?.displayValue || '0';
+                const steals = playerData.stats?.find(s => s.name === 'steals')?.displayValue || '0';
+                const blocks = playerData.stats?.find(s => s.name === 'blocks')?.displayValue || '0';
+                const turnovers = playerData.stats?.find(s => s.name === 'turnovers')?.displayValue || '0';
 
                 playersHtml += `
                     <div class="player-stats ${selected}" data-player-id="${player.id}" data-side="${side}">
                         <div class="player-header">
-                            <div class="player-photo">${player.displayName?.charAt(0) || '👤'}</div>
+                            <div class="player-photo">${player.displayName?.charAt(0).toUpperCase() || '👤'}</div>
                             <div class="player-info">
-                                <div class="player-name">${player.displayName || 'Player'}</div>
-                                <div class="player-position">${playerData.position?.displayName || 'Position TBD'}</div>
+                                <div class="player-name">${player.displayName?.toUpperCase() || 'PLAYER'}</div>
+                                <div class="player-position">${playerData.position?.displayName || 'POS'}</div>
                                 <div class="player-number">#${playerData.jerseyNumber || '--'}</div>
                             </div>
                         </div>
                         <div class="stats-grid">
-                            ${statsGrid}
+                            <div class="stat-item"><div class="stat-value">${points}</div><div class="stat-label">Points</div></div>
+                            <div class="stat-item"><div class="stat-value">${rebounds}</div><div class="stat-label">Reb</div></div>
+                            <div class="stat-item"><div class="stat-value">${assists}</div><div class="stat-label">Ast</div></div>
+                            <div class="stat-item"><div class="stat-value">${steals}</div><div class="stat-label">Stl</div></div>
                         </div>
                     </div>
                 `;
@@ -904,7 +911,6 @@
 
             document.getElementById(contentId).innerHTML = playersHtml;
 
-            // Add click handlers
             document.querySelectorAll(`[data-side="${side}"]`).forEach(el => {
                 el.addEventListener('click', () => {
                     document.querySelectorAll(`[data-side="${side}"].selected`).forEach(s => s.classList.remove('selected'));
@@ -917,56 +923,7 @@
             });
         }
 
-        function getPlayerStatsGrid(playerData) {
-            const stats = playerData.stats || [];
-
-            if (appState.currentSport === 'nfl') {
-                const passing = stats.find(s => s.name === 'passing') || {};
-                const rushing = stats.find(s => s.name === 'rushing') || {};
-                const receiving = stats.find(s => s.name === 'receiving') || {};
-
-                return `
-                    <div class="stat-item"><div class="stat-value">${passing.statistics?.[0]?.displayValue || '--'}</div><div class="stat-label">Pass Yds</div></div>
-                    <div class="stat-item"><div class="stat-value">${rushing.statistics?.[0]?.displayValue || '--'}</div><div class="stat-label">Rush Yds</div></div>
-                    <div class="stat-item"><div class="stat-value">${receiving.statistics?.[0]?.displayValue || '--'}</div><div class="stat-label">Rec Yds</div></div>
-                    <div class="stat-item"><div class="stat-value">${passing.statistics?.[2]?.displayValue || '--'}</div><div class="stat-label">TDs</div></div>
-                `;
-            } else if (appState.currentSport === 'nba') {
-                const points = stats.find(s => s.name === 'points')?.displayValue || '--';
-                const rebounds = stats.find(s => s.name === 'rebounds')?.displayValue || '--';
-                const assists = stats.find(s => s.name === 'assists')?.displayValue || '--';
-                const steals = stats.find(s => s.name === 'steals')?.displayValue || '--';
-
-                return `
-                    <div class="stat-item"><div class="stat-value">${points}</div><div class="stat-label">Points</div></div>
-                    <div class="stat-item"><div class="stat-value">${rebounds}</div><div class="stat-label">Rebounds</div></div>
-                    <div class="stat-item"><div class="stat-value">${assists}</div><div class="stat-label">Assists</div></div>
-                    <div class="stat-item"><div class="stat-value">${steals}</div><div class="stat-label">Steals</div></div>
-                `;
-            } else if (appState.currentSport === 'mlb') {
-                const hits = stats.find(s => s.name === 'hits')?.displayValue || '--';
-                const runs = stats.find(s => s.name === 'runs')?.displayValue || '--';
-                const rbi = stats.find(s => s.name === 'rbi')?.displayValue || '--';
-                const homeRuns = stats.find(s => s.name === 'homeRuns')?.displayValue || '--';
-
-                return `
-                    <div class="stat-item"><div class="stat-value">${hits}</div><div class="stat-label">Hits</div></div>
-                    <div class="stat-item"><div class="stat-value">${runs}</div><div class="stat-label">Runs</div></div>
-                    <div class="stat-item"><div class="stat-value">${rbi}</div><div class="stat-label">RBIs</div></div>
-                    <div class="stat-item"><div class="stat-value">${homeRuns}</div><div class="stat-label">HRs</div></div>
-                `;
-            }
-
-            return '';
-        }
-
         // ============ Event Listeners ============
-        document.getElementById('sportSelector').addEventListener('change', (e) => {
-            appState.currentSport = e.target.value;
-            appState.selectedPlayers = { left: null, right: null };
-            fetchAndDisplayGame();
-        });
-
         document.getElementById('refreshBtn').addEventListener('click', () => {
             fetchAndDisplayGame();
         });
@@ -982,7 +939,6 @@
             }
         });
 
-        // Stats selector buttons
         document.querySelectorAll('.stat-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const selector = e.target.closest('.stats-selector');
@@ -990,7 +946,6 @@
                 const type = e.target.dataset.type;
 
                 appState.statType[side] = type;
-
                 selector.querySelectorAll('.stat-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
 
@@ -1011,7 +966,7 @@
             if (appState.isAppStarted) {
                 fetchAndDisplayGame();
             }
-        }, 30000); // 30 seconds
+        }, 30000);
     </script>
 </body>
 </html>
