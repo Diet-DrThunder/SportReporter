@@ -13,7 +13,6 @@
     --muted:rgba(255,255,255,.58);
     --dim:rgba(255,255,255,.34);
     --line:rgba(255,255,255,.075);
-    --soft:rgba(255,255,255,.035);
     --team:#168dcc;
   }
 
@@ -56,7 +55,7 @@
   .side{
     min-width:0;
     height:100%;
-    padding:18px 22px 48px;
+    padding:18px 22px 44px;
     display:flex;
     flex-direction:column;
     background:linear-gradient(90deg,rgba(255,255,255,.035),rgba(255,255,255,.006));
@@ -191,10 +190,6 @@
     border-bottom:1px solid rgba(255,255,255,.045);
   }
 
-  .stat.no-bar{
-    grid-template-columns:68px minmax(0,1fr) 76px;
-  }
-
   .stat-label{
     color:var(--muted);
     font-weight:950;
@@ -238,32 +233,34 @@
     border-top:1px solid rgba(255,255,255,.045);
     color:var(--dim);
     font-size:.75rem;
-    min-height:26px;
+    min-height:30px;
   }
 
-  .control-dock{
-    position:absolute;
-    left:22px;
-    bottom:10px;
-    z-index:20;
+  .status-row{
     display:flex;
     align-items:center;
-    gap:14px;
-    height:28px;
-    color:var(--muted);
-    font-size:.78rem;
-    font-weight:900;
+    gap:10px;
+    white-space:nowrap;
+  }
+
+  .status-row > span:first-child{
+    margin-right:auto;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
 
   .delay{
     display:flex;
     align-items:center;
-    gap:7px;
+    gap:6px;
+    color:var(--muted);
+    font-size:.72rem;
+    font-weight:900;
   }
 
   .delay input{
-    width:76px;
-    height:14px;
+    width:58px;
+    height:12px;
     accent-color:#fff;
   }
 
@@ -278,8 +275,8 @@
     background:transparent;
     color:var(--muted);
     padding:0;
-    height:24px;
-    font-size:.78rem;
+    height:20px;
+    font-size:.72rem;
     font-weight:950;
     text-transform:uppercase;
     letter-spacing:.06em;
@@ -478,7 +475,17 @@
 
       <div class="section-label" id="leftLabel">Team Profile</div>
       <div class="stats" id="leftStats"></div>
-      <div class="status" id="leftStatus">Waiting for ESPN data.</div>
+
+      <div class="status status-row">
+        <span id="leftStatus">Waiting for ESPN data.</span>
+        <span class="delay">
+          <span>Delay</span>
+          <input id="delaySlider" type="range" min="0" max="90" value="0">
+          <strong id="delayLabel">0s</strong>
+        </span>
+        <button class="text-btn" id="mediaBtn">Media</button>
+        <button class="text-btn" id="gamesBtn">Games</button>
+      </div>
     </aside>
 
     <main class="center" id="center">
@@ -510,16 +517,6 @@
       <div class="stats" id="rightStats"></div>
       <div class="status" id="rightStatus">Waiting for ESPN data.</div>
     </aside>
-
-    <div class="control-dock">
-      <div class="delay" title="Delay stat updates to sync with your stream">
-        <span>Delay</span>
-        <input id="delaySlider" type="range" min="0" max="60" value="0">
-        <strong id="delayLabel">0s</strong>
-      </div>
-      <button class="text-btn" id="mediaBtn">Media</button>
-      <button class="text-btn" id="gamesBtn">Games</button>
-    </div>
   </div>
 </div>
 
@@ -556,7 +553,7 @@
       </select>
 
       <div class="note">
-        Main screen never shows score, time, quarter, or points. Percentage and made/attempted stats use bars.
+        No score, time, quarter, or points are shown. Percentage and made/attempted stats use bars. Delay buffers stat display for stream sync.
       </div>
     </div>
   </div>
@@ -608,7 +605,7 @@ let app = {
   manualMode:null,
   statDelay:0,
   refreshTimer:null,
-  delayTimer:null,
+  pendingRenders:[],
   lastQuery:'upcoming',
   teamCache:new Map()
 };
@@ -877,20 +874,43 @@ async function applyGame(game, forceMode){
   const mode = forceMode || app.manualMode || (app.selectedMode === 'auto' ? autoMode : app.selectedMode);
   setModeButtons(mode);
 
-  clearTimeout(app.delayTimer);
-  app.delayTimer = setTimeout(async () => {
-    if(mode === 'live'){
-      renderStats('left', liveRows(away), teamColor(away), 'live');
-      renderStats('right', liveRows(home), teamColor(home), 'live');
-    }else{
-      const [awayProfile, homeProfile] = await Promise.all([getSeasonProfile(away), getSeasonProfile(home)]);
-      renderStats('left', seasonRows(awayProfile), teamColor(away), 'season');
-      renderStats('right', seasonRows(homeProfile), teamColor(home), 'season');
-    }
+  let snapshot;
 
-    el.leftStatus.textContent = app.gameId === 'test' ? 'Test Mode' : 'ESPN data loaded';
-    el.rightStatus.textContent = app.gameId === 'test' ? 'Test Mode' : 'ESPN data loaded';
+  if(mode === 'live'){
+    snapshot = {
+      mode,
+      leftRows:liveRows(away),
+      rightRows:liveRows(home),
+      leftColor:teamColor(away),
+      rightColor:teamColor(home),
+      statusText:app.gameId === 'test' ? 'Test Mode' : 'ESPN data loaded'
+    };
+  }else{
+    const [awayProfile, homeProfile] = await Promise.all([getSeasonProfile(away), getSeasonProfile(home)]);
+    snapshot = {
+      mode,
+      leftRows:seasonRows(awayProfile),
+      rightRows:seasonRows(homeProfile),
+      leftColor:teamColor(away),
+      rightColor:teamColor(home),
+      statusText:app.gameId === 'test' ? 'Test Mode' : 'ESPN data loaded'
+    };
+  }
+
+  scheduleStatRender(snapshot);
+}
+
+function scheduleStatRender(snapshot){
+  const timer = setTimeout(() => {
+    renderStats('left', snapshot.leftRows, snapshot.leftColor, snapshot.mode);
+    renderStats('right', snapshot.rightRows, snapshot.rightColor, snapshot.mode);
+    el.leftStatus.textContent = snapshot.statusText;
+    el.rightStatus.textContent = snapshot.statusText;
+
+    app.pendingRenders = app.pendingRenders.filter(t => t !== timer);
   }, app.statDelay * 1000);
+
+  app.pendingRenders.push(timer);
 }
 
 async function loadGames(kind='upcoming'){
