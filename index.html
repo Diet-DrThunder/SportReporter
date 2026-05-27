@@ -12,205 +12,287 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
             background: #000;
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             overflow: hidden;
         }
 
-        .container-main {
-            display: flex;
-            height: 100vh;
+        .projector-container {
             width: 100vw;
+            height: 100vh;
+            background: #000;
+            display: flex;
             flex-direction: column;
         }
 
-        .content-area {
-            display: flex;
+        .projector-content {
             flex: 1;
-            gap: 0;
-            overflow: hidden;
+            display: flex;
+            width: 200vw;
+            margin-left: -50vw;
         }
 
-        .video-placeholder {
-            width: 80%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+        .black-bars {
+            background: #000;
+            height: 60px;
+        }
+
+        .main-content {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        .team-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
             position: relative;
-            border-right: 2px solid #333;
+            border-right: 3px solid #333;
         }
 
-        .video-content {
-            text-align: center;
-            z-index: 10;
-        }
-
-        .video-content h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .video-content p {
-            color: #666;
-            font-size: 1.2rem;
-        }
-
-        .stats-sidebar {
-            width: 20%;
-            background: #0a0a0a;
-            padding: 1.5rem;
-            overflow-y: auto;
-            border-left: 2px solid #333;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .stats-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .sport-selector {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 0.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            cursor: pointer;
-        }
-
-        .sport-selector:hover {
-            background: #2a2a2a;
-        }
-
-        .game-card {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid #333;
-        }
-
-        .team-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            font-size: 0.9rem;
-        }
-
-        .team-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex: 1;
-        }
-
-        .team-logo {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-        }
-
-        .team-name {
-            font-weight: 600;
-        }
-
-        .team-score {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #4ade80;
-            min-width: 40px;
-            text-align: right;
-        }
-
-        .game-time {
-            font-size: 0.8rem;
-            color: #888;
-            padding: 0.5rem 0;
-            text-align: center;
-        }
-
-        .game-status {
-            font-size: 0.75rem;
-            color: #f97316;
-            font-weight: 600;
-            padding: 0.25rem 0.5rem;
-            background: rgba(249, 115, 22, 0.1);
-            border-radius: 0.25rem;
-            display: inline-block;
-            margin-top: 0.5rem;
-        }
-
-        .game-details {
-            font-size: 0.75rem;
-            color: #999;
-            margin-top: 0.5rem;
-            line-height: 1.4;
-        }
-
-        .score-ticker {
-            background: #1a1a1a;
-            border-top: 2px solid #333;
-            padding: 1rem;
-            display: flex;
-            gap: 2rem;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .ticker-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-shrink: 0;
-            padding: 0 1rem;
-            border-right: 1px solid #333;
-        }
-
-        .ticker-item:last-child {
+        .team-section:last-child {
             border-right: none;
         }
 
-        .ticker-teams {
+        .team-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .team-logo-large {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .team-name {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .team-score {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .team-record {
+            font-size: 1rem;
+            color: #999;
+        }
+
+        .stats-selector {
             display: flex;
             gap: 0.5rem;
-            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        .ticker-team {
+        .stat-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .stat-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
             font-weight: 600;
-            font-size: 0.85rem;
         }
 
-        .ticker-score {
+        .stats-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .player-stats {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .player-stats:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .player-stats.selected {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .player-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .player-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            flex-shrink: 0;
+            color: #666;
+        }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-name {
             font-size: 1.2rem;
             font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .player-position {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+
+        .player-number {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
             color: #4ade80;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.25rem;
+        }
+
+        .team-stats {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .team-stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .team-stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-name {
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        .stat-number {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        .video-section {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 300px;
+            height: 200px;
+            background: #000;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        #videoFeed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            display: flex;
+            gap: 0.25rem;
+            z-index: 10;
+        }
+
+        .video-btn {
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: background 0.2s;
+        }
+
+        .video-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
         }
 
         .start-overlay {
@@ -267,33 +349,46 @@
             box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
         }
 
-        .start-button:active {
-            transform: scale(0.95);
-        }
-
         .control-buttons {
-            position: absolute;
+            position: fixed;
             top: 1rem;
-            right: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             gap: 0.5rem;
             z-index: 100;
         }
 
         .control-btn {
-            padding: 0.5rem 1rem;
-            background: #1a1a1a;
-            border: 1px solid #333;
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: #fff;
             border-radius: 0.375rem;
             cursor: pointer;
             font-size: 0.875rem;
             transition: background 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .control-btn:hover {
-            background: #2a2a2a;
-            border-color: #555;
+            background: rgba(0, 0, 0, 0.95);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .sport-selector {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .sport-selector:hover {
+            background: rgba(0, 0, 0, 0.95);
         }
 
         .touchdown-animation {
@@ -330,11 +425,21 @@
             }
         }
 
-        .loading {
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .loading-spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #333;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             border-top-color: #4ade80;
             animation: spin 0.8s linear infinite;
@@ -344,32 +449,21 @@
             to { transform: rotate(360deg); }
         }
 
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            margin: 0.5rem 0;
-        }
-
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0a;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
@@ -380,7 +474,65 @@
         <button class="start-button" id="startButton">Start App</button>
     </div>
 
-    <div class="container-main" id="mainApp" style="display: none;">
+    <div class="projector-container" id="mainApp" style="display: none;">
+        <div class="black-bars"></div>
+        
+        <div class="projector-content">
+            <div class="main-content">
+                <!-- LEFT TEAM -->
+                <div class="team-section" id="teamSectionLeft">
+                    <div style="position: relative;">
+                        <div class="team-header">
+                            <div class="team-logo-large" id="teamLogoLeft">🏈</div>
+                            <div class="team-name" id="teamNameLeft">Away Team</div>
+                            <div class="team-score" id="teamScoreLeft">0</div>
+                            <div class="team-record" id="teamRecordLeft">0-0</div>
+                            <div class="team-record" id="gameStatusLeft" style="margin-top: 0.5rem; font-size: 0.9rem;">--</div>
+                        </div>
+
+                        <div class="video-section" id="videoSection">
+                            <video id="videoFeed" playsinline></video>
+                            <div class="video-controls">
+                                <button class="video-btn" id="toggleCameraBtn">📷</button>
+                                <button class="video-btn" id="toggleFullscreenVideoBtn">⛶</button>
+                            </div>
+                        </div>
+
+                        <div class="stats-selector" id="statsSelectorLeft">
+                            <button class="stat-btn active" data-type="team">Team Stats</button>
+                            <button class="stat-btn" data-type="players">Players</button>
+                        </div>
+                    </div>
+
+                    <div class="stats-content" id="statsContentLeft">
+                        <div class="error-message">Loading...</div>
+                    </div>
+                </div>
+
+                <!-- RIGHT TEAM -->
+                <div class="team-section" id="teamSectionRight">
+                    <div class="team-header">
+                        <div class="team-logo-large" id="teamLogoRight">🏈</div>
+                        <div class="team-name" id="teamNameRight">Home Team</div>
+                        <div class="team-score" id="teamScoreRight">0</div>
+                        <div class="team-record" id="teamRecordRight">0-0</div>
+                        <div class="team-record" id="gameStatusRight" style="margin-top: 0.5rem; font-size: 0.9rem;">--</div>
+                    </div>
+
+                    <div class="stats-selector" id="statsSelectorRight">
+                        <button class="stat-btn active" data-type="team">Team Stats</button>
+                        <button class="stat-btn" data-type="players">Players</button>
+                    </div>
+
+                    <div class="stats-content" id="statsContentRight">
+                        <div class="error-message">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="black-bars"></div>
+
         <div class="control-buttons">
             <select id="sportSelector" class="sport-selector">
                 <option value="nfl">🏈 NFL</option>
@@ -389,30 +541,6 @@
             </select>
             <button class="control-btn" id="fullscreenBtn">Fullscreen</button>
             <button class="control-btn" id="refreshBtn">Refresh</button>
-        </div>
-
-        <div class="content-area">
-            <div class="video-placeholder">
-                <div class="video-content">
-                    <h2>Broadcast Area</h2>
-                    <p>Video Feed Goes Here</p>
-                    <p style="font-size: 0.9rem; color: #666; margin-top: 2rem;">Press T for Touchdown, D for Defense</p>
-                </div>
-            </div>
-
-            <div class="stats-sidebar" id="statsSidebar">
-                <div class="stats-header">
-                    <h3 style="font-size: 1.1rem; font-weight: 600;">Live Games</h3>
-                    <div class="loading" id="loadingSpinner"></div>
-                </div>
-                <div id="gamesContainer">
-                    <p style="color: #666; text-align: center; padding: 2rem 0;">Loading games...</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="score-ticker" id="scoreTicker">
-            <p style="color: #666; width: 100%; text-align: center;">Loading scores...</p>
         </div>
     </div>
 
@@ -429,10 +557,98 @@
         // ============ State Management ============
         let appState = {
             currentSport: 'nfl',
-            games: [],
+            currentGame: null,
             audioContext: null,
-            isAppStarted: false
+            isAppStarted: false,
+            selectedPlayers: { left: null, right: null },
+            statType: { left: 'team', right: 'team' },
+            videoStream: null,
+            teamColors: {
+                left: '#1a1a2e',
+                right: '#1a1a2e'
+            }
         };
+
+        // ============ Utility Functions ============
+        function getTeamColor(teamName) {
+            const colors = {
+                'Kansas City Chiefs': '#E31828',
+                'San Francisco 49ers': '#AA0000',
+                'Philadelphia Eagles': '#003831',
+                'Dallas Cowboys': '#003594',
+                'Buffalo Bills': '#00338D',
+                'Green Bay Packers': '#203731',
+                'New England Patriots': '#002244',
+                'Pittsburgh Steelers': '#27251F',
+                'Los Angeles Rams': '#003594',
+                'Tampa Bay Buccaneers': '#FF6B35',
+                'Miami Dolphins': '#008E97',
+                'New York Giants': '#0B3A7D',
+                'Chicago Bears': '#0B162A',
+                'New Orleans Saints': '#D3BC8D',
+                'Las Vegas Raiders': '#000000',
+                'Atlanta Falcons': '#A71930',
+                'Baltimore Ravens': '#241773',
+                'New York Jets': '#125740',
+                'Denver Broncos': '#FB4F14',
+                'Tennessee Titans': '#0C2C56',
+                'Minnesota Vikings': '#4F2683',
+                'Washington Football Team': '#5A1D34',
+                'Arizona Cardinals': '#97233F',
+                'Seattle Seahawks': '#0C2C56',
+                'Jacksonville Jaguars': '#006687',
+                'Houston Texans': '#03202F',
+                'Los Angeles Chargers': '#0080B4',
+                'Cincinnati Bengals': '#FB4F14',
+                'Indianapolis Colts': '#002C5F',
+                'Detroit Lions': '#0076B6',
+                'Carolina Panthers': '#0085CA',
+            };
+            return colors[teamName] || '#1a1a2e';
+        }
+
+        function rgbToRgba(hex, alpha = 0.1) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // ============ Video Setup ============
+        async function setupVideo() {
+            try {
+                const videoFeed = document.getElementById('videoFeed');
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' },
+                    audio: false 
+                });
+                appState.videoStream = stream;
+                videoFeed.srcObject = stream;
+                videoFeed.play();
+            } catch (error) {
+                console.warn('Camera access denied or unavailable:', error);
+                document.getElementById('videoSection').style.display = 'none';
+            }
+        }
+
+        document.getElementById('toggleCameraBtn')?.addEventListener('click', async () => {
+            if (appState.videoStream) {
+                appState.videoStream.getTracks().forEach(track => track.stop());
+                appState.videoStream = null;
+                document.getElementById('videoFeed').srcObject = null;
+            } else {
+                await setupVideo();
+            }
+        });
+
+        document.getElementById('toggleFullscreenVideoBtn')?.addEventListener('click', () => {
+            const videoSection = document.getElementById('videoSection');
+            if (!document.fullscreenElement) {
+                videoSection.requestFullscreen().catch(err => console.warn('Fullscreen failed:', err));
+            } else {
+                document.exitFullscreen();
+            }
+        });
 
         // ============ Audio Setup ============
         function initAudioContext() {
@@ -449,10 +665,7 @@
                 initAudioContext();
                 const soundPath = `sounds/${soundFile}`;
                 const response = await fetch(soundPath);
-                if (!response.ok) {
-                    console.warn(`Sound file not found: ${soundPath}`);
-                    return;
-                }
+                if (!response.ok) return;
                 const audioBuffer = await response.arrayBuffer();
                 const buffer = await appState.audioContext.decodeAudioData(audioBuffer);
                 const source = appState.audioContext.createBufferSource();
@@ -464,7 +677,6 @@
             }
         }
 
-        // ============ Touchdown Animation ============
         function triggerTouchdown() {
             playSound('touchdown.mp3');
             const animation = document.createElement('div');
@@ -490,16 +702,17 @@
         });
 
         // ============ Start App ============
-        document.getElementById('startButton').addEventListener('click', () => {
+        document.getElementById('startButton').addEventListener('click', async () => {
             appState.isAppStarted = true;
             initAudioContext();
             document.getElementById('startOverlay').classList.add('hidden');
             document.getElementById('mainApp').style.display = 'flex';
-            fetchAndDisplayGames();
+            await setupVideo();
+            fetchAndDisplayGame();
         });
 
         // ============ API Fetching ============
-        async function fetchAndDisplayGames() {
+        async function fetchAndDisplayGame() {
             try {
                 const url = API_ENDPOINTS[appState.currentSport];
                 const proxiedUrl = CORS_PROXY + encodeURIComponent(url);
@@ -508,110 +721,254 @@
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
                 const data = await response.json();
-                appState.games = data.events || [];
-                renderGames();
-                renderTicker();
+                const game = data.events?.[0];
+                
+                if (!game) {
+                    showError('No games found');
+                    return;
+                }
+
+                appState.currentGame = game;
+                renderGameData();
             } catch (error) {
-                console.error('Error fetching games:', error);
-                document.getElementById('gamesContainer').innerHTML = `
-                    <div class="error-message">
-                        Failed to load games. Retrying in 30 seconds...
-                    </div>
-                `;
+                console.error('Error fetching game:', error);
+                showError('Failed to load game data');
             }
+        }
+
+        function showError(message) {
+            document.getElementById('statsContentLeft').innerHTML = `<div class="error-message">${message}</div>`;
+            document.getElementById('statsContentRight').innerHTML = `<div class="error-message">${message}</div>`;
         }
 
         // ============ Rendering ============
-        function renderGames() {
-            const container = document.getElementById('gamesContainer');
-            
-            if (!appState.games || appState.games.length === 0) {
-                container.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem 0;">No games found</p>';
+        function renderGameData() {
+            const game = appState.currentGame;
+            if (!game) return;
+
+            const competitors = game.competitions?.[0]?.competitors || [];
+            const away = competitors.find(c => c.homeAway === 'away');
+            const home = competitors.find(c => c.homeAway === 'home');
+
+            if (!away || !home) {
+                showError('Team data unavailable');
                 return;
             }
 
-            container.innerHTML = appState.games.map(game => {
-                const competitors = game.competitions?.[0]?.competitors || [];
-                const home = competitors.find(c => c.homeAway === 'home');
-                const away = competitors.find(c => c.homeAway === 'away');
-                const status = game.competitions?.[0]?.status || {};
-                const clock = game.competitions?.[0]?.clock || 0;
-                const situation = game.competitions?.[0]?.situation;
+            // Update team info
+            updateTeamSection('left', away, game);
+            updateTeamSection('right', home, game);
 
-                return `
-                    <div class="game-card">
-                        <div class="game-header">
-                            <span class="game-status">${status.type?.description || 'Scheduled'}</span>
-                        </div>
-                        
-                        <div class="team-row">
-                            <div class="team-info">
-                                <div class="team-logo">${away?.team?.abbreviation || '?'}</div>
-                                <span class="team-name">${away?.team?.displayName || 'Away'}</span>
-                            </div>
-                            <div class="team-score">${away?.score || '0'}</div>
-                        </div>
+            // Set team colors
+            appState.teamColors.left = getTeamColor(away.team?.displayName || '');
+            appState.teamColors.right = getTeamColor(home.team?.displayName || '');
 
-                        <div class="team-row" style="border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-                            <div class="team-info">
-                                <div class="team-logo">${home?.team?.abbreviation || '?'}</div>
-                                <span class="team-name">${home?.team?.displayName || 'Home'}</span>
-                            </div>
-                            <div class="team-score">${home?.score || '0'}</div>
-                        </div>
+            applyTeamColors();
 
-                        <div class="game-time">
-                            ${status.displayClock || 'TBD'}
-                        </div>
-
-                        <div class="game-details">
-                            ${situation ? `
-                                <div>Down: ${situation.down || '-'} &nbsp;|&nbsp; Distance: ${situation.yardLine || '-'}</div>
-                            ` : ''}
-                            <div style="margin-top: 0.3rem; color: #666;">${game.competitions?.[0]?.venue?.fullName || 'TBD'}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            // Render initial stats
+            renderStats('left', away);
+            renderStats('right', home);
         }
 
-        function renderTicker() {
-            const ticker = document.getElementById('scoreTicker');
+        function updateTeamSection(side, teamData, game) {
+            const sectionId = `teamSection${side === 'left' ? 'Left' : 'Right'}`;
+            const section = document.getElementById(sectionId);
+            const logoId = `teamLogo${side === 'left' ? 'Left' : 'Right'}`;
+            const nameId = `teamName${side === 'left' ? 'Left' : 'Right'}`;
+            const scoreId = `teamScore${side === 'left' ? 'Left' : 'Right'}`;
+            const recordId = `teamRecord${side === 'left' ? 'Left' : 'Right'}`;
+            const statusId = `gameStatus${side === 'left' ? 'Left' : 'Right'}`;
 
-            if (!appState.games || appState.games.length === 0) {
-                ticker.innerHTML = '<p style="color: #666; width: 100%; text-align: center;">No games available</p>';
+            const abbr = teamData.team?.abbreviation || '?';
+            const name = teamData.team?.displayName || 'Team';
+            const score = teamData.score || 0;
+            const record = teamData.records?.[0]?.summary || '0-0';
+            const status = game.competitions?.[0]?.status?.displayClock || '--';
+
+            document.getElementById(logoId).textContent = abbr;
+            document.getElementById(nameId).textContent = name;
+            document.getElementById(scoreId).textContent = score;
+            document.getElementById(recordId).textContent = record;
+            document.getElementById(statusId).textContent = status;
+        }
+
+        function applyTeamColors() {
+            const leftSection = document.getElementById('teamSectionLeft');
+            const rightSection = document.getElementById('teamSectionRight');
+
+            leftSection.style.background = rgbToRgba(appState.teamColors.left, 0.08);
+            rightSection.style.background = rgbToRgba(appState.teamColors.right, 0.08);
+        }
+
+        function renderStats(side, teamData) {
+            const statType = appState.statType[side];
+            const contentId = `statsContent${side === 'left' ? 'Left' : 'Right'}`;
+
+            if (statType === 'team') {
+                renderTeamStats(side, teamData);
+            } else {
+                renderPlayerStats(side, teamData);
+            }
+        }
+
+        function renderTeamStats(side, teamData) {
+            const stats = teamData.statistics || [];
+            const contentId = `statsContent${side === 'left' ? 'Left' : 'Right'}`;
+
+            let statsHtml = '<div class="team-stats">';
+
+            if (appState.currentSport === 'nfl') {
+                const passingYards = stats.find(s => s.name === 'passingYards')?.displayValue || '--';
+                const rushingYards = stats.find(s => s.name === 'rushingYards')?.displayValue || '--';
+                const turnovers = stats.find(s => s.name === 'turnovers')?.displayValue || '--';
+                const tackles = stats.find(s => s.name === 'tackles')?.displayValue || '--';
+                const interceptions = stats.find(s => s.name === 'interceptions')?.displayValue || '--';
+                const sacks = stats.find(s => s.name === 'sacks')?.displayValue || '--';
+
+                statsHtml += `
+                    <div class="team-stat-row"><span class="stat-name">Passing Yards</span><span class="stat-number">${passingYards}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Rushing Yards</span><span class="stat-number">${rushingYards}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Turnovers</span><span class="stat-number">${turnovers}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Tackles</span><span class="stat-number">${tackles}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Interceptions</span><span class="stat-number">${interceptions}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Sacks</span><span class="stat-number">${sacks}</span></div>
+                `;
+            } else if (appState.currentSport === 'nba') {
+                const points = stats.find(s => s.name === 'points')?.displayValue || '--';
+                const rebounds = stats.find(s => s.name === 'rebounds')?.displayValue || '--';
+                const assists = stats.find(s => s.name === 'assists')?.displayValue || '--';
+                const steals = stats.find(s => s.name === 'steals')?.displayValue || '--';
+                const blocks = stats.find(s => s.name === 'blocks')?.displayValue || '--';
+                const turnovers = stats.find(s => s.name === 'turnovers')?.displayValue || '--';
+
+                statsHtml += `
+                    <div class="team-stat-row"><span class="stat-name">Points</span><span class="stat-number">${points}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Rebounds</span><span class="stat-number">${rebounds}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Assists</span><span class="stat-number">${assists}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Steals</span><span class="stat-number">${steals}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Blocks</span><span class="stat-number">${blocks}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Turnovers</span><span class="stat-number">${turnovers}</span></div>
+                `;
+            } else if (appState.currentSport === 'mlb') {
+                const hits = stats.find(s => s.name === 'hits')?.displayValue || '--';
+                const runs = stats.find(s => s.name === 'runs')?.displayValue || '--';
+                const rbi = stats.find(s => s.name === 'rbi')?.displayValue || '--';
+                const strikeouts = stats.find(s => s.name === 'strikeouts')?.displayValue || '--';
+                const errors = stats.find(s => s.name === 'errors')?.displayValue || '--';
+
+                statsHtml += `
+                    <div class="team-stat-row"><span class="stat-name">Hits</span><span class="stat-number">${hits}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Runs</span><span class="stat-number">${runs}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">RBIs</span><span class="stat-number">${rbi}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Strikeouts</span><span class="stat-number">${strikeouts}</span></div>
+                    <div class="team-stat-row"><span class="stat-name">Errors</span><span class="stat-number">${errors}</span></div>
+                `;
+            }
+
+            statsHtml += '</div>';
+            document.getElementById(contentId).innerHTML = statsHtml;
+        }
+
+        function renderPlayerStats(side, teamData) {
+            const contentId = `statsContent${side === 'left' ? 'Left' : 'Right'}`;
+            const players = teamData.players || [];
+
+            if (players.length === 0) {
+                document.getElementById(contentId).innerHTML = '<div class="error-message">No player data available</div>';
                 return;
             }
 
-            ticker.innerHTML = appState.games.map(game => {
-                const competitors = game.competitions?.[0]?.competitors || [];
-                const home = competitors.find(c => c.homeAway === 'home');
-                const away = competitors.find(c => c.homeAway === 'away');
-                const status = game.competitions?.[0]?.status || {};
+            let playersHtml = '';
+            players.slice(0, 10).forEach(playerData => {
+                const player = playerData.person || playerData;
+                const selected = appState.selectedPlayers[side]?.id === player.id ? 'selected' : '';
 
-                return `
-                    <div class="ticker-item">
-                        <div class="ticker-teams">
-                            <span class="ticker-team">${away?.team?.abbreviation || 'Away'}</span>
-                            <span class="ticker-score">${away?.score || '0'}</span>
-                            <span style="color: #666;">@</span>
-                            <span class="ticker-team">${home?.team?.abbreviation || 'Home'}</span>
-                            <span class="ticker-score">${home?.score || '0'}</span>
+                const statsGrid = getPlayerStatsGrid(playerData);
+
+                playersHtml += `
+                    <div class="player-stats ${selected}" data-player-id="${player.id}" data-side="${side}">
+                        <div class="player-header">
+                            <div class="player-photo">${player.displayName?.charAt(0) || '👤'}</div>
+                            <div class="player-info">
+                                <div class="player-name">${player.displayName || 'Player'}</div>
+                                <div class="player-position">${playerData.position?.displayName || 'Position TBD'}</div>
+                                <div class="player-number">#${playerData.jerseyNumber || '--'}</div>
+                            </div>
                         </div>
-                        <div style="font-size: 0.75rem; color: #888; margin-left: 0.5rem;">${status.displayClock || ''}</div>
+                        <div class="stats-grid">
+                            ${statsGrid}
+                        </div>
                     </div>
                 `;
-            }).join('');
+            });
+
+            document.getElementById(contentId).innerHTML = playersHtml;
+
+            // Add click handlers
+            document.querySelectorAll(`[data-side="${side}"]`).forEach(el => {
+                el.addEventListener('click', () => {
+                    document.querySelectorAll(`[data-side="${side}"].selected`).forEach(s => s.classList.remove('selected'));
+                    el.classList.add('selected');
+                    appState.selectedPlayers[side] = {
+                        id: el.dataset.playerId,
+                        name: el.querySelector('.player-name').textContent
+                    };
+                });
+            });
+        }
+
+        function getPlayerStatsGrid(playerData) {
+            const stats = playerData.stats || [];
+
+            if (appState.currentSport === 'nfl') {
+                const passing = stats.find(s => s.name === 'passing') || {};
+                const rushing = stats.find(s => s.name === 'rushing') || {};
+                const receiving = stats.find(s => s.name === 'receiving') || {};
+
+                return `
+                    <div class="stat-item"><div class="stat-value">${passing.statistics?.[0]?.displayValue || '--'}</div><div class="stat-label">Pass Yds</div></div>
+                    <div class="stat-item"><div class="stat-value">${rushing.statistics?.[0]?.displayValue || '--'}</div><div class="stat-label">Rush Yds</div></div>
+                    <div class="stat-item"><div class="stat-value">${receiving.statistics?.[0]?.displayValue || '--'}</div><div class="stat-label">Rec Yds</div></div>
+                    <div class="stat-item"><div class="stat-value">${passing.statistics?.[2]?.displayValue || '--'}</div><div class="stat-label">TDs</div></div>
+                `;
+            } else if (appState.currentSport === 'nba') {
+                const points = stats.find(s => s.name === 'points')?.displayValue || '--';
+                const rebounds = stats.find(s => s.name === 'rebounds')?.displayValue || '--';
+                const assists = stats.find(s => s.name === 'assists')?.displayValue || '--';
+                const steals = stats.find(s => s.name === 'steals')?.displayValue || '--';
+
+                return `
+                    <div class="stat-item"><div class="stat-value">${points}</div><div class="stat-label">Points</div></div>
+                    <div class="stat-item"><div class="stat-value">${rebounds}</div><div class="stat-label">Rebounds</div></div>
+                    <div class="stat-item"><div class="stat-value">${assists}</div><div class="stat-label">Assists</div></div>
+                    <div class="stat-item"><div class="stat-value">${steals}</div><div class="stat-label">Steals</div></div>
+                `;
+            } else if (appState.currentSport === 'mlb') {
+                const hits = stats.find(s => s.name === 'hits')?.displayValue || '--';
+                const runs = stats.find(s => s.name === 'runs')?.displayValue || '--';
+                const rbi = stats.find(s => s.name === 'rbi')?.displayValue || '--';
+                const homeRuns = stats.find(s => s.name === 'homeRuns')?.displayValue || '--';
+
+                return `
+                    <div class="stat-item"><div class="stat-value">${hits}</div><div class="stat-label">Hits</div></div>
+                    <div class="stat-item"><div class="stat-value">${runs}</div><div class="stat-label">Runs</div></div>
+                    <div class="stat-item"><div class="stat-value">${rbi}</div><div class="stat-label">RBIs</div></div>
+                    <div class="stat-item"><div class="stat-value">${homeRuns}</div><div class="stat-label">HRs</div></div>
+                `;
+            }
+
+            return '';
         }
 
         // ============ Event Listeners ============
         document.getElementById('sportSelector').addEventListener('change', (e) => {
             appState.currentSport = e.target.value;
-            fetchAndDisplayGames();
+            appState.selectedPlayers = { left: null, right: null };
+            fetchAndDisplayGame();
         });
 
         document.getElementById('refreshBtn').addEventListener('click', () => {
-            fetchAndDisplayGames();
+            fetchAndDisplayGame();
         });
 
         document.getElementById('fullscreenBtn').addEventListener('click', () => {
@@ -625,10 +982,34 @@
             }
         });
 
+        // Stats selector buttons
+        document.querySelectorAll('.stat-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const selector = e.target.closest('.stats-selector');
+                const side = selector.id.includes('Left') ? 'left' : 'right';
+                const type = e.target.dataset.type;
+
+                appState.statType[side] = type;
+
+                selector.querySelectorAll('.stat-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+
+                const game = appState.currentGame;
+                if (!game) return;
+
+                const competitors = game.competitions?.[0]?.competitors || [];
+                const teamData = side === 'left' ? competitors.find(c => c.homeAway === 'away') : competitors.find(c => c.homeAway === 'home');
+
+                if (teamData) {
+                    renderStats(side, teamData);
+                }
+            });
+        });
+
         // ============ Auto-Refresh ============
         setInterval(() => {
             if (appState.isAppStarted) {
-                fetchAndDisplayGames();
+                fetchAndDisplayGame();
             }
         }, 30000); // 30 seconds
     </script>
