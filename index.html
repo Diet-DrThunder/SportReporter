@@ -35,12 +35,42 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 100;
         }
 
         .header-title {
             font-size: 1.8rem;
             font-weight: bold;
             letter-spacing: 2px;
+        }
+
+        .game-selector {
+            flex: 1;
+            margin: 0 2rem;
+        }
+
+        .game-selector select {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.7rem 1rem;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .game-selector select:hover {
+            border-color: #555;
+            background: #252525;
+        }
+
+        .game-selector select:focus {
+            outline: none;
+            border-color: #4ade80;
+            background: #252525;
         }
 
         .controls {
@@ -66,96 +96,195 @@
             border-color: #555;
         }
 
-        .content {
-            display: flex;
+        .main-content {
             flex: 1;
+            display: flex;
+            overflow: hidden;
+            gap: 0;
+        }
+
+        /* Theatre Mode Layout */
+        .stats-panel {
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            background: #0f0f0f;
+            border-right: 2px solid #222;
             overflow: hidden;
         }
 
-        .team-side {
+        .stats-panel.right {
+            border-right: none;
+            border-left: 2px solid #222;
+        }
+
+        .center-section {
             flex: 1;
             display: flex;
             flex-direction: column;
-            border-right: 2px solid #222;
-            overflow-y: auto;
+            background: #000;
             position: relative;
         }
 
-        .team-side:last-child {
-            border-right: none;
+        .broadcast-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            position: relative;
+            overflow: hidden;
         }
 
-        .team-side.left {
-            border-right: 3px solid #C1272D;
+        .broadcast-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .team-side.right {
-            border-left: 3px solid #0C2340;
+        .broadcast-placeholder svg {
+            width: 120px;
+            height: 120px;
+            opacity: 0.3;
         }
 
-        .team-header {
-            padding: 2rem 2rem 1.5rem;
-            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
-            border-bottom: 1px solid #222;
+        .broadcast-placeholder p {
+            color: #666;
+            font-size: 1.1rem;
         }
 
-        .team-info {
+        .game-info-bar {
+            background: #1a1a1a;
+            border-top: 1px solid #222;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .team-scoreline {
             display: flex;
             align-items: center;
             gap: 2rem;
+            flex: 1;
+        }
+
+        .team-score {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .team-name {
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-large {
+            font-size: 2.5rem;
+            font-weight: bold;
+            min-width: 80px;
+        }
+
+        .game-time-center {
+            text-align: center;
+            flex: 1;
+        }
+
+        .game-time-center .status {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-time-center .time {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        .panel-header {
+            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+            padding: 1.5rem;
+            border-bottom: 1px solid #222;
+            flex-shrink: 0;
+        }
+
+        .panel-team-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             margin-bottom: 1rem;
         }
 
-        .team-logo {
-            width: 100px;
-            height: 100px;
+        .panel-team-logo {
+            width: 60px;
+            height: 60px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 2rem;
             flex-shrink: 0;
         }
 
-        .team-details h2 {
-            font-size: 2.2rem;
+        .panel-team-name {
             font-weight: bold;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
         }
 
-        .team-details p {
-            font-size: 0.9rem;
-            color: #999;
-            margin: 0.3rem 0;
-        }
-
-        .score-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1.5rem;
-            padding: 1rem 0;
-            border-top: 1px solid #222;
-        }
-
-        .score {
-            font-size: 3.5rem;
-            font-weight: bold;
-        }
-
-        .game-time {
-            font-size: 0.9rem;
+        .panel-team-record {
+            font-size: 0.85rem;
             color: #888;
-            text-align: center;
-            flex: 1;
         }
 
-        .stats-container {
-            padding: 2rem;
-            overflow-y: auto;
+        .view-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .view-btn {
             flex: 1;
+            padding: 0.6rem;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            border-radius: 3px;
+        }
+
+        .view-btn:hover {
+            background: #2a2a2a;
+            border-color: #555;
+        }
+
+        .view-btn.active {
+            background: #333;
+            border-color: #555;
+            color: #4ade80;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
         }
 
         .stat-row {
@@ -164,7 +293,7 @@
             align-items: center;
             padding: 0.8rem 0;
             border-bottom: 1px solid #1a1a1a;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         .stat-row:last-child {
@@ -176,28 +305,23 @@
             font-weight: 600;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
 
         .stat-value {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             color: #4ade80;
-        }
-
-        .player-section {
-            padding: 2rem;
-            overflow-y: auto;
-            flex: 1;
         }
 
         .player-card {
             background: #1a1a1a;
             padding: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             border-left: 3px solid #333;
             cursor: pointer;
             transition: all 0.2s;
+            border-radius: 3px;
         }
 
         .player-card:hover {
@@ -205,78 +329,63 @@
             border-left-color: #555;
         }
 
-        .player-card.selected {
-            background: #252525;
-            border-left-color: #4ade80;
-        }
-
         .player-name {
             font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
         }
 
         .player-info {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #888;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.6rem;
         }
 
         .player-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .player-stat {
             background: rgba(74, 222, 128, 0.1);
-            padding: 0.5rem;
-            border-radius: 4px;
+            padding: 0.4rem;
+            border-radius: 3px;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
 
         .player-stat-value {
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #4ade80;
         }
 
         .player-stat-label {
             color: #888;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
         }
 
-        .stat-btn {
-            padding: 0.7rem 1.5rem;
-            background: #1a1a1a;
-            border: 1px solid #333;
+        .loading {
+            text-align: center;
             color: #888;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            transition: all 0.2s;
-            margin-right: 0.5rem;
-            margin-bottom: 1rem;
+            padding: 2rem 1rem;
         }
 
-        .stat-btn:hover {
-            background: #2a2a2a;
-            border-color: #555;
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #dc2626;
+            color: #fca5a5;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            margin: 1rem;
         }
 
-        .stat-btn.active {
-            background: #333;
-            border-color: #555;
-            color: #4ade80;
-        }
-
-        .start-overlay {
+        .game-selector-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -291,90 +400,61 @@
             gap: 2rem;
         }
 
-        .start-overlay.hidden {
+        .game-selector-overlay.hidden {
             display: none;
         }
 
-        .start-overlay h1 {
-            font-size: 4rem;
+        .selector-content h1 {
+            font-size: 3.5rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 3px;
             color: #fff;
+            margin-bottom: 1rem;
         }
 
-        .start-overlay p {
-            font-size: 1.1rem;
+        .selector-content p {
+            font-size: 1rem;
             color: #888;
+            margin-bottom: 2rem;
         }
 
-        .start-button {
-            padding: 1rem 3rem;
-            background: #C1272D;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 4px;
+        .game-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 60vh;
+            overflow-y: auto;
+            width: 100%;
+            max-width: 600px;
+            padding: 0 2rem;
+        }
+
+        .game-option {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            padding: 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.2s;
-        }
-
-        .start-button:hover {
-            background: #a01f27;
-            transform: scale(1.05);
-        }
-
-        .loading {
-            text-align: center;
-            color: #888;
-            padding: 2rem;
-        }
-
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #dc2626;
-            color: #fca5a5;
-            padding: 1rem;
-            margin: 1rem;
-            border-radius: 4px;
+            transition: all 0.3s;
             text-align: center;
         }
 
-        .touchdown-animation {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 12rem;
+        .game-option:hover {
+            border-color: #4ade80;
+            background: #252525;
+            transform: translateY(-2px);
+        }
+
+        .game-option-matchup {
+            font-size: 1.3rem;
             font-weight: bold;
-            color: #C1272D;
-            z-index: 999;
-            pointer-events: none;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            animation: slam 1s ease-out;
-            text-shadow: 0 0 30px #C1272D, 0 0 60px #C1272D;
+            margin-bottom: 0.5rem;
         }
 
-        @keyframes slam {
-            0% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(0.5) rotateZ(-5deg);
-                text-shadow: 0 0 20px #C1272D;
-            }
-            50% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.2) rotateZ(2deg);
-                text-shadow: 0 0 40px #C1272D, 0 0 80px #C1272D;
-            }
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(1.5) rotateZ(0deg);
-                text-shadow: 0 0 20px #C1272D;
-            }
+        .game-option-status {
+            font-size: 0.9rem;
+            color: #888;
         }
 
         ::-webkit-scrollbar {
@@ -396,74 +476,106 @@
     </style>
 </head>
 <body>
-    <div class="start-overlay" id="startOverlay">
-        <h1>NBA Live Dashboard</h1>
-        <p>Click to Start</p>
-        <button class="start-button" id="startButton">Start</button>
+    <!-- Game Selection Overlay -->
+    <div class="game-selector-overlay" id="gameSelector">
+        <div class="selector-content">
+            <h1>NBA Live Dashboard</h1>
+            <p>Select a game to begin</p>
+            <div class="game-list" id="gameList">
+                <div class="loading">Loading available games...</div>
+            </div>
+        </div>
     </div>
 
+    <!-- Main App -->
     <div class="container" id="mainApp" style="display: none;">
+        <!-- Header -->
         <div class="header">
             <div class="header-title">NBA LIVE</div>
+            <div class="game-selector">
+                <select id="gameDropdown">
+                    <option value="">Select Game</option>
+                </select>
+            </div>
             <div class="controls">
                 <button class="btn" id="refreshBtn">Refresh</button>
                 <button class="btn" id="fullscreenBtn">Fullscreen</button>
             </div>
         </div>
 
-        <div class="content">
-            <!-- LEFT TEAM -->
-            <div class="team-side left">
-                <div class="team-header">
-                    <div class="team-info">
-                        <div class="team-logo" id="leftTeamLogo">🏀</div>
-                        <div class="team-details">
-                            <h2 id="leftTeamName">Team</h2>
-                            <p id="leftTeamRecord">0-0</p>
-                            <p id="leftTeamStatus">--</p>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- LEFT STATS PANEL -->
+            <div class="stats-panel left">
+                <div class="panel-header">
+                    <div class="panel-team-info">
+                        <div class="panel-team-logo" id="leftTeamLogo">🏀</div>
+                        <div>
+                            <div class="panel-team-name" id="leftTeamName">Team</div>
+                            <div class="panel-team-record" id="leftTeamRecord">0-0</div>
                         </div>
                     </div>
-                    <div class="score-section">
-                        <div class="score" id="leftScore">0</div>
-                        <div class="game-time" id="gameTime">--</div>
-                        <div style="width: 80px;"></div>
+                    <div class="view-buttons">
+                        <button class="view-btn active" data-panel="left" data-view="team">Team</button>
+                        <button class="view-btn" data-panel="left" data-view="players">Players</button>
                     </div>
                 </div>
-
-                <div style="padding: 0 2rem;">
-                    <button class="stat-btn active" data-view="team-left">Team Stats</button>
-                    <button class="stat-btn" data-view="players-left">Players</button>
-                </div>
-
-                <div id="leftStatsContainer" class="stats-container">
+                <div class="panel-content" id="leftContent">
                     <div class="loading">Loading stats...</div>
                 </div>
             </div>
 
-            <!-- RIGHT TEAM -->
-            <div class="team-side right">
-                <div class="team-header">
-                    <div class="team-info">
-                        <div class="team-logo" id="rightTeamLogo">🏀</div>
-                        <div class="team-details">
-                            <h2 id="rightTeamName">Team</h2>
-                            <p id="rightTeamRecord">0-0</p>
-                            <p id="rightTeamStatus">--</p>
+            <!-- CENTER BROADCAST -->
+            <div class="center-section">
+                <div class="broadcast-container">
+                    <div class="broadcast-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+                            <polyline points="17 2 12 7 7 2"></polyline>
+                        </svg>
+                        <p>Broadcast Video Here</p>
+                    </div>
+                </div>
+                <div class="game-info-bar">
+                    <div class="team-scoreline">
+                        <div class="team-score">
+                            <div>
+                                <div class="team-name" id="leftTeamNameScore">Away</div>
+                                <div class="score-large" id="leftScoreMain">0</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="score-section">
-                        <div class="score" id="rightScore">0</div>
-                        <div style="flex: 1;"></div>
-                        <div style="width: 80px;"></div>
+                    <div class="game-time-center">
+                        <div class="status" id="gameStatus">--</div>
+                        <div class="time" id="gameTimeMain">--</div>
+                    </div>
+                    <div class="team-scoreline" style="flex-direction: row-reverse;">
+                        <div class="team-score">
+                            <div>
+                                <div class="team-name" id="rightTeamNameScore">Home</div>
+                                <div class="score-large" id="rightScoreMain">0</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div style="padding: 0 2rem;">
-                    <button class="stat-btn active" data-view="team-right">Team Stats</button>
-                    <button class="stat-btn" data-view="players-right">Players</button>
+            <!-- RIGHT STATS PANEL -->
+            <div class="stats-panel right">
+                <div class="panel-header">
+                    <div class="panel-team-info">
+                        <div class="panel-team-logo" id="rightTeamLogo">🏀</div>
+                        <div>
+                            <div class="panel-team-name" id="rightTeamName">Team</div>
+                            <div class="panel-team-record" id="rightTeamRecord">0-0</div>
+                        </div>
+                    </div>
+                    <div class="view-buttons">
+                        <button class="view-btn active" data-panel="right" data-view="team">Team</button>
+                        <button class="view-btn" data-panel="right" data-view="players">Players</button>
+                    </div>
                 </div>
-
-                <div id="rightStatsContainer" class="stats-container">
+                <div class="panel-content" id="rightContent">
                     <div class="loading">Loading stats...</div>
                 </div>
             </div>
@@ -475,47 +587,93 @@
         const NBA_API = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
 
         let appState = {
-            isStarted: false,
+            allGames: [],
             currentGame: null,
-            audioContext: null,
-            selectedView: { left: 'team', right: 'team' },
-            selectedPlayers: { left: null, right: null }
+            currentGameId: null,
+            isStarted: false,
+            viewMode: { left: 'team', right: 'team' },
+            refreshInterval: null
         };
 
-        // ============ Start App ============
-        document.getElementById('startButton').addEventListener('click', () => {
-            appState.isStarted = true;
-            document.getElementById('startOverlay').classList.add('hidden');
-            document.getElementById('mainApp').style.display = 'flex';
-            fetchGame();
-        });
-
-        // ============ Fetch Game Data ============
-        async function fetchGame() {
+        // ============ Load Games on Start ============
+        async function loadAvailableGames() {
             try {
                 const url = CORS_PROXY + encodeURIComponent(NBA_API);
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Failed to fetch');
                 
                 const data = await response.json();
-                const game = data.events?.[0];
+                appState.allGames = data.events || [];
                 
-                if (!game) {
-                    showError('No games available');
+                if (appState.allGames.length === 0) {
+                    document.getElementById('gameList').innerHTML = '<div class="error">No games available right now</div>';
                     return;
                 }
 
-                appState.currentGame = game;
-                renderGame();
+                renderGameSelector();
             } catch (error) {
                 console.error('Error:', error);
-                showError('Failed to load game data');
+                document.getElementById('gameList').innerHTML = '<div class="error">Failed to load games</div>';
             }
         }
 
-        function showError(msg) {
-            document.getElementById('leftStatsContainer').innerHTML = `<div class="error">${msg}</div>`;
-            document.getElementById('rightStatsContainer').innerHTML = `<div class="error">${msg}</div>`;
+        function renderGameSelector() {
+            const gameList = document.getElementById('gameList');
+            gameList.innerHTML = '';
+
+            appState.allGames.forEach((game, index) => {
+                const competitors = game.competitions?.[0]?.competitors || [];
+                const away = competitors.find(c => c.homeAway === 'away');
+                const home = competitors.find(c => c.homeAway === 'home');
+                const status = game.competitions?.[0]?.status?.type?.description || 'Scheduled';
+
+                if (!away || !home) return;
+
+                const option = document.createElement('div');
+                option.className = 'game-option';
+                option.innerHTML = `
+                    <div class="game-option-matchup">${away.team.displayName} @ ${home.team.displayName}</div>
+                    <div class="game-option-status">${status}</div>
+                `;
+                option.addEventListener('click', () => selectGame(index));
+                gameList.appendChild(option);
+            });
+        }
+
+        function selectGame(gameIndex) {
+            appState.currentGame = appState.allGames[gameIndex];
+            appState.currentGameId = appState.currentGame.id;
+            appState.isStarted = true;
+
+            document.getElementById('gameSelector').classList.add('hidden');
+            document.getElementById('mainApp').style.display = 'flex';
+
+            populateGameDropdown();
+            renderGame();
+            startAutoRefresh();
+        }
+
+        function populateGameDropdown() {
+            const dropdown = document.getElementById('gameDropdown');
+            dropdown.innerHTML = '';
+
+            appState.allGames.forEach((game, index) => {
+                const competitors = game.competitions?.[0]?.competitors || [];
+                const away = competitors.find(c => c.homeAway === 'away');
+                const home = competitors.find(c => c.homeAway === 'home');
+
+                if (!away || !home) return;
+
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${away.team.displayName} @ ${home.team.displayName}`;
+                if (game.id === appState.currentGameId) option.selected = true;
+                dropdown.appendChild(option);
+            });
+
+            dropdown.addEventListener('change', (e) => {
+                selectGame(parseInt(e.target.value));
+            });
         }
 
         // ============ Render Game ============
@@ -530,38 +688,38 @@
 
             if (!away || !home) return;
 
-            // Update left side (away team)
-            renderTeamHeader('left', away, game);
-            renderTeamHeader('right', home, game);
+            // Update team info
+            updateTeamPanel('left', away, game);
+            updateTeamPanel('right', home, game);
 
-            // Game time
+            // Update center score
+            document.getElementById('leftTeamNameScore').textContent = away.team.displayName;
+            document.getElementById('rightTeamNameScore').textContent = home.team.displayName;
+            document.getElementById('leftScoreMain').textContent = away.score || '0';
+            document.getElementById('rightScoreMain').textContent = home.score || '0';
+
+            // Update game time
             let timeStr = `Q${period} ${Math.floor(clock / 60)}:${String(Math.floor(clock % 60)).padStart(2, '0')}`;
             if (status.type?.description?.includes('Final')) timeStr = 'FINAL';
-            document.getElementById('gameTime').textContent = timeStr;
+            document.getElementById('gameTimeMain').textContent = timeStr;
+            document.getElementById('gameStatus').textContent = status.type?.description || 'Scheduled';
 
-            // Render stats
+            // Render initial stats
             renderTeamStats('left', away);
             renderTeamStats('right', home);
         }
 
-        function renderTeamHeader(side, team, game) {
+        function updateTeamPanel(side, team, game) {
             const prefix = side === 'left' ? 'left' : 'right';
             document.getElementById(`${prefix}TeamLogo`).textContent = team.team?.abbreviation?.substring(0, 1) || '🏀';
             document.getElementById(`${prefix}TeamName`).textContent = team.team?.displayName || 'Team';
             document.getElementById(`${prefix}TeamRecord`).textContent = team.records?.[0]?.summary || '0-0';
-            document.getElementById(`${prefix}Score`).textContent = team.score || '0';
-            
-            const status = game.competitions?.[0]?.status?.type?.description || 'Scheduled';
-            document.getElementById(`${prefix}TeamStatus`).textContent = status;
         }
 
         function renderTeamStats(side, team) {
             const stats = team.statistics || [];
-            const containerId = `${side}StatsContainer`;
-            
-            let html = '';
+            const containerId = `${side}Content`;
 
-            // Extract all available stats
             const statMap = {
                 'Field Goal %': stats.find(s => s.name === 'fieldGoalPct')?.displayValue || '--',
                 'Three Point %': stats.find(s => s.name === 'threePointPct')?.displayValue || '--',
@@ -573,10 +731,9 @@
                 'Blocks': stats.find(s => s.name === 'blocks')?.displayValue || '--',
                 'Turnovers': stats.find(s => s.name === 'turnovers')?.displayValue || '--',
                 'Personal Fouls': stats.find(s => s.name === 'personalFouls')?.displayValue || '--',
-                'Bench Points': stats.find(s => s.name === 'benchPoints')?.displayValue || '--',
-                'Fast Break Points': stats.find(s => s.name === 'fastBreakPoints')?.displayValue || '--',
             };
 
+            let html = '';
             Object.entries(statMap).forEach(([label, value]) => {
                 html += `
                     <div class="stat-row">
@@ -590,7 +747,7 @@
         }
 
         function renderPlayerStats(side, team) {
-            const containerId = `${side}StatsContainer`;
+            const containerId = `${side}Content`;
             const players = team.players || [];
 
             if (players.length === 0) {
@@ -599,16 +756,15 @@
             }
 
             let html = '';
-            players.forEach(playerData => {
+            players.slice(0, 12).forEach(playerData => {
                 const person = playerData.person || {};
                 const position = playerData.position?.abbreviation || 'N/A';
                 const number = playerData.jerseyNumber || '--';
-
                 const stats = playerData.stats || [];
-                const points = stats.find(s => s.name === 'points')?.displayValue || '--';
-                const rebounds = stats.find(s => s.name === 'rebounds')?.displayValue || '--';
-                const assists = stats.find(s => s.name === 'assists')?.displayValue || '--';
-                const steals = stats.find(s => s.name === 'steals')?.displayValue || '--';
+                const points = stats.find(s => s.name === 'points')?.displayValue || '0';
+                const rebounds = stats.find(s => s.name === 'rebounds')?.displayValue || '0';
+                const assists = stats.find(s => s.name === 'assists')?.displayValue || '0';
+                const steals = stats.find(s => s.name === 'steals')?.displayValue || '0';
 
                 html += `
                     <div class="player-card">
@@ -619,19 +775,19 @@
                         <div class="player-stats">
                             <div class="player-stat">
                                 <div class="player-stat-value">${points}</div>
-                                <div class="player-stat-label">Points</div>
+                                <div class="player-stat-label">Pts</div>
                             </div>
                             <div class="player-stat">
                                 <div class="player-stat-value">${rebounds}</div>
-                                <div class="player-stat-label">Rebounds</div>
+                                <div class="player-stat-label">Reb</div>
                             </div>
                             <div class="player-stat">
                                 <div class="player-stat-value">${assists}</div>
-                                <div class="player-stat-label">Assists</div>
+                                <div class="player-stat-label">Ast</div>
                             </div>
                             <div class="player-stat">
                                 <div class="player-stat-value">${steals}</div>
-                                <div class="player-stat-label">Steals</div>
+                                <div class="player-stat-label">Stl</div>
                             </div>
                         </div>
                     </div>
@@ -641,38 +797,62 @@
             document.getElementById(containerId).innerHTML = html;
         }
 
-        // ============ View Switching ============
-        document.querySelectorAll('.stat-btn').forEach(btn => {
+        // ============ View Mode Switching ============
+        document.querySelectorAll('.view-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
+                const panel = e.target.dataset.panel;
                 const view = e.target.dataset.view;
-                const [type, side] = view.split('-');
-                
+
                 // Update active button
-                const container = e.target.parentElement;
-                container.querySelectorAll('.stat-btn').forEach(b => b.classList.remove('active'));
+                e.target.parentElement.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
 
-                // Switch view
-                const game = appState.currentGame;
-                if (!game) return;
+                // Update view mode
+                appState.viewMode[panel] = view;
 
+                // Re-render
+                const game = appState.currentGame;
                 const competitors = game.competitions?.[0]?.competitors || [];
-                const team = side === 'left' 
+                const team = panel === 'left' 
                     ? competitors.find(c => c.homeAway === 'away')
                     : competitors.find(c => c.homeAway === 'home');
 
                 if (!team) return;
 
-                if (type === 'team') {
-                    renderTeamStats(side, team);
+                if (view === 'team') {
+                    renderTeamStats(panel, team);
                 } else {
-                    renderPlayerStats(side, team);
+                    renderPlayerStats(panel, team);
                 }
             });
         });
 
+        // ============ Refresh Data ============
+        async function refreshGame() {
+            try {
+                const url = CORS_PROXY + encodeURIComponent(NBA_API);
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Failed to fetch');
+                
+                const data = await response.json();
+                const updatedGame = data.events?.find(g => g.id === appState.currentGameId);
+                
+                if (updatedGame) {
+                    appState.currentGame = updatedGame;
+                    renderGame();
+                }
+            } catch (error) {
+                console.error('Refresh error:', error);
+            }
+        }
+
+        function startAutoRefresh() {
+            if (appState.refreshInterval) clearInterval(appState.refreshInterval);
+            appState.refreshInterval = setInterval(refreshGame, 15000);
+        }
+
         // ============ Controls ============
-        document.getElementById('refreshBtn').addEventListener('click', fetchGame);
+        document.getElementById('refreshBtn').addEventListener('click', refreshGame);
         document.getElementById('fullscreenBtn').addEventListener('click', () => {
             const container = document.getElementById('mainApp');
             if (!document.fullscreenElement) {
@@ -682,26 +862,8 @@
             }
         });
 
-        // ============ Keyboard Controls ============
-        document.addEventListener('keydown', (e) => {
-            if (!appState.isStarted) return;
-            
-            if (e.key.toUpperCase() === 'T') {
-                const animation = document.createElement('div');
-                animation.className = 'touchdown-animation';
-                animation.textContent = 'SLAM!';
-                document.body.appendChild(animation);
-                setTimeout(() => animation.remove(), 1000);
-            } else if (e.key.toUpperCase() === 'D') {
-                // Defense sound would go here
-                console.log('Defense!');
-            }
-        });
-
-        // ============ Auto-Refresh ============
-        setInterval(() => {
-            if (appState.isStarted) fetchGame();
-        }, 30000);
+        // ============ Initialize ============
+        window.addEventListener('DOMContentLoaded', loadAvailableGames);
     </script>
 </body>
 </html>
